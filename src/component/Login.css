@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css2?family=Zefani:wght@400;700&display=swap');
+
+/* Base styling */
+.login-container {
+    display: flex;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    background: #f0f4f8;
+}
+
+.login-left {
+    flex: 2; /* Increase flex value to make this panel larger */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px; /* Increase padding for more space */
+    position: relative; /* Ensure proper positioning */
+    background-image: 
+        linear-gradient(0deg, rgb(217, 200, 250), rgb(115, 183, 254)); /* Gradient background only */
+    background-size: 100%; /* Ensure gradient covers the entire area */
+    background-blend-mode: normal; /* Normal blend mode */
+    z-index: 0; /* Ensure the background is behind other elements */
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
+    padding: 20px;
+    width: 80%; /* Adjust width as needed */
+    max-width: 500px; /* Maximum width of the card */
+    text-align: left; /* Align text to the left */
+    font-family: 'Zefani', sans-serif; /* Apply Zefani font */
+    aspect-ratio: 1 / 1; /* Maintain a square aspect ratio */
+    box-sizing: border-box; /* Ensure padding is included in the width/height */
+    position: relative; /* Ensure the glass card is above the background */
+    z-index: 1; /* Ensure the glass card is on top of the background */
+}
+
+.glass-card h1 {
+    font-size: 3.5rem; /* Larger font size */
+    line-height: 1.2;
+    margin-bottom: 20px;
+    font-family: 'Zefani', sans-serif; /* Apply Zefani font */
+    color: #fff;
+}
+
+.glass-card h1 span {
+    color: rgb(19, 19, 75); /* Navy blue color */
+    font-weight: bold; /* Bold text */
+}
+
+.glass-card p {
+    font-size: 1rem;
+    color: #fff; /* White text for contrast */
+}
+
+.login-right {
+    flex: 2; /* Increase flex value to make this panel larger */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px; /* Increase padding for more space */
+    background: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.login-logo {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.login-right h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+.login-right p {
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    color: #7f8c8d;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 400px; /* Ensure form width is manageable */
+}
+
+input[type="email"],
+input[type="password"] {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+input:focus {
+    border-color: #1a73e8;
+    outline: none;
+}
+
+button {
+    padding: 10px;
+    background: linear-gradient(to right, rgb(94, 170, 250), rgb(153, 139, 252));
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-bottom: 20px;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+    background: linear-gradient(to right, rgb(153, 139, 252), rgb(94, 170, 250));
+    transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
+
+.login-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.login-options label {
+    display: flex;
+    align-items: center;
+}
+
+.login-options a {
+    color: #1a73e8;
+    text-decoration: none;
+}
+
+.login-divider {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #7f8c8d;
+}
+
+.google-login {
+    background: #fff;
+    color: #2c3e50;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.google-login:hover {
+    background: #f8f9fa; /* Light background on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow on hover */
+}
+
+.google-login img {
+    margin-right: 10px;
+}
+
+@media (max-width: 768px) {
+    .login-container {
+        flex-direction: column;
+    }
+    
+    .login-left, .login-right {
+        flex: none;
+        width: 100%;
+        padding: 20px;
+    }
+}
