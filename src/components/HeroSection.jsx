@@ -91,8 +91,8 @@ const HeroContainer = styled.div`
   }
 
   .image-container {
-  margin-left:450px;
-      position: relative;
+    margin-left: 450px;
+    position: relative;
     flex: 1;
     display: flex;
     align-items: center;
@@ -104,22 +104,26 @@ const HeroContainer = styled.div`
     border-radius: 50%;
     border: 5px solid #ffffff;
     object-fit: cover;
+    opacity: 0;
+    transform: scale(0.5);
+    animation: fadeInScale 1.5s ease-in-out forwards;
   }
 
   .image1 {
     width: 240px;
     height: 240px;
-    z-index: 5; /* Bring this image on top */
+    z-index: 5;
     top: -240px;
     left: -60px;
+    animation-delay: 0.2s;
   }
 
   .image2 {
     width: 200px;
     height: 200px;
-    z-index: ;
     top: -20px;
     left: -80px;
+    animation-delay: 0.4s;
   }
 
   .image3 {
@@ -128,6 +132,7 @@ const HeroContainer = styled.div`
     z-index: 4;
     top: 140px;
     left: 20px;
+    animation-delay: 0.6s;
   }
 
   .image4 {
@@ -136,6 +141,7 @@ const HeroContainer = styled.div`
     z-index: 2;
     top: 40px;
     left: 100px;
+    animation-delay: 0.8s;
   }
 
   .image5 {
@@ -144,6 +150,18 @@ const HeroContainer = styled.div`
     z-index: 1;
     top: -140px;
     left: 90px;
+    animation-delay: 1s;
+  }
+
+  @keyframes fadeInScale {
+    0% {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
   }
 `;
 
