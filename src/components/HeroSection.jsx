@@ -1,122 +1,173 @@
 import React from "react";
 import styled from "styled-components";
-import heroImage from "../assets/intro-bg.jpg"; // Add your image here
+
+// Import images
+import homeImage1 from "../assets/home1.jpg";
+import homeImage2 from "../assets/home2.jpg";
+import homeImage3 from "../assets/home3.webp";
+import homeImage4 from "../assets/home4.jpg";
+import homeImage5 from "../assets/home5.jpg";
 
 const HeroContainer = styled.div`
   height: 100vh;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: url(${heroImage}) no-repeat center center/cover;
-  color: #fff;
-  text-align: center;
+  background: rgb(244, 244, 244);
+  color: #000;
+  text-align: left;
+  padding-left: 20px;
   position: relative;
   overflow: hidden;
 
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1;
+  .text-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 
   h1 {
-    position: relative;
-    z-index: 2;
+    margin-left: 100px;
     font-size: 4rem;
-    margin: 0;
+    font-weight: bold;
+    line-height: 1.2;
+  }
+
+  h1 span {
+    display: block;
   }
 
   p {
-    position: relative;
-    z-index: 2;
     font-size: 1.5rem;
-    margin: 20px 0; /* Add some spacing between the text and button */
+    margin-left: 100px;
   }
-`;
 
-const Button = styled.button`
-  position: relative;
-  overflow: hidden;
-  border: 1px solid #18181a;
-  color: #18181a;
-  display: inline-block;
-  font-size: 15px;
-  line-height: 15px;
-  padding: 18px 18px 17px;
-  text-decoration: none;
-  cursor: pointer;
-  background: #fff;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  margin: 10px; /* Add margin to separate buttons */
-  
-  span:first-child {
+  .button-container {
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+    margin-left: 100px;
+  }
+
+  .button {
+    padding: 0.8em 1.6em;
+    border: none;
+    border-radius: 100px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: rgb(0, 123, 255);
+    transition: all 1000ms;
+    font-size: 14px;
     position: relative;
-    transition: color 600ms cubic-bezier(0.48, 0, 0.12, 1);
-    z-index: 10;
+    overflow: hidden;
+    outline: 2px solid rgb(0, 123, 255);
   }
 
-  span:last-child {
-    color: white;
-    display: block;
-    position: absolute;
-    bottom: 0;
-    transition: all 500ms cubic-bezier(0.48, 0, 0.12, 1);
-    z-index: 100;
-    opacity: 0;
-    top: 50%;
-    left: 50%;
-    transform: translateY(225%) translateX(-50%);
-    height: 14px;
-    line-height: 13px;
+  .button:hover {
+    color: #ffffff;
+    transform: scale(1.1);
+    outline: 2px solid rgb(0, 123, 255);
+    box-shadow: 4px 5px 17px -4px #268391;
   }
 
-  &:after {
+  .button::before {
     content: "";
     position: absolute;
-    bottom: -50%;
-    left: 0;
-    width: 100%;
+    left: -50px;
+    top: 0;
+    width: 0;
     height: 100%;
-    background-color: black;
-    transform-origin: bottom center;
-    transition: transform 600ms cubic-bezier(0.48, 0, 0.12, 1);
-    transform: skewY(9.3deg) scaleY(0);
-    z-index: 50;
+    background-color: rgb(0, 123, 255);
+    transform: skewX(45deg);
+    z-index: -1;
+    transition: width 1000ms;
   }
 
-  &:hover:after {
-    transform-origin: bottom center;
-    transform: skewY(9.3deg) scaleY(2) translateY(-10%);
+  .button:hover::before {
+    width: 250%;
   }
 
-  &:hover span:last-child {
-    transform: translateX(-50%) translateY(-50%);
-    opacity: 1;
-    transition: all 900ms cubic-bezier(0.48, 0, 0.12, 1);
+  .image-container {
+  margin-left:450px;
+      position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .image {
+    position: absolute;
+    border-radius: 50%;
+    border: 5px solid #ffffff;
+    object-fit: cover;
+  }
+
+  .image1 {
+    width: 240px;
+    height: 240px;
+    z-index: 5; /* Bring this image on top */
+    top: -240px;
+    left: -60px;
+  }
+
+  .image2 {
+    width: 200px;
+    height: 200px;
+    z-index: ;
+    top: -20px;
+    left: -80px;
+  }
+
+  .image3 {
+    width: 140px;
+    height: 140px;
+    z-index: 4;
+    top: 140px;
+    left: 20px;
+  }
+
+  .image4 {
+    width: 160px;
+    height: 160px;
+    z-index: 2;
+    top: 40px;
+    left: 100px;
+  }
+
+  .image5 {
+    width: 220px;
+    height: 220px;
+    z-index: 1;
+    top: -140px;
+    left: 90px;
   }
 `;
 
 const HeroSection = () => {
   return (
     <HeroContainer id="home">
-      <h1>Welcome to Skill-X</h1>
-      <p>Your gateway to top freelance opportunities.</p>
-      <Button aria-label="Hire a freelancer">
-        <span>Hire a Freelancer</span>
-        <span>Hire it !</span>
-      </Button>
-      <Button aria-label="Earn money freelancing">
-        <span>Earn Money Freelancing</span>
-        <span>Earn It !</span>
-      </Button>
+      <div className="text-container">
+        <h1>
+          <span>Welcome to</span>
+          <span>Skill-X.</span>
+        </h1>
+        <p>Your gateway to top freelance opportunities.</p>
+        <div className="button-container">
+          <button className="button">Hire</button>
+          <button className="button">Work</button>
+        </div>
+      </div>
+      <div className="image-container">
+        <img className="image image1" src={homeImage1} alt="Home Image 1" />
+        <img className="image image2" src={homeImage2} alt="Home Image 2" />
+        <img className="image image3" src={homeImage3} alt="Home Image 3" />
+        <img className="image image4" src={homeImage4} alt="Home Image 4" />
+        <img className="image image5" src={homeImage5} alt="Home Image 5" />
+      </div>
     </HeroContainer>
   );
 };
