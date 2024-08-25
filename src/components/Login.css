@@ -102,7 +102,7 @@ input:focus {
     outline: none;
 }
 
-button {
+.button1 {
     padding: 10px;
     background: linear-gradient(to right, rgb(94, 170, 250), rgb(153, 139, 252));
     color: #fff;
@@ -114,7 +114,7 @@ button {
     transition: background 0.3s ease, transform 0.3s ease;
 }
 
-button:hover {
+.button1:hover {
     background: linear-gradient(to right, rgb(153, 139, 252), rgb(94, 170, 250));
     transform: scale(1.05); /* Slightly enlarge the button on hover */
 }

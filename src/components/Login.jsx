@@ -30,7 +30,7 @@ const Login = () => {
             </label>
             <a href="/forgot-password">Forgot password?</a>
           </div>
-          <button type="submit">Login</button>
+          <button className="button1" type="submit">Login</button>
           <div className="login-divider">or</div>
           <button className="google-login">
             <img
