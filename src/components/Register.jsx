@@ -1,10 +1,10 @@
 import React,{ useState } from "react";
 import "./Login.css";
-import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { app } from '../firebaseConfig';
 
-const Login = () => {
+const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
@@ -14,19 +14,15 @@ const Login = () => {
     e.preventDefault();
     const auth = getAuth(app);
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-      console.log('User logged in:', user);
-      navigate('/dashboard');
+      console.log('User logged in:', user); 
+      navigate('/Dashboard');
     } catch (error) {
-      setError('Invalid username or password');
+      setError(error.message);
       console.error('Login error:', error.message);
     }
-  };
-
-  const navigateToSignUp = () => {
-    navigate('/SignUp');
-  };
+  };  
 
   const handleGoogleLogin = async () => {
     const auth = getAuth(app);
@@ -60,18 +56,17 @@ const Login = () => {
       <div className="login-right">
         <div className="login-logo">🌐</div>
         <h2>Hey, hello 👋</h2>
-        <p>Enter the information you entered while registering.</p>
+        <p>Enter your email and create a strong password you'll remember.</p>
         <form onSubmit={handleLogin}>
           <input type="email" placeholder="Email" required onChange={(e) => setEmail(e.target.value)} />
           <input type="password" placeholder="Password" required onChange={(e) => setPassword(e.target.value)} />
           {error && <div className="error-message">{error}</div>}
           <div className="login-options">
             <label>
-            <a href="/register">New here?</a>
+            <a href="/login">Already have an account?</a>
             </label>
-            <a href="/forgot-password">Forgot password?</a>
           </div>
-          <button className="button1" type="submit">Login</button>
+          <button className="button1" type="submit">Register</button>
           <div className="login-divider">or</div>
           </form>
           <button className="google-login" onClick={handleGoogleLogin}>
@@ -79,11 +74,11 @@ const Login = () => {
               src="https://img.icons8.com/color/16/000000/google-logo.png"
               alt="Google"
             />
-            Sign in with Google
+            Sign up with Google
           </button>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default Register;

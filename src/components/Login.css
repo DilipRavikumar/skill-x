@@ -7,7 +7,11 @@
     font-family: Arial, sans-serif;
     background: #f0f4f8;
 }
-
+.error-message {
+    color: red;
+    margin-bottom: 15px;
+    font-size: 14px;
+  }  
 .login-left {
     flex: 2; /* Increase flex value to make this panel larger */
     display: flex;

@@ -11,12 +11,14 @@ import FreelancerProfile from './components/FreelancerProfile';
 import FreelancerForm from './components/FreelancerForm';
 import UserTypeSelection from './components/UserTypeSelection'; // Ensure this matches your component name
 import './index.css';
+import Register from './components/Register';
 
 const App = () => {
   return (
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/freelancer-profile" element={<FreelancerProfile />} /> {/* Ensure this matches the route and component */}
         <Route path="/user-type-select" element={<UserTypeSelection />} /> {/* Corrected path */}
         <Route path="/freelancer-form" element={<FreelancerForm />} /> {/* Ensure this matches your component name */}
