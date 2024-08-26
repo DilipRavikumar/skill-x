@@ -8,7 +8,7 @@
 .btn-17 {
   -webkit-tap-highlight-color: transparent;
   background-color: #fff;
-  color: #007bff; /* Default color for the new button */
+  color: rgb(1, 11, 231); /* Default color for the new button */
   cursor: pointer;
   font-family: 'Montserrat', sans-serif;
   font-size: 0.7em; /* Further reduced font size */
@@ -16,21 +16,21 @@
   line-height: 30px; /* Adjusted line height for smaller button */
   text-transform: uppercase;
   border-radius: 25px; /* Further reduced border radius */
-  border: 2px solid #007bff; /* Keep border thickness for compact size */
+  border: 2px solid rgb(1, 11, 231); /* Keep border thickness for compact size */
   padding: 0.5rem 1.5rem; /* Further reduced padding */
   position: relative;
   transition: all 0.3s;
 }
 
 .btn-17:hover {
-  background: #007bff; /* Hover background color */
+  background: rgb(1, 11, 231); /* Hover background color */
   color: #fff; /* Hover text color */
   font-size: 0.8em; /* Slightly larger font size on hover */
 }
 
 .btn-17:active {
-  background: #0056b3; /* Active background color */
-  border-color: #0056b3; /* Active border color */
+  background: rgb(1, 11, 231); /* Active background color */
+  border-color: rgb(1, 11, 231); /* Active border color */
 }
 .search-container {
   position: relative;

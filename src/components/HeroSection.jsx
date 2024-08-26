@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { FaSearch } from "react-icons/fa";
 
-// Import images
-import homeImage1 from "../assets/home1.jpg";
-import homeImage2 from "../assets/home2.jpg";
-import homeImage3 from "../assets/home3.webp";
-import homeImage4 from "../assets/home4.jpg";
-import homeImage5 from "../assets/home5.jpg";
+// Import the images
+import mainImage from "../assets/Home.png";
+import cubeImage from "../assets/cube.png"; // Replace with your cube image path
+import spiralImage from "../assets/spiral.png"; // Replace with your spiral image path
+import crushImage from "../assets/crush.png"; // Replace with your crush image path
 
 const HeroContainer = styled.div`
   height: 100vh;
@@ -19,12 +19,16 @@ const HeroContainer = styled.div`
   padding-left: 20px;
   position: relative;
   overflow: hidden;
+  animation: fadeIn 1.5s ease-out;
 
   .text-container {
     flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    position: relative;
+    z-index: 2;
+    animation: slideInLeft 1.5s ease-out;
   }
 
   h1 {
@@ -32,15 +36,13 @@ const HeroContainer = styled.div`
     font-size: 4rem;
     font-weight: bold;
     line-height: 1.2;
-  }
-
-  h1 span {
-    display: block;
+    animation: zoomIn 1.5s ease-out;
   }
 
   p {
     font-size: 1.5rem;
     margin-left: 100px;
+    animation: zoomIn 1.5s ease-out;
   }
 
   .button-container {
@@ -48,6 +50,8 @@ const HeroContainer = styled.div`
     display: flex;
     gap: 20px;
     margin-left: 100px;
+    position: relative;
+    z-index: 3;
   }
 
   .button {
@@ -58,18 +62,18 @@ const HeroContainer = styled.div`
     letter-spacing: 3px;
     text-transform: uppercase;
     cursor: pointer;
-    color: rgb(0, 123, 255);
+    color: rgb(1, 11, 231);
     transition: all 1000ms;
     font-size: 14px;
     position: relative;
     overflow: hidden;
-    outline: 2px solid rgb(0, 123, 255);
+    outline: 2px solid rgb(1, 11, 231);
   }
 
   .button:hover {
     color: #ffffff;
     transform: scale(1.1);
-    outline: 2px solid rgb(0, 123, 255);
+    outline: 2px solid rgb(1, 11, 231);
     box-shadow: 4px 5px 17px -4px #268391;
   }
 
@@ -80,7 +84,7 @@ const HeroContainer = styled.div`
     top: 0;
     width: 0;
     height: 100%;
-    background-color: rgb(0, 123, 255);
+    background-color: rgb(1, 11, 231);
     transform: skewX(45deg);
     z-index: -1;
     transition: width 1000ms;
@@ -90,6 +94,43 @@ const HeroContainer = styled.div`
     width: 250%;
   }
 
+  .search-container1 {
+    position: relative;
+    margin-left: 100px;
+    margin-top: 20px;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    animation: slideInRight 1.5s ease-out;
+  }
+
+  .search-bar1 {
+    background-color: rgb(244, 244, 244);
+    width: 300px;
+    padding: 0.8em 2.5em 0.8em 1em;
+    border: 2px solid rgb(1, 11, 231);
+    border-radius: 50px;
+    font-size: 14px;
+    outline: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+  }
+
+  .search-icon-container {
+    position: absolute;
+    right: 92px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: rgb(1, 11, 231);
+    font-size: 18px;
+    transition: transform 0.3s;
+  }
+
+  .search-icon-container:hover {
+    transform: translateY(-50%) scale(1.2);
+  }
+
   .image-container {
     margin-left: 450px;
     position: relative;
@@ -97,80 +138,105 @@ const HeroContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-
-  .image {
-    position: absolute;
-    border-radius: 50%;
-    border: 5px solid #ffffff;
-    object-fit: cover;
-    opacity: 0;
-    transform: scale(0.5);
-    animation: fadeInScale 1.5s ease-in-out forwards;
-  }
-
-  .image1 {
-    width: 240px;
-    height: 240px;
-    z-index: 5;
-    top: -240px;
-    left: -60px;
-    animation-delay: 0.2s;
-  }
-
-  .image2 {
-    width: 200px;
-    height: 200px;
-    top: -20px;
-    left: -80px;
-    animation-delay: 0.4s;
-  }
-
-  .image3 {
-    width: 140px;
-    height: 140px;
-    z-index: 4;
-    top: 140px;
-    left: 20px;
-    animation-delay: 0.6s;
-  }
-
-  .image4 {
-    width: 160px;
-    height: 160px;
-    z-index: 2;
-    top: 40px;
-    left: 100px;
-    animation-delay: 0.8s;
-  }
-
-  .image5 {
-    width: 220px;
-    height: 220px;
     z-index: 1;
-    top: -140px;
-    left: 90px;
-    animation-delay: 1s;
   }
 
-  @keyframes fadeInScale {
-    0% {
+  .mainImage {
+    margin-right: 200px;
+    margin-top: 50px;
+    width: 500px;
+    height: 500px;
+    z-index: 5;
+    animation: zoomIn 1.5s ease-out;
+  }
+
+  .elementImage {
+    position: absolute;
+    animation: fadeIn 1.5s ease-out, rotate 20s linear infinite;
+  }
+
+  .crush {
+    top: 10%;
+    left: -200px;
+    width: 100px;
+  }
+  
+  .cube {
+    top: -20px;
+    right: 10px;
+    width: 100px;
+  }
+  
+  .spiral {
+    bottom: -30px;
+    right: 120px;
+    width: 100px;
+  }
+
+  @keyframes fadeIn {
+    from {
       opacity: 0;
-      transform: scale(0.5);
     }
-    100% {
+    to {
       opacity: 1;
+    }
+  }
+
+  @keyframes slideInLeft {
+    from {
+      transform: translateX(-50px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideInRight {
+    from {
+      transform: translateX(50px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes zoomIn {
+    from {
+      transform: scale(0.9);
+      opacity: 0;
+    }
+    to {
       transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
     }
   }
 `;
 
 const HeroSection = () => {
+  const [query, setQuery] = useState("");
+
+  const handleSearch = () => {
+    alert(`Searching for: ${query}`);
+  };
+
   return (
     <HeroContainer id="home">
       <div className="text-container">
         <h1>
-          <span>Welcome to</span>
+          <span>Welcome to </span>
           <span>Skill-X.</span>
         </h1>
         <p>Your gateway to top freelance opportunities.</p>
@@ -178,13 +244,29 @@ const HeroSection = () => {
           <button className="button">Hire</button>
           <button className="button">Work</button>
         </div>
+        <div className="search-container1">
+          <input
+            className="search-bar1"
+            type="text"
+            placeholder="Search for Services..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                handleSearch();
+              }
+            }}
+          />
+          <div className="search-icon-container" onClick={handleSearch}>
+            <FaSearch />
+          </div>
+        </div>
       </div>
       <div className="image-container">
-        <img className="image image1" src={homeImage1} alt="Home Image 1" />
-        <img className="image image2" src={homeImage2} alt="Home Image 2" />
-        <img className="image image3" src={homeImage3} alt="Home Image 3" />
-        <img className="image image4" src={homeImage4} alt="Home Image 4" />
-        <img className="image image5" src={homeImage5} alt="Home Image 5" />
+        <img className="mainImage" src={mainImage} alt="Main" />
+        <img className="elementImage cube" src={cubeImage} alt="Cube Element" />
+        <img className="elementImage spiral" src={spiralImage} alt="Spiral Element" />
+        <img className="elementImage crush" src={crushImage} alt="Crush Element" />
       </div>
     </HeroContainer>
   );

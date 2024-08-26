@@ -73,7 +73,7 @@ const Navbar = () => {
   };
 
   const activeLinkStyle = {
-    color: '#007bff'
+    color: 'rgb(1, 11, 231)'
   };
 
   return (

@@ -1,57 +1,98 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import styled from 'styled-components';
+import aboutImage from '../assets/About.webp'; // Add your image here
 
-import aboutImage from '../assets/about.jpg'; // Add your image here
+const AboutContainer = styled.div`
+  padding: 60px 20px;
+  background: #f4f4f4;
+  color: #333;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  opacity: 0; /* Initially hidden */
+  transform: translateY(20px); /* Start slightly lower */
+  transition: opacity 1s ease-out, transform 1s ease-out; /* Smooth transition */
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0); /* Reset position when visible */
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 600px;
+    border-radius: 10px;
+    margin-left: 40px;
+    opacity: 0;
+    transform: translateX(-50px) rotate(5deg); /* Slight rotation for effect */
+    transition: opacity 1s ease-out, transform 1s ease-out;
+  }
+
+  &.visible img {
+    opacity: 1;
+    transform: translateX(0) rotate(0); /* Slide-in and zoom-in when visible */
+  }
+
+  .text-container {
+    margin-right: 40px;
+    max-width: 600px;
+    opacity: 0;
+    transform: translateX(50px);
+    transition: opacity 1s ease-out, transform 1s ease-out;
+  }
+
+  &.visible .text-container {
+    opacity: 1;
+    transform: translateX(0); /* Slide-in and zoom-in when visible */
+  }
+
+  h2 {
+    font-size: 2em; /* Larger heading font size */
+    margin-bottom: 20px;
+    color: #333;
+  }
+
+  p {
+    font-size: 1em; /* Larger paragraph font size */
+    line-height: 1.6;
+    color: #555;
+  }
+`;
 
 const AboutSection = () => {
-  const aboutContainerStyle = {
-    padding: '60px 20px',
-    background: '#f4f4f4',
-    color: '#333',
-    textAlign: 'left',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-    opacity: '0',
-    animation: 'fadeIn 1s forwards'
-  };
+  const aboutRef = useRef(null);
 
-  const imgStyle = {
-    width: '100%',
-    height: 'auto',
-    maxWidth: '600px',
-    borderRadius: '10px',
-    marginLeft: '40px',
-    transform: 'translateX(-50px) rotate(5deg)', // Slight rotation for effect
-    animation: 'slideInLeft 1s forwards, zoomIn 1s forwards'
-  };
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          aboutRef.current.classList.add('visible');
+          observer.unobserve(entry.target); // Optional: Unobserve after animation to avoid triggering again
+        }
+      },
+      { threshold: 0.1 } // Trigger when 10% of the section is visible
+    );
 
-  const textStyle = {
-    marginRight: '40px',
-    maxWidth: '600px',
-    transform: 'translateX(50px)',
-    animation: 'slideInRight 1s forwards, zoomIn 1s forwards',
-    transition: 'text-shadow 0.3s ease-in-out',
-  };
+    if (aboutRef.current) {
+      observer.observe(aboutRef.current);
+    }
 
-  const headingStyle = {
-    fontSize: '2em', // Larger heading font size
-    marginBottom: '20px',
-    color: '#333'
-  };
-
-  const paragraphStyle = {
-    fontSize: '1em', // Larger paragraph font size
-    lineHeight: '1.6',
-    color: '#555'
-  };
+    return () => {
+      if (aboutRef.current) {
+        observer.unobserve(aboutRef.current);
+      }
+    };
+  }, []);
 
   return (
-    <div style={aboutContainerStyle} id="about">
-      <img src={aboutImage} alt="About Skill-X" style={imgStyle} />
-      <div style={textStyle}>
-        <h2 style={headingStyle}>About Skill-X</h2>
-        <p style={paragraphStyle}>
+    <AboutContainer ref={aboutRef} id="about">
+      <img src={aboutImage} alt="About Skill-X" />
+      <div className="text-container">
+        <h2>About Skill-X</h2>
+        <p>
           Skill-X is dedicated to connecting talented freelancers with high-quality projects. 
           Our platform offers a seamless experience for both freelancers and clients, providing 
           tools and resources to ensure successful collaborations. We focus on delivering top-notch 
@@ -61,7 +102,7 @@ const AboutSection = () => {
           services and find your next opportunity today with Skill-X.
         </p>
       </div>
-    </div>
+    </AboutContainer>
   );
 };
 
