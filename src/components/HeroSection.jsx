@@ -16,23 +16,26 @@ const HeroContainer = styled.div`
   background: rgb(244, 244, 244);
   color: #000;
   text-align: left;
-  padding-left: 20px;
+  padding: 20px;
   position: relative;
   overflow: hidden;
   animation: fadeIn 1.5s ease-out;
 
   .text-container {
+  
     flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: flex-start; /* Align items to the start on larger screens */
+    text-align: left; /* Align text to the left */
     position: relative;
     z-index: 2;
     animation: slideInLeft 1.5s ease-out;
   }
 
   h1 {
-    margin-left: 100px;
+    margin-left:80px;
     font-size: 4rem;
     font-weight: bold;
     line-height: 1.2;
@@ -41,15 +44,17 @@ const HeroContainer = styled.div`
 
   p {
     font-size: 1.5rem;
-    margin-left: 100px;
+    margin-left:80px;
+    margin-top: 20px;
     animation: zoomIn 1.5s ease-out;
   }
 
   .button-container {
+  margin-left:80px;
     margin-top: 20px;
     display: flex;
     gap: 20px;
-    margin-left: 100px;
+    justify-content: flex-start; /* Align buttons to the start on larger screens */
     position: relative;
     z-index: 3;
   }
@@ -95,10 +100,10 @@ const HeroContainer = styled.div`
   }
 
   .search-container1 {
+    margin-left:80px;
+
     position: relative;
-    margin-left: 100px;
     margin-top: 20px;
-    z-index: 1;
     display: flex;
     align-items: center;
     animation: slideInRight 1.5s ease-out;
@@ -118,7 +123,7 @@ const HeroContainer = styled.div`
 
   .search-icon-container {
     position: absolute;
-    right: 92px;
+    right: 40px;
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
@@ -160,13 +165,13 @@ const HeroContainer = styled.div`
     left: -200px;
     width: 100px;
   }
-  
+
   .cube {
     top: -20px;
     right: 10px;
     width: 100px;
   }
-  
+
   .spiral {
     bottom: -30px;
     right: 120px;
@@ -221,6 +226,53 @@ const HeroContainer = styled.div`
     }
     to {
       transform: rotate(360deg);
+    }
+  }
+
+  /* Media Queries for Responsiveness */
+  @media (max-width: 768px) {
+    .text-container {
+      align-items: center; /* Center items horizontally on mobile */
+      text-align: center; /* Center text on mobile */
+    }
+
+    .button-container {
+      flex-direction: column; /* Stack buttons vertically on mobile */
+      gap: 10px;
+      align-items: center; /* Center buttons horizontally on mobile */
+    }
+
+    .search-container1 {
+      width: 100%;
+      justify-content: center; /* Center search bar on mobile */
+      margin-top: 20px;
+    }
+
+    .search-bar1 {
+      width: 80%; /* Adjust width for mobile */
+    }
+
+    .image-container {
+      display: none; /* Hide image container on mobile */
+    }
+
+    .elementImage {
+      width: 80px; /* Adjust size of elements for mobile */
+    }
+
+    .crush {
+      top: 15%;
+      left: 0;
+    }
+
+    .cube {
+      top: 0;
+      right: 0;
+    }
+
+    .spiral {
+      bottom: 0;
+      right: 0;
     }
   }
 `;
