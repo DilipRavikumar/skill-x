@@ -1,17 +1,13 @@
-// ProfileContext.js
 import React, { createContext, useContext, useState } from 'react';
 
 const ProfileContext = createContext();
 
 export const ProfileProvider = ({ children }) => {
   const [profile, setProfile] = useState({
-    name: '',
     bio: '',
     skills: [],
     category: '',
     location: '',
-    hourlyRate: '',
-    availability: '',
     profilePicture: null,
   });
 
