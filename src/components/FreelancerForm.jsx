@@ -1,9 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { useProfile } from './ProfileContext'; // Import useProfile
-import { getFirestore, query, where, getDocs, doc, setDoc, collection } from 'firebase/firestore'; // Import Firestore methods
-import { getAuth, onAuthStateChanged } from 'firebase/auth'; // Import Firebase Authentication
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import { useProfile } from "./ProfileContext";
+import {
+  getFirestore,
+  query,
+  where,
+  getDocs,
+  doc,
+  setDoc,
+  collection,
+} from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 const FormContainer = styled.div`
   display: flex;
@@ -113,9 +121,9 @@ const FreelancerForm = () => {
   const { profile, setProfile } = useProfile();
   const [formValues, setFormValues] = useState({
     ...profile,
-    skills: Array.isArray(profile.skills) ? profile.skills : [], // Ensure skills is an array
+    skills: Array.isArray(profile.skills) ? profile.skills : [],
   });
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
   const [user, setUser] = useState(null);
   const auth = getAuth();
   const firestore = getFirestore();
@@ -126,12 +134,15 @@ const FreelancerForm = () => {
       if (currentUser) {
         setUser(currentUser);
         const userEmail = currentUser.email;
-        // Query the 'users' collection to find a document with the matching email field
-        const q = query(collection(firestore, 'users'), where('email', '==', userEmail));
+
+        const q = query(
+          collection(firestore, "users"),
+          where("email", "==", userEmail)
+        );
         const querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {
-          const docSnap = querySnapshot.docs[0]; // Assuming there's only one match
+          const docSnap = querySnapshot.docs[0];
           setFormValues(docSnap.data());
         }
       } else {
@@ -153,20 +164,24 @@ const FreelancerForm = () => {
   };
 
   const handleSkillKeyPress = (e) => {
-    if (e.key === 'Enter' && inputValue.trim()) {
+    if (e.key === "Enter" && inputValue.trim()) {
       e.preventDefault();
       setFormValues((prevState) => ({
         ...prevState,
-        skills: Array.isArray(prevState.skills) ? [...prevState.skills, inputValue.trim()] : [inputValue.trim()], // Ensure skills is an array
+        skills: Array.isArray(prevState.skills)
+          ? [...prevState.skills, inputValue.trim()]
+          : [inputValue.trim()],
       }));
-      setInputValue('');
+      setInputValue("");
     }
   };
 
   const handleRemoveSkill = (skillToRemove) => {
     setFormValues((prevState) => ({
       ...prevState,
-      skills: Array.isArray(prevState.skills) ? prevState.skills.filter(skill => skill !== skillToRemove) : [], // Ensure skills is an array
+      skills: Array.isArray(prevState.skills)
+        ? prevState.skills.filter((skill) => skill !== skillToRemove)
+        : [],
     }));
   };
 
@@ -175,23 +190,26 @@ const FreelancerForm = () => {
     if (user) {
       try {
         const userEmail = user.email;
-        // Query the 'users' collection to find a document with the matching email field
-        const q = query(collection(firestore, 'users'), where('email', '==', userEmail));
+
+        const q = query(
+          collection(firestore, "users"),
+          where("email", "==", userEmail)
+        );
         const querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {
-          const docRef = doc(firestore, 'users', querySnapshot.docs[0].id); // Get document ID
-          await setDoc(docRef, formValues, { merge: true }); // Merge to update document
+          const docRef = doc(firestore, "users", querySnapshot.docs[0].id);
+          await setDoc(docRef, formValues, { merge: true });
           setProfile(formValues);
-          navigate('/Dashboard')
+          navigate("/Dashboard");
         } else {
-          console.error('No matching user document found');
+          console.error("No matching user document found");
         }
       } catch (error) {
-        console.error('Error saving profile data: ', error);
+        console.error("Error saving profile data: ", error);
       }
     } else {
-      console.error('No user is signed in');
+      console.error("No user is signed in");
     }
   };
 
@@ -204,7 +222,7 @@ const FreelancerForm = () => {
           id="bio"
           name="bio"
           rows="4"
-          value={formValues.bio || ''}
+          value={formValues.bio || ""}
           onChange={handleInputChange}
         />
       </FormField>
@@ -214,7 +232,9 @@ const FreelancerForm = () => {
           {formValues.skills?.map((skill, index) => (
             <Tag key={index}>
               {skill}
-              <RemoveTag onClick={() => handleRemoveSkill(skill)}>&times;</RemoveTag>
+              <RemoveTag onClick={() => handleRemoveSkill(skill)}>
+                &times;
+              </RemoveTag>
             </Tag>
           ))}
           <Input
@@ -231,22 +251,32 @@ const FreelancerForm = () => {
         <select
           id="category"
           name="category"
-          value={formValues.category || ''}
+          value={formValues.category || ""}
           onChange={handleInputChange}
         >
           <option value="">Select a category</option>
           <option value="Websites_IT_Software">Websites, IT & Software</option>
           <option value="Writing_Content">Writing & Content</option>
-          <option value="Design_Media_Architecture">Design, Media & Architecture</option>
+          <option value="Design_Media_Architecture">
+            Design, Media & Architecture
+          </option>
           <option value="Data_Entry_Admin">Data Entry & Admin</option>
           <option value="Engineering_Science">Engineering & Science</option>
           <option value="Sales_Marketing">Sales & Marketing</option>
-          <option value="Business_Accounting_HR_Legal">Business, Accounting, HR & Legal</option>
-          <option value="Product_Sourcing_Manufacturing">Product Sourcing & Manufacturing</option>
-          <option value="Mobile_Phones_Computing">Mobile Phones & Computing</option>
+          <option value="Business_Accounting_HR_Legal">
+            Business, Accounting, HR & Legal
+          </option>
+          <option value="Product_Sourcing_Manufacturing">
+            Product Sourcing & Manufacturing
+          </option>
+          <option value="Mobile_Phones_Computing">
+            Mobile Phones & Computing
+          </option>
           <option value="Translation_Languages">Translation & Languages</option>
           <option value="Trades_Services">Trades & Services</option>
-          <option value="Freight_Shipping_Transportation">Freight, Shipping & Transportation</option>
+          <option value="Freight_Shipping_Transportation">
+            Freight, Shipping & Transportation
+          </option>
           <option value="Telecommunications">Telecommunications</option>
           <option value="Education">Education</option>
           <option value="Other">Other</option>
@@ -258,11 +288,13 @@ const FreelancerForm = () => {
           id="location"
           name="location"
           type="text"
-          value={formValues.location || ''}
+          value={formValues.location || ""}
           onChange={handleInputChange}
         />
       </FormField>
-      <SubmitButton type="submit" onClick={handleSubmit}>Save Changes</SubmitButton>
+      <SubmitButton type="submit" onClick={handleSubmit}>
+        Save Changes
+      </SubmitButton>
     </FormContainer>
   );
 };

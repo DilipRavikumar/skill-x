@@ -1,7 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { getFirestore, doc, setDoc, query, where, getDocs, collection } from 'firebase/firestore';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  query,
+  where,
+  getDocs,
+  collection,
+} from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const FormContainer = styled.div`
   display: flex;
@@ -109,12 +117,12 @@ const Title = styled.h1`
 
 const EmployerForm = () => {
   const [formValues, setFormValues] = useState({
-    bio: '',
+    bio: "",
     preferredLocations: [],
     languagesKnown: [],
   });
-  const [preferredLocationInput, setPreferredLocationInput] = useState('');
-  const [languageInput, setLanguageInput] = useState('');
+  const [preferredLocationInput, setPreferredLocationInput] = useState("");
+  const [languageInput, setLanguageInput] = useState("");
   const [user, setUser] = useState(null);
   const auth = getAuth();
   const firestore = getFirestore();
@@ -124,18 +132,21 @@ const EmployerForm = () => {
       if (currentUser) {
         setUser(currentUser);
         const userEmail = currentUser.email;
-        // Query the 'users' collection to find a document with the matching email field
-        const q = query(collection(firestore, 'users'), where('email', '==', userEmail));
+
+        const q = query(
+          collection(firestore, "users"),
+          where("email", "==", userEmail)
+        );
         const querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {
-          const docSnap = querySnapshot.docs[0]; // Assuming there's only one match
+          const docSnap = querySnapshot.docs[0];
           setFormValues(docSnap.data());
         }
       } else {
         setUser(null);
         setFormValues({
-          bio: '',
+          bio: "",
           preferredLocations: [],
           languagesKnown: [],
         });
@@ -159,16 +170,32 @@ const EmployerForm = () => {
   };
 
   const handleTagKeyPress = (e, field) => {
-    if (e.key === 'Enter' && (field === 'preferredLocations' ? preferredLocationInput.trim() : languageInput.trim())) {
+    if (
+      e.key === "Enter" &&
+      (field === "preferredLocations"
+        ? preferredLocationInput.trim()
+        : languageInput.trim())
+    ) {
       e.preventDefault();
       setFormValues((prevState) => ({
         ...prevState,
-        [field]: Array.isArray(prevState[field]) ? [...prevState[field], field === 'preferredLocations' ? preferredLocationInput.trim() : languageInput.trim()] : [field === 'preferredLocations' ? preferredLocationInput.trim() : languageInput.trim()],
+        [field]: Array.isArray(prevState[field])
+          ? [
+              ...prevState[field],
+              field === "preferredLocations"
+                ? preferredLocationInput.trim()
+                : languageInput.trim(),
+            ]
+          : [
+              field === "preferredLocations"
+                ? preferredLocationInput.trim()
+                : languageInput.trim(),
+            ],
       }));
-      if (field === 'preferredLocations') {
-        setPreferredLocationInput('');
+      if (field === "preferredLocations") {
+        setPreferredLocationInput("");
       } else {
-        setLanguageInput('');
+        setLanguageInput("");
       }
     }
   };
@@ -176,7 +203,9 @@ const EmployerForm = () => {
   const handleRemoveTag = (field, tagToRemove) => {
     setFormValues((prevState) => ({
       ...prevState,
-      [field]: Array.isArray(prevState[field]) ? prevState[field].filter(tag => tag !== tagToRemove) : [],
+      [field]: Array.isArray(prevState[field])
+        ? prevState[field].filter((tag) => tag !== tagToRemove)
+        : [],
     }));
   };
 
@@ -185,23 +214,24 @@ const EmployerForm = () => {
     if (user) {
       try {
         const userEmail = user.email;
-        // Query the 'users' collection to find a document with the matching email field
-        const q = query(collection(firestore, 'users'), where('email', '==', userEmail));
+
+        const q = query(
+          collection(firestore, "users"),
+          where("email", "==", userEmail)
+        );
         const querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {
-          const docRef = doc(firestore, 'users', querySnapshot.docs[0].id); // Get document ID
-          await setDoc(docRef, formValues, { merge: true }); // Merge to update document
-          // Navigate to EmployerProfile
-          // Use your navigation logic here
+          const docRef = doc(firestore, "users", querySnapshot.docs[0].id);
+          await setDoc(docRef, formValues, { merge: true });
         } else {
-          console.error('No matching employer document found');
+          console.error("No matching employer document found");
         }
       } catch (error) {
-        console.error('Error saving employer data: ', error);
+        console.error("Error saving employer data: ", error);
       }
     } else {
-      console.error('No user is signed in');
+      console.error("No user is signed in");
     }
   };
 
@@ -214,7 +244,7 @@ const EmployerForm = () => {
           id="bio"
           name="bio"
           rows="4"
-          value={formValues.bio || ''}
+          value={formValues.bio || ""}
           onChange={handleInputChange}
         />
       </FormField>
@@ -224,7 +254,11 @@ const EmployerForm = () => {
           {formValues.preferredLocations?.map((location, index) => (
             <Tag key={index}>
               {location}
-              <RemoveTag onClick={() => handleRemoveTag('preferredLocations', location)}>&times;</RemoveTag>
+              <RemoveTag
+                onClick={() => handleRemoveTag("preferredLocations", location)}
+              >
+                &times;
+              </RemoveTag>
             </Tag>
           ))}
           <Input
@@ -232,7 +266,7 @@ const EmployerForm = () => {
             placeholder="Type a location and press Enter"
             value={preferredLocationInput}
             onChange={handlePreferredLocationInputChange}
-            onKeyDown={(e) => handleTagKeyPress(e, 'preferredLocations')}
+            onKeyDown={(e) => handleTagKeyPress(e, "preferredLocations")}
           />
         </TagList>
       </FormField>
@@ -242,7 +276,11 @@ const EmployerForm = () => {
           {formValues.languagesKnown?.map((language, index) => (
             <Tag key={index}>
               {language}
-              <RemoveTag onClick={() => handleRemoveTag('languagesKnown', language)}>&times;</RemoveTag>
+              <RemoveTag
+                onClick={() => handleRemoveTag("languagesKnown", language)}
+              >
+                &times;
+              </RemoveTag>
             </Tag>
           ))}
           <Input
@@ -250,11 +288,13 @@ const EmployerForm = () => {
             placeholder="Type a language and press Enter"
             value={languageInput}
             onChange={handleLanguageInputChange}
-            onKeyDown={(e) => handleTagKeyPress(e, 'languagesKnown')}
+            onKeyDown={(e) => handleTagKeyPress(e, "languagesKnown")}
           />
         </TagList>
       </FormField>
-      <SubmitButton type="submit" onClick={handleSubmit}>Save Changes</SubmitButton>
+      <SubmitButton type="submit" onClick={handleSubmit}>
+        Save Changes
+      </SubmitButton>
     </FormContainer>
   );
 };
