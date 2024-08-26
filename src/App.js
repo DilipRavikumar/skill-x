@@ -12,6 +12,7 @@ import FreelancerForm from './components/FreelancerForm';
 import './index.css';
 import Register from './components/Register';
 import NewUser from './components/UserTypeSelection';
+import EmployerForm from './components/EmployerForm';
 
 const App = () => {
   return (
@@ -21,7 +22,8 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/freelancer-profile" element={<FreelancerProfile />} /> {/* Ensure this matches the route and component */}
         <Route path="/newuser" element={<NewUser />} /> {/* Corrected path */}
-        <Route path="/freelancer-form" element={<FreelancerForm />} /> {/* Ensure this matches your component name */}
+        <Route path="/freelancer-form" element={<FreelancerForm />} />
+        <Route path="/employer-form" element={<EmployerForm />} /> {/* Ensure this matches your component name */}
         <Route
           path="*"
           element={
