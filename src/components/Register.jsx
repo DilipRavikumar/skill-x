@@ -17,7 +17,7 @@ const Register = () => {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       console.log('User logged in:', user); 
-      navigate('/Dashboard');
+      navigate('/newuser');
     } catch (error) {
       setError(error.message);
       console.error('Login error:', error.message);
@@ -31,7 +31,7 @@ const Register = () => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
       console.log('User signed in with Google:', user);
-      navigate('/Dashboard');
+      navigate('/newuser');
     } catch (error) {
       setError(error.message);
       console.error('Google sign-in error:', error.message);
