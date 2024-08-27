@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link as ScrollLink } from 'react-scroll'; // For smooth scrolling
-import {  useNavigate } from 'react-router-dom'; // For navigation
+import { useNavigate } from 'react-router-dom'; // For navigation
 import './Navbar.css'; // Import your CSS file
 
 const Navbar = () => {
@@ -20,6 +20,10 @@ const Navbar = () => {
 
   const handleLoginClick = () => {
     navigate('/login'); // Navigate to the login page
+  };
+
+  const handleRegisterClick = () => {
+    navigate('/register'); // Navigate to the register page
   };
 
   const navbarStyle = {
@@ -76,6 +80,17 @@ const Navbar = () => {
     color: 'rgb(1, 11, 231)'
   };
 
+  const registerLinkStyle = {
+    color: 'rgb(1, 11, 231)',
+    textDecoration: 'none',
+    fontSize: '16px',
+    padding: '10px 20px',
+    borderRadius: '5px',
+    fontWeight: '500',
+    marginLeft: '10px',
+    transition: 'color 0.3s ease'
+  };
+
   return (
     <div style={navbarStyle}>
       <div style={containerStyle}>
@@ -110,6 +125,9 @@ const Navbar = () => {
           <button className="btn-17" onClick={handleLoginClick}>
             Login
           </button>
+          <a href="/register" style={registerLinkStyle}>
+            Register
+          </a>
         </div>
       </div>
     </div>

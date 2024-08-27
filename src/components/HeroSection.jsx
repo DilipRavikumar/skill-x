@@ -123,7 +123,7 @@ const HeroContainer = styled.div`
 
   .search-icon-container {
     position: absolute;
-    right: 40px;
+    right: 20px;
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;

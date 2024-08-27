@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from 'react';
-import styled from 'styled-components';
-import aboutImage from '../assets/About.webp'; // Add your image here
+import React, { useEffect, useRef } from "react";
+import styled from "styled-components";
+import aboutImage from "../assets/About.webp"; // Add your image here
 
 const AboutContainer = styled.div`
   padding: 60px 20px;
@@ -49,8 +49,8 @@ const AboutContainer = styled.div`
     transform: translateX(0); /* Slide-in and zoom-in when visible */
   }
 
-  h2 {
-    font-size: 2em; /* Larger heading font size */
+  h1 {
+    margin: 10px 0;
     margin-bottom: 20px;
     color: #333;
   }
@@ -69,7 +69,7 @@ const AboutSection = () => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          aboutRef.current.classList.add('visible');
+          aboutRef.current.classList.add("visible");
           observer.unobserve(entry.target); // Optional: Unobserve after animation to avoid triggering again
         }
       },
@@ -91,15 +91,17 @@ const AboutSection = () => {
     <AboutContainer ref={aboutRef} id="about">
       <img src={aboutImage} alt="About Skill-X" />
       <div className="text-container">
-        <h2>About Skill-X</h2>
+        <h1>About Skill-X</h1>
         <p>
-          Skill-X is dedicated to connecting talented freelancers with high-quality projects. 
-          Our platform offers a seamless experience for both freelancers and clients, providing 
-          tools and resources to ensure successful collaborations. We focus on delivering top-notch 
-          opportunities in various fields including technology, design, and marketing. 
-          Our user-friendly interface and dedicated support team are here to help you at every step, 
-          ensuring that both freelancers and clients achieve their goals. Explore our diverse range of 
-          services and find your next opportunity today with Skill-X.
+          Skill-X is dedicated to connecting talented freelancers with
+          high-quality projects. Our platform offers a seamless experience for
+          both freelancers and clients, providing tools and resources to ensure
+          successful collaborations. We focus on delivering top-notch
+          opportunities in various fields including technology, design, and
+          marketing. Our user-friendly interface and dedicated support team are
+          here to help you at every step, ensuring that both freelancers and
+          clients achieve their goals. Explore our diverse range of services and
+          find your next opportunity today with Skill-X.
         </p>
       </div>
     </AboutContainer>

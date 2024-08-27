@@ -1,12 +1,19 @@
-import React,{ useState } from "react";
+import React, { useState } from "react";
 import "./Login.css";
-import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
-import { app } from '../firebaseConfig';
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+} from "firebase/auth";
+import { useNavigate, Link } from "react-router-dom";
+import { app } from "../firebaseConfig";
+import loginImage from "../assets/login.png"; // Ensure this path is correct
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -14,18 +21,19 @@ const Login = () => {
     e.preventDefault();
     const auth = getAuth(app);
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       const user = userCredential.user;
-      console.log('User logged in:', user);
-      navigate('/dashboard');
+      console.log("User logged in:", user);
+      // Handle remember me functionality if needed
+      navigate("/dashboard");
     } catch (error) {
-      setError('Invalid username or password');
-      console.error('Login error:', error.message);
+      setError("Invalid username or password");
+      console.error("Login error:", error.message);
     }
-  };
-
-  const navigateToSignUp = () => {
-    navigate('/SignUp');
   };
 
   const handleGoogleLogin = async () => {
@@ -34,11 +42,11 @@ const Login = () => {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      console.log('User signed in with Google:', user);
-      navigate('/Dashboard');
+      console.log("User signed in with Google:", user);
+      navigate("/Dashboard");
     } catch (error) {
       setError(error.message);
-      console.error('Google sign-in error:', error.message);
+      console.error("Google sign-in error:", error.message);
     }
   };
 
@@ -46,41 +54,79 @@ const Login = () => {
     <div className="login-container">
       <div className="login-left">
         <div className="glass-card">
-          <h1>
-            Digital
-            <br />
-            platform
-            <br /> for
-            <br />
-            <span>Freelancing.</span>
-          </h1>
-          <p>You will never know everything. But you will know more.</p>
+          <h2 className="card-text">
+            Welcome back! Log in to continue exploring Skill X 💯
+            <span className="emoji"></span>
+          </h2>
+          <img
+            src={loginImage}
+            alt="3D Illustration"
+            className="login-illustration"
+          />
         </div>
       </div>
       <div className="login-right">
-        <div className="login-logo">🌐</div>
-        <h2>Hey, hello 👋</h2>
-        <p>Enter the information you entered while registering.</p>
+        <h2>Login 👋</h2>
+        <p>Login to your account to explore.</p>
         <form onSubmit={handleLogin}>
-          <input type="email" placeholder="Email" required onChange={(e) => setEmail(e.target.value)} />
-          <input type="password" placeholder="Password" required onChange={(e) => setPassword(e.target.value)} />
+          <div className="coolinput">
+            <label className="text">Email</label>
+            <input
+              type="email"
+              className="input"
+              placeholder="Email"
+              required
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <label className="text">Password</label>
+            <input
+              type="password"
+              className="input"
+              placeholder="Password"
+              required
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div className="remember-forgot">
+            <label className="remember-me">
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+              />
+              Remember Me
+            </label>
+            <Link to="/forgot-password" className="forgot-password">
+              Forgot password?
+            </Link>
+          </div>
           {error && <div className="error-message">{error}</div>}
           <div className="login-options">
             <label>
-            <a href="/register">New here?</a>
+              <Link to="/SignUp">New here?</Link>
             </label>
-            <a href="/forgot-password">Forgot password?</a>
           </div>
-          <button className="button1" type="submit">Login</button>
-          <div className="login-divider">or</div>
-          </form>
-          <button className="google-login" onClick={handleGoogleLogin}>
-            <img
-              src="https://img.icons8.com/color/16/000000/google-logo.png"
-              alt="Google"
-            />
-            Sign in with Google
+          <button className="button1" type="submit">
+            Login
           </button>
+          <div className="login-divider">
+            <span className="divider-line vertical"></span>
+            <span className="divider-text">Or Login with</span>
+            <span className="divider-line vertical"></span>
+          </div>
+        </form>
+        <button className="google-login" onClick={handleGoogleLogin}>
+          <img
+            src="https://img.icons8.com/color/16/000000/google-logo.png"
+            alt="Google"
+          />
+          Login with Google
+        </button>
+        <div className="register-link">
+          <p>
+            Do you have already an account? <Link to="/sign-in">Register</Link>
+          </p>
+        </div>
       </div>
     </div>
   );
