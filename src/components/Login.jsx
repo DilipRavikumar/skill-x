@@ -51,44 +51,44 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-left">
-        <div className="glass-card">
-          <h2 className="card-text">
+    <div className="auth-container">
+      <div className="auth-left">
+        <div className="glass-panel">
+          <h2 className="panel-text">
             Welcome back! Log in to continue exploring Skill X 💯
             <span className="emoji"></span>
           </h2>
           <img
             src={loginImage}
             alt="3D Illustration"
-            className="login-illustration"
+            className="auth-illustration"
           />
         </div>
       </div>
-      <div className="login-right">
+      <div className="auth-right">
         <h2>Login 👋</h2>
         <p>Login to your account to explore.</p>
         <form onSubmit={handleLogin}>
-          <div className="coolinput">
-            <label className="text">Email</label>
+          <div className="input-group">
+            <label className="input-label">Email</label>
             <input
               type="email"
-              className="input"
+              className="text-input"
               placeholder="Email"
               required
               onChange={(e) => setEmail(e.target.value)}
             />
-            <label className="text">Password</label>
+            <label className="input-label">Password</label>
             <input
               type="password"
-              className="input"
+              className="text-input"
               placeholder="Password"
               required
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <div className="remember-forgot">
-            <label className="remember-me">
+          <div className="options-row">
+            <label className="checkbox-label">
               <input
                 type="checkbox"
                 checked={rememberMe}
@@ -96,33 +96,33 @@ const Login = () => {
               />
               Remember Me
             </label>
-            <Link to="/forgot-password" className="forgot-password">
+            <Link to="/forgot-password" className="forgot-link">
               Forgot password?
             </Link>
           </div>
-          {error && <div className="error-message">{error}</div>}
-          <div className="login-options">
+          {error && <div className="error-text">{error}</div>}
+          <div className="auth-actions">
             <label>
               <Link to="/SignUp">New here?</Link>
             </label>
           </div>
-          <button className="button1" type="submit">
+          <button className="auth-button" type="submit">
             Login
           </button>
-          <div className="login-divider">
+          <div className="auth-divider">
             <span className="divider-line vertical"></span>
-            <span className="divider-text">Or Login with</span>
+            <span className="divider-label">Or Login with</span>
             <span className="divider-line vertical"></span>
           </div>
         </form>
-        <button className="google-login" onClick={handleGoogleLogin}>
+        <button className="google-button" onClick={handleGoogleLogin}>
           <img
             src="https://img.icons8.com/color/16/000000/google-logo.png"
             alt="Google"
           />
           Login with Google
         </button>
-        <div className="register-link">
+        <div className="register-prompt">
           <p>
             Do you have already an account? <Link to="/sign-in">Register</Link>
           </p>

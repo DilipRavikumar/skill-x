@@ -1,4 +1,4 @@
-.login-container {
+.auth-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -6,7 +6,7 @@
   background-color: #ffffff;
 }
 
-.login-left {
+.auth-left {
   width: 50%;
   padding: 2rem;
   background-color: rgb(1, 11, 231);
@@ -16,7 +16,7 @@
   align-items: center;
 }
 
-.glass-card {
+.glass-panel {
   background: rgba(255, 255, 255, 0.316);
   padding: 2rem;
   height: 500px;
@@ -25,25 +25,25 @@
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   display: flex;
-  flex-direction: column; /* Arrange content in a column */
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: left;
 }
 
-.card-text {
+.panel-text {
   font-size: 1.5rem;
-  color: white; /* or any other color to make the text visible */
-  margin-bottom: 5rem; /* Add space between text and image */
+  color: white;
+  margin-bottom: 5rem;
 }
 
-.login-illustration {
+.auth-illustration {
   max-width: 100%;
   height: auto;
   object-fit: contain;
 }
 
-.login-right {
+.auth-right {
   width: 50%;
   padding: 2rem;
   display: flex;
@@ -54,14 +54,14 @@
   border-radius: 0 10px 10px 0;
 }
 
-.login-right h2 {
+.auth-right h2 {
   font-size: 2rem;
   text-align: left;
   margin-right: 160px;
   margin-bottom: 0.1rem;
 }
 
-.login-right p {
+.auth-right p {
   font-size: 1rem;
   text-align: left;
   margin-right: 60px;
@@ -76,14 +76,14 @@ form {
   max-width: 300px;
 }
 
-.coolinput {
+.input-group {
   display: flex;
   flex-direction: column;
   position: static;
   max-width: 300px;
 }
 
-.coolinput label.text {
+.input-label {
   font-size: 0.75rem;
   color: rgb(1, 11, 231);
   font-weight: 700;
@@ -95,8 +95,7 @@ form {
   width: fit-content;
 }
 
-.coolinput input[type="email"],
-.coolinput input[type="password"] {
+.text-input {
   padding: 11px 10px;
   font-size: 0.75rem;
   border: 2px rgb(1, 11, 231) solid;
@@ -105,24 +104,23 @@ form {
   margin-bottom: 1rem;
 }
 
-.coolinput input[type="email"]:focus,
-.coolinput input[type="password"]:focus {
+.text-input:focus {
   outline: none;
 }
 
-.button1 {
-    margin-top: 1rem;
-    background-color: rgb(1, 11, 231);
-    color: white;
-    padding: 12px;
-    font-size: 0.9rem;
-    border-radius: 16px;
-    border: none;
-    cursor: pointer;
-    transform: translateY(-80%); /* Move the button up by 10% */
-  }
-  
-.google-login {
+.auth-button {
+  margin-top: 1rem;
+  background-color: rgb(1, 11, 231);
+  color: white;
+  padding: 12px;
+  font-size: 0.9rem;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  transform: translateY(-80%);
+}
+
+.google-button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -137,60 +135,58 @@ form {
   cursor: pointer;
 }
 
-.google-login img {
+.google-button img {
   margin-right: 8px;
 }
 
-.login-divider {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: -20px;
-    margin: 1rem 0;
-    font-size: 0.8rem;
-    color: #666;
-    transform: translateY(-100%); /* Move the button up by 10% */
-    
-  }
-  
-  .divider-line {
-    flex: 1;
-    border-top: 1px solid #ccc; /* Horizontal line style */
-  }
-  
-  .divider-line.vertical {
-    height: 1px; /* Height of the vertical line */
-    width: 1px; /* Width of the vertical line */
-    margin: 0 1rem; /* Space around the vertical line */
-    background-color: #ccc; /* Color of the vertical line */
-  }
-  
-  .divider-text {
-    margin: 0 1rem;
-    white-space: nowrap; /* Prevent text from wrapping */
-    color: #666; /* Color of the text */
-  }
-  
-.login-options {
+.auth-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: -20px;
+  margin: 1rem 0;
+  font-size: 0.8rem;
+  color: #666;
+  transform: translateY(-100%);
+}
+
+.divider-line {
+  flex: 1;
+  border-top: 1px solid #ccc;
+}
+
+.divider-line.vertical {
+  height: 1px;
+  width: 1px;
+  margin: 0 1rem;
+  background-color: #ccc;
+}
+
+.divider-label {
+  margin: 0 1rem;
+  white-space: nowrap;
+  color: #666;
+}
+
+.auth-actions {
   display: flex;
   justify-content: space-between;
   margin-bottom: 1rem;
 }
 
-.error-message {
+.error-text {
   color: red;
   margin-bottom: 1rem;
 }
-/* Existing styles */
 
-.remember-forgot {
+.options-row {
   display: flex;
   justify-content: space-between;
   margin-bottom: 1rem;
   align-items: center;
 }
 
-.remember-me {
+.checkbox-label {
   color: rgb(86, 86, 88);
   margin-top: 8px;
   font-size: 12px;
@@ -198,41 +194,31 @@ form {
   align-items: center;
 }
 
-.remember-me input {
+.checkbox-label input {
   margin-right: 0.5rem;
 }
 
-.forgot-password {
+.forgot-link {
   margin-top: 8px;
   color: rgb(86, 86, 88);
+  font-size: sma;
   text-decoration: none;
-  font-size: 0.75rem;
 }
 
-.forgot-password:hover {
+.forgot-link:hover {
   text-decoration: underline;
 }
-.register-link {
-    margin-left: 62px;
-    margin-bottom: 40px;
-    text-align: center;
-    color: rgb(1, 11, 231);
-    transform: translateY(100%); /* Move the button up by 10% */
 
-  }
-  
-  .register-link p {
-    font-size: small;
-  }
-  
-  .register-link a {
-    color: rgb(1, 11, 231);
-    text-decoration: none;
-    font-weight: bold;
-    font-size: small;
-  }
-  
-  .register-link a:hover {
-    text-decoration: underline;
-  }
-  
+.register-prompt {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.register-prompt a {
+  color: rgb(1, 11, 231);
+  text-decoration: none;
+}
+
+.register-prompt a:hover {
+  text-decoration: underline;
+}

@@ -55,68 +55,68 @@ const Register = () => {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-left">
+    <div className="register-container">
+      <div className="register-left">
         <div className="glass-card">
-          <h2 className="card-text">
+          <h2 className="card-heading">
             Join us and start exploring Skill X! 🌟
             <span className="emoji"></span>
           </h2>
           <img
             src={loginImage}
             alt="3D Illustration"
-            className="login-illustration"
+            className="register-illustration"
           />
         </div>
       </div>
-      <div className="login-right">
+      <div className="register-right">
         <h2>Register 👋</h2>
         <p>Create an account to get started.</p>
         <form onSubmit={handleRegister}>
-          <div className="coolinput">
-            <label className="text">Email</label>
+          <div className="input-container">
+            <label className="input-label">Email</label>
             <input
               type="email"
-              className="input"
+              className="input-field"
               placeholder="Email"
               required
               onChange={(e) => setEmail(e.target.value)}
             />
-            <label className="text">Password</label>
+            <label className="input-label">Password</label>
             <input
               type="password"
-              className="input"
+              className="input-field"
               placeholder="Password"
               required
               onChange={(e) => setPassword(e.target.value)}
             />
-            <label className="text">Confirm Password</label>
+            <label className="input-label">Confirm Password</label>
             <input
               type="password"
-              className="input"
+              className="input-field"
               placeholder="Confirm Password"
               required
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </div>
           {error && <div className="error-message">{error}</div>}
-          <button className="button1" type="submit">
+          <button className="submit-button" type="submit">
             Register
           </button>
-          <div className="login-divider">
+          <div className="register-divider">
             <span className="divider-line vertical"></span>
             <span className="divider-text">Or Register with</span>
             <span className="divider-line vertical"></span>
           </div>
         </form>
-        <button className="google-login" onClick={handleGoogleRegister}>
+        <button className="google-register" onClick={handleGoogleRegister}>
           <img
             src="https://img.icons8.com/color/16/000000/google-logo.png"
             alt="Google"
           />
           Register with Google
         </button>
-        <div className="register-link">
+        <div className="login-link">
           <p>
             Already have an account? <Link to="/login">Login</Link>
           </p>
