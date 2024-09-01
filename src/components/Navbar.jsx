@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link as ScrollLink } from 'react-scroll'; // For smooth scrolling
 import { useNavigate } from 'react-router-dom'; // For navigation
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { auth } from '../firebaseConfig'; // Adjust path as needed
 import './Navbar.css'; // Import your CSS file
 
 const Navbar = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [showSearch, setShowSearch] = useState(false);
+  const [user, setUser] = useState(null); // Track user authentication state
   const navigate = useNavigate(); // Initialize navigate
 
   useEffect(() => {
@@ -18,12 +21,33 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   const handleLoginClick = () => {
     navigate('/login'); // Navigate to the login page
   };
 
   const handleRegisterClick = () => {
     navigate('/register'); // Navigate to the register page
+  };
+
+  const handleLogoutClick = async () => {
+    try {
+      await signOut(auth);
+      navigate('/'); // Navigate to home or any other page after logout
+    } catch (error) {
+      console.error("Error signing out: ", error);
+    }
+  };
+
+  const handleProfileClick = () => {
+    navigate('/freelancer-profile'); // Navigate to freelancer profile page
   };
 
   const navbarStyle = {
@@ -122,12 +146,28 @@ const Navbar = () => {
           ))}
         </nav>
         <div style={{ display: 'flex', alignItems: 'center', marginLeft: '20px' }}>
-          <button className="btn-17" onClick={handleLoginClick}>
-            Login
-          </button>
-          <a href="/register" style={registerLinkStyle}>
-            Register
-          </a>
+          {user ? (
+            <>
+              <img
+                src={user.photoURL || '/default-profile.png'}
+                alt="Profile"
+                style={{ width: '40px', height: '40px', borderRadius: '50%', cursor: 'pointer' }}
+                onClick={handleProfileClick} // Navigate to freelancer profile on click
+              />
+              <button className="btn-18" onClick={handleLogoutClick}>
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <button className="btn-17" onClick={handleLoginClick}>
+                Login
+              </button>
+              <a href="/register" style={registerLinkStyle}>
+                Register
+              </a>
+            </>
+          )}
         </div>
       </div>
     </div>

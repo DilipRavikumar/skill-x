@@ -57,12 +57,19 @@ const Button = styled.button`
   }
 `;
 
+const ErrorMessage = styled.p`
+  color: red;
+  font-size: 0.9rem;
+  margin: 10px 0;
+`;
+
 const NewUser = () => {
   const [step, setStep] = useState(0);
   const [displayName, setDisplayName] = useState("");
   const [username, setUsername] = useState("");
   const [userType, setUserType] = useState(null);
   const [userEmail, setUserEmail] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -78,6 +85,17 @@ const NewUser = () => {
   }, []);
 
   const handleNextStep = () => {
+    if (step === 0 && !displayName) {
+      setError("Display Name cannot be empty.");
+      return;
+    } else if (step === 1 && !username) {
+      setError("Username cannot be empty.");
+      return;
+    } else if (step === 2 && !userType) {
+      setError("Please select a user type.");
+      return;
+    }
+    setError("");
     setStep((prevStep) => prevStep + 1);
   };
 
@@ -87,6 +105,11 @@ const NewUser = () => {
   };
 
   const handleSubmit = async () => {
+    if (!displayName || !username || !userType) {
+      setError("Please complete all fields before submitting.");
+      return;
+    }
+
     try {
       await addDoc(collection(db, "users"), {
         displayName,
@@ -111,6 +134,7 @@ const NewUser = () => {
 
   return (
     <SelectionContainer>
+      {error && <ErrorMessage>{error}</ErrorMessage>}
       {step === 0 && (
         <div>
           <h1>Enter your display name</h1>

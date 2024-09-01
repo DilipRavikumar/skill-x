@@ -69,3 +69,37 @@
   font-size: 18px;
   pointer-events: none; /* Prevent interaction with the icon */
 }
+.btn-18,
+.btn-18 * {
+  border: 0 solid;
+  box-sizing: border-box;
+}
+
+.btn-18 {
+  -webkit-tap-highlight-color: transparent;
+  background-color: #fff;
+  color: rgb(1, 11, 231); /* Default color for the new button */
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.7em; /* Further reduced font size */
+  font-weight: 300;
+  line-height: 30px; /* Adjusted line height for smaller button */
+  text-transform: uppercase;
+  border-radius: 25px; /* Further reduced border radius */
+  border: 2px solid rgb(1, 11, 231); /* Keep border thickness for compact size */
+  padding: 0.5rem 1.5rem; /* Further reduced padding */
+  position: relative;
+  transition: all 0.3s;
+  margin-left: 10px;
+}
+
+.btn-18:hover {
+  background: rgb(1, 11, 231); /* Hover background color */
+  color: #fff; /* Hover text color */
+  font-size: 0.8em; /* Slightly larger font size on hover */
+}
+
+.btn-18:active {
+  background: rgb(1, 11, 231); /* Active background color */
+  border-color: rgb(1, 11, 231); /* Active border color */
+}

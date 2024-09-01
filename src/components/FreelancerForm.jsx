@@ -117,6 +117,16 @@ const Title = styled.h1`
   margin-bottom: 20px;
 `;
 
+const ProfileImage = styled.img`
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #007bff;
+  margin-bottom: 20px;
+  cursor: pointer;
+`;
+
 const FreelancerForm = () => {
   const { profile, setProfile } = useProfile();
   const [formValues, setFormValues] = useState({
@@ -125,6 +135,7 @@ const FreelancerForm = () => {
   });
   const [inputValue, setInputValue] = useState("");
   const [user, setUser] = useState(null);
+  const [profileImage, setProfileImage] = useState(profile.profileImage || '/default-profile.png'); // Default profile image
   const auth = getAuth();
   const firestore = getFirestore();
   const navigate = useNavigate();
@@ -144,6 +155,7 @@ const FreelancerForm = () => {
         if (!querySnapshot.empty) {
           const docSnap = querySnapshot.docs[0];
           setFormValues(docSnap.data());
+          setProfileImage(docSnap.data().profileImage || '/default-profile.png');
         }
       } else {
         setUser(null);
@@ -185,6 +197,15 @@ const FreelancerForm = () => {
     }));
   };
 
+  const handleProfileImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Here you would handle the file upload logic
+      // For now, just preview the selected file
+      setProfileImage(URL.createObjectURL(file));
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (user) {
@@ -199,8 +220,8 @@ const FreelancerForm = () => {
 
         if (!querySnapshot.empty) {
           const docRef = doc(firestore, "users", querySnapshot.docs[0].id);
-          await setDoc(docRef, formValues, { merge: true });
-          setProfile(formValues);
+          await setDoc(docRef, { ...formValues, profileImage }, { merge: true });
+          setProfile({ ...formValues, profileImage });
           navigate("/Dashboard");
         } else {
           console.error("No matching user document found");
@@ -216,6 +237,18 @@ const FreelancerForm = () => {
   return (
     <FormContainer>
       <Title>Freelancer Profile</Title>
+      <ProfileImage
+        src={profileImage}
+        alt="Profile"
+        onClick={() => document.getElementById('profile-image-input').click()}
+      />
+      <input
+        type="file"
+        id="profile-image-input"
+        style={{ display: 'none' }}
+        accept="image/*"
+        onChange={handleProfileImageChange}
+      />
       <FormField>
         <Label htmlFor="bio">Bio:</Label>
         <TextArea
@@ -260,43 +293,4 @@ const FreelancerForm = () => {
           <option value="Design_Media_Architecture">
             Design, Media & Architecture
           </option>
-          <option value="Data_Entry_Admin">Data Entry & Admin</option>
-          <option value="Engineering_Science">Engineering & Science</option>
-          <option value="Sales_Marketing">Sales & Marketing</option>
-          <option value="Business_Accounting_HR_Legal">
-            Business, Accounting, HR & Legal
-          </option>
-          <option value="Product_Sourcing_Manufacturing">
-            Product Sourcing & Manufacturing
-          </option>
-          <option value="Mobile_Phones_Computing">
-            Mobile Phones & Computing
-          </option>
-          <option value="Translation_Languages">Translation & Languages</option>
-          <option value="Trades_Services">Trades & Services</option>
-          <option value="Freight_Shipping_Transportation">
-            Freight, Shipping & Transportation
-          </option>
-          <option value="Telecommunications">Telecommunications</option>
-          <option value="Education">Education</option>
-          <option value="Other">Other</option>
-        </select>
-      </FormField>
-      <FormField>
-        <Label htmlFor="location">Location:</Label>
-        <Input
-          id="location"
-          name="location"
-          type="text"
-          value={formValues.location || ""}
-          onChange={handleInputChange}
-        />
-      </FormField>
-      <SubmitButton type="submit" onClick={handleSubmit}>
-        Save Changes
-      </SubmitButton>
-    </FormContainer>
-  );
-};
-
-export default FreelancerForm;
+          <option
