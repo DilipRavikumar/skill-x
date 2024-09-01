@@ -4,11 +4,11 @@ const ProfileContext = createContext();
 
 export const ProfileProvider = ({ children }) => {
   const [profile, setProfile] = useState({
+    name: '',
     bio: '',
     skills: [],
     category: '',
-    location: '',
-    profilePicture: null,
+    profilePicture: '/path/to/default-profile.png', // Default image path
   });
 
   return (
