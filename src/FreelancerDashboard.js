@@ -1,129 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import { useProfile } from './components/ProfileContext'; // Update path as needed
-import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
-import OrdersList from './components/OrdersList'
-
-// Styled components for layout
-const DashboardContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-`;
-
-const Header = styled.header`
-  background: #007bff;
-  color: white;
-  padding: 15px;
-  text-align: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-`;
-
-const Sidebar = styled.aside`
-  width: 250px;
-  background: #343a40;
-  color: #ffffff;
-  padding: 20px;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  overflow-y: auto;
-  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
-`;
-
-const MainContent = styled.main`
-  margin-left: 270px;
-  padding: 20px;
-  background: #ffffff;
-  min-height: 100vh;
-  overflow-y: auto;
-`;
-
-const SectionTitle = styled.h2`
-  font-size: 1.75rem;
-  margin-bottom: 20px;
-  color: #007bff;
-`;
-
-const Button = styled.button`
-  background: #007bff;
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-bottom: 20px;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background: #0056b3;
-  }
-`;
-
-const ProfileCard = styled.div`
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  text-align: center;
-`;
-
-const GigCard = styled.div`
-  background: #ffffff;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  margin-bottom: 15px;
-  display: flex;
-  align-items: center;
-`;
-
-const GigThumbnail = styled.img`
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 10px;
-  margin-right: 15px;
-`;
-
-const GigDetails = styled.div`
-  flex: 1;
-`;
-
-const GigActions = styled.div`
-  display: flex;
-  gap: 10px;
-`;
-
-const ProfileImage = styled.img`
-  border-radius: 50%;
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  margin-bottom: 15px;
-`;
-
-const List = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-`;
-
-const ListItem = styled.div`
-  background: #ffffff;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-`;
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import "./FreelancerDashboard.css"; // Import the external CSS file
+import { useProfile } from "./components/ProfileContext"; // Update path as needed
+import {
+  getFirestore,
+  collection,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import {
+  FaUser,
+  FaBriefcase,
+  FaBox,
+  FaEnvelope,
+  FaStar,
+  FaCog,
+} from "react-icons/fa"; // Import icons
 
 const FreelancerDashboard = () => {
   const { profile } = useProfile();
   const navigate = useNavigate();
-  const [currentSection, setCurrentSection] = useState('my-gigs');
+  const [currentSection, setCurrentSection] = useState("my-gigs");
   const [gigs, setGigs] = useState([]);
   const auth = getAuth();
   const firestore = getFirestore();
@@ -134,14 +33,17 @@ const FreelancerDashboard = () => {
         // Fetch gigs created by the logged-in freelancer
         try {
           const gigsQuery = query(
-            collection(firestore, 'gigs'),
-            where('freelancerId', '==', user.uid)
+            collection(firestore, "gigs"),
+            where("freelancerId", "==", user.uid)
           );
           const querySnapshot = await getDocs(gigsQuery);
-          const fetchedGigs = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+          const fetchedGigs = querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
           setGigs(fetchedGigs);
         } catch (error) {
-          console.error('Error fetching gigs: ', error);
+          console.error("Error fetching gigs: ", error);
         }
       } else {
         setGigs([]);
@@ -156,56 +58,113 @@ const FreelancerDashboard = () => {
   };
 
   return (
-    <DashboardContainer>
-      <Header>
+    <div className="dashboard-container">
+      <header className="header">
         <h1>Skill-X Freelancer Dashboard</h1>
-      </Header>
-      <Sidebar>
-        <Button onClick={() => handleSectionChange('profile')}>Profile Overview</Button>
-        <Button onClick={() => handleSectionChange('my-gigs')}>My Gigs</Button>
-        <Button onClick={() => handleSectionChange('orders')}>Orders</Button>
-        <Button onClick={() => handleSectionChange('messages')}>Messages</Button>
-        <Button onClick={() => handleSectionChange('reviews')}>Reviews</Button>
-        <Button onClick={() => handleSectionChange('settings')}>Account Settings</Button>
-      </Sidebar>
-      <MainContent>
-        {currentSection === 'profile' && (
+      </header>
+      <aside className="sidebar">
+        <div className="sidebar-button-container">
+          <button
+            className={`sidebar-button ${currentSection === "profile" ? "active" : ""}`}
+            onClick={() => handleSectionChange("profile")}
+          >
+            <FaUser className="icon" /> <span>Profile Overview</span>
+          </button>
+          <button
+            className={`sidebar-button ${currentSection === "my-gigs" ? "active" : ""}`}
+            onClick={() => handleSectionChange("my-gigs")}
+          >
+            <FaBriefcase className="icon" /> <span>My Gigs</span>
+          </button>
+          <button
+            className={`sidebar-button ${currentSection === "orders" ? "active" : ""}`}
+            onClick={() => handleSectionChange("orders")}
+          >
+            <FaBox className="icon" /> <span>Orders</span>
+          </button>
+          <button
+            className={`sidebar-button ${currentSection === "messages" ? "active" : ""}`}
+            onClick={() => handleSectionChange("messages")}
+          >
+            <FaEnvelope className="icon" /> <span>Messages</span>
+          </button>
+          <button
+            className={`sidebar-button ${currentSection === "reviews" ? "active" : ""}`}
+            onClick={() => handleSectionChange("reviews")}
+          >
+            <FaStar className="icon" /> <span>Reviews</span>
+          </button>
+          <button
+            className={`sidebar-button ${currentSection === "settings" ? "active" : ""}`}
+            onClick={() => handleSectionChange("settings")}
+          >
+            <FaCog className="icon" /> <span>Account Settings</span>
+          </button>
+        </div>
+      </aside>
+
+      <main className="main-content">
+        {currentSection === "profile" && (
           <div>
-            <SectionTitle>Profile Overview</SectionTitle>
-            <ProfileCard>
-              <ProfileImage src={profile?.profileImage || '/default-profile.png'} alt="Profile" />
-              <h2>{profile?.displayName || 'No Name'}</h2>
-              <p>{profile?.bio || 'No bio available'}</p>
-              <Button onClick={() => navigate('/freelancer-form')}>Edit Profile</Button>
-            </ProfileCard>
+            <h2 className="section-title">Profile Overview</h2>
+            <div className="profile-card">
+              <img
+                className="profile-image"
+                src={profile?.profileImage || "/default-profile.png"}
+                alt="Profile"
+              />
+              <h2>{profile?.displayName || "No Name"}</h2>
+              <p>{profile?.bio || "No bio available"}</p>
+              <button
+                className="button-freelancer-dashboard"
+                onClick={() => navigate("/freelancer-form")}
+              >
+                Edit Profile
+              </button>
+            </div>
           </div>
         )}
 
-        {currentSection === 'my-gigs' && (
+        {currentSection === "my-gigs" && (
           <div>
-            <SectionTitle>My Gigs</SectionTitle>
-            <Button onClick={() => navigate('/create-gig')}>Create New Gig</Button>
-            <List>
+            <h2 className="section-title">My Gigs</h2>
+            <button
+              className="button1-freelancer-dashboard"
+              onClick={() => navigate("/create-gig")}
+            >
+              Create New Gig
+            </button>
+            <div className="list">
               {gigs.length > 0 ? (
-                gigs.map(gig => (
-                  <GigCard key={gig.id}>
-                    {gig.thumbnail && <GigThumbnail src={gig.thumbnail} alt={gig.title} />}
-                    <GigDetails>
+                gigs.map((gig) => (
+                  <div className="gig-card" key={gig.id}>
+                    {gig.thumbnail && (
+                      <img
+                        className="gig-thumbnail"
+                        src={gig.thumbnail}
+                        alt={gig.title}
+                      />
+                    )}
+                    <div className="gig-details">
                       <h3>{gig.title}</h3>
                       <p>{gig.description}</p>
                       <p>Price: ₹{gig.price}</p>
                       <p>Category: {gig.category}</p>
-                    </GigDetails>
-                    <GigActions>
-                      <Button>Edit</Button>
-                      <Button>Delete</Button>
-                    </GigActions>
-                  </GigCard>
+                    </div>
+                    <div className="gig-actions">
+                      <button className="button-freelancer-dashboard">
+                        Edit
+                      </button>
+                      <button className="button-freelancer-dashboard">
+                        Delete
+                      </button>
+                    </div>
+                  </div>
                 ))
               ) : (
-                <ListItem>No gigs found</ListItem>
+                <div className="list-item">No gigs found</div>
               )}
-            </List>
+            </div>
           </div>
         )}
 
@@ -213,49 +172,48 @@ const FreelancerDashboard = () => {
         <OrdersList /> // Use the OrdersList component here
       )}
 
-        {currentSection === 'messages' && (
+        {currentSection === "messages" && (
           <div>
-            <SectionTitle>Messages</SectionTitle>
-            <List>
+            <h2 className="section-title">Messages</h2>
+            <div className="list">
               {/* Sample Message Items */}
-              <ListItem>
+              <div className="list-item">
                 <h3>Conversation with Client</h3>
                 <p>Last message preview</p>
-              </ListItem>
+              </div>
               {/* Repeat ListItem for each conversation */}
-            </List>
+            </div>
           </div>
         )}
 
-        {currentSection === 'reviews' && (
+        {currentSection === "reviews" && (
           <div>
-            <SectionTitle>Reviews</SectionTitle>
-            <List>
+            <h2 className="section-title">Reviews</h2>
+            <div className="list">
               {/* Sample Review Items */}
-              <ListItem>
+              <div className="list-item">
                 <h3>Review from Client</h3>
                 <p>Rating: ★★★☆☆</p>
                 <p>Review text...</p>
-              </ListItem>
+              </div>
               {/* Repeat ListItem for each review */}
-            </List>
+            </div>
           </div>
         )}
 
-        {currentSection === 'settings' && (
+        {currentSection === "settings" && (
           <div>
-            <SectionTitle>Account Settings</SectionTitle>
-            {/* Personal and Payment Settings Form */}
-            <ProfileCard>
+            <h2 className="section-title">Account Settings</h2>
+            <div className="profile-card">
               <h3>Personal Information</h3>
-              <Button onClick={() => navigate('/settings/personal')}>Edit Personal Info</Button>
-              <h3>Payment Settings</h3>
-              <Button onClick={() => navigate('/settings/payment')}>Edit Payment Info</Button>
-            </ProfileCard>
+              <button className="button-freelancer-dashboard">
+                Edit Settings
+              </button>
+            </div>
           </div>
         )}
-      </MainContent>
-    </DashboardContainer>
+      </main>
+    </div>
   );
 };
 
