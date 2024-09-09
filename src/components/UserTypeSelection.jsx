@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
-import { collection, addDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { db, auth } from "../firebaseConfig";
 
@@ -63,12 +63,13 @@ const ErrorMessage = styled.p`
   margin: 10px 0;
 `;
 
-const NewUser = () => {
+const UserTypeSelection = () => {
   const [step, setStep] = useState(0);
   const [displayName, setDisplayName] = useState("");
   const [username, setUsername] = useState("");
-  const [userType, setUserType] = useState(null);
+  const [role, setUserType] = useState(null);
   const [userEmail, setUserEmail] = useState("");
+  const [uid, setUid] = useState(null); // State to store user ID
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -76,6 +77,7 @@ const NewUser = () => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUserEmail(user.email);
+        setUid(user.uid); // Store the user's UID
       } else {
         console.log("User is not signed in");
       }
@@ -91,7 +93,7 @@ const NewUser = () => {
     } else if (step === 1 && !username) {
       setError("Username cannot be empty.");
       return;
-    } else if (step === 2 && !userType) {
+    } else if (step === 2 && !role) {
       setError("Please select a user type.");
       return;
     }
@@ -105,30 +107,32 @@ const NewUser = () => {
   };
 
   const handleSubmit = async () => {
-    if (!displayName || !username || !userType) {
+    if (!displayName || !username || !role) {
       setError("Please complete all fields before submitting.");
       return;
     }
 
     try {
-      await addDoc(collection(db, "users"), {
+      // Update the existing user document in Firestore
+      const userDocRef = doc(db, "users", uid);
+      await updateDoc(userDocRef, {
         displayName,
         username,
-        userType,
+        role,
         email: userEmail,
       });
 
-      if (userType === "freelancer") {
+      if (role === "freelancer") {
         navigate("/freelancer-form", {
-          state: { displayName, username, userType, email: userEmail },
+          state: { displayName, username, role, email: userEmail },
         });
-      } else if (userType === "employer") {
+      } else if (role === "employer") {
         navigate("/employer-form", {
-          state: { displayName, username, userType, email: userEmail },
+          state: { displayName, username, role, email: userEmail },
         });
       }
     } catch (error) {
-      console.error("Error adding document: ", error);
+      console.error("Error updating document: ", error);
     }
   };
 
@@ -166,7 +170,7 @@ const NewUser = () => {
             onClick={() => handleSelection("freelancer")}
             style={{
               backgroundColor:
-                userType === "freelancer" ? "#0056b3" : "#007bff",
+                role === "freelancer" ? "#0056b3" : "#007bff",
             }}
           >
             Freelancer
@@ -174,7 +178,7 @@ const NewUser = () => {
           <Button
             onClick={() => handleSelection("employer")}
             style={{
-              backgroundColor: userType === "employer" ? "#0056b3" : "#007bff",
+              backgroundColor: role === "employer" ? "#0056b3" : "#007bff",
             }}
           >
             Employer
@@ -186,4 +190,4 @@ const NewUser = () => {
   );
 };
 
-export default NewUser;
+export default UserTypeSelection;

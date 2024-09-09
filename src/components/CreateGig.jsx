@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { getFirestore, collection, addDoc } from 'firebase/firestore';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { FaCalendarAlt } from 'react-icons/fa';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 const FormContainer = styled.div`
   display: flex;
@@ -102,73 +100,28 @@ const Title = styled.h1`
   margin-bottom: 20px;
 `;
 
-const TagList = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-`;
-
-const Tag = styled.div`
-  background-color: #007bff;
-  color: #fff;
-  padding: 6px 12px;
+const ThumbnailPreview = styled.img`
+  max-width: 200px;
+  max-height: 200px;
+  margin: 10px 0;
   border-radius: 5px;
-  font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-`;
-
-const RemoveTag = styled.span`
-  margin-left: 8px;
-  cursor: pointer;
-  font-weight: bold;
-`;
-
-const DatePickerWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 12px;
-  width: 100%;
-
-  .react-datepicker-wrapper {
-    width: 100%;
-  }
-
-  .react-datepicker__input-container {
-    width: 100%;
-  }
-
-  input {
-    border: none;
-    font-size: 1rem;
-    width: 100%;
-    &:focus {
-      outline: none;
-    }
-  }
-`;
-
-const CalendarIcon = styled(FaCalendarAlt)`
-  margin-right: 10px;
-  color: #007bff;
 `;
 
 const CreateGig = () => {
   const [gigDetails, setGigDetails] = useState({
     title: '',
     category: '',
-    subcategory: '',
     description: '',
-    budget: '',
-    deliveryTime: new Date(),
-    skillsRequired: [],
+    price: '',
+    deliveryTime: '',
+    thumbnail: '',
   });
-  const [skillInput, setSkillInput] = useState('');
+  const [thumbnailFile, setThumbnailFile] = useState(null);
+  const [thumbnailPreview, setThumbnailPreview] = useState('');
   const [user, setUser] = useState(null);
   const firestore = getFirestore();
   const auth = getAuth();
+  const storage = getStorage();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -182,47 +135,45 @@ const CreateGig = () => {
     return () => unsubscribe();
   }, [auth]);
 
+  useEffect(() => {
+    if (thumbnailFile) {
+      const objectUrl = URL.createObjectURL(thumbnailFile);
+      setThumbnailPreview(objectUrl);
+
+      return () => URL.revokeObjectURL(objectUrl);
+    }
+  }, [thumbnailFile]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setGigDetails({ ...gigDetails, [name]: value });
   };
 
-  const handleSkillInputChange = (e) => {
-    setSkillInput(e.target.value);
-  };
-
-  const handleSkillKeyPress = (e) => {
-    if (e.key === 'Enter' && skillInput.trim()) {
-      e.preventDefault();
-      setGigDetails((prevState) => ({
-        ...prevState,
-        skillsRequired: [...prevState.skillsRequired, skillInput.trim()],
-      }));
-      setSkillInput('');
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setThumbnailFile(file);
     }
-  };
-
-  const handleRemoveSkill = (skillToRemove) => {
-    setGigDetails((prevState) => ({
-      ...prevState,
-      skillsRequired: prevState.skillsRequired.filter(skill => skill !== skillToRemove),
-    }));
-  };
-
-  const handleDateChange = (date) => {
-    setGigDetails((prevState) => ({
-      ...prevState,
-      deliveryTime: date,
-    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (user) {
       try {
+        // Upload thumbnail image
+        let thumbnailURL = '';
+        if (thumbnailFile) {
+          const storageRef = ref(storage, `gigs/${user.uid}/${thumbnailFile.name}`);
+          await uploadBytes(storageRef, thumbnailFile);
+          thumbnailURL = await getDownloadURL(storageRef);
+        }
+
         const gigData = {
           ...gigDetails,
-          userEmail: user.email,
+          freelancerId: user.uid,
+          freelancerName: user.displayName || 'Anonymous',
+          freelancerProfileImage: user.photoURL || '',
+          thumbnail: thumbnailURL,
           createdAt: new Date(),
         };
 
@@ -291,17 +242,6 @@ const CreateGig = () => {
           </Select>
         </FormField>
         <FormField>
-          <Label htmlFor="subcategory">Subcategory:</Label>
-          <Input
-            id="subcategory"
-            name="subcategory"
-            type="text"
-            value={gigDetails.subcategory}
-            onChange={handleInputChange}
-            required
-          />
-        </FormField>
-        <FormField>
           <Label htmlFor="description">Description:</Label>
           <TextArea
             id="description"
@@ -313,55 +253,42 @@ const CreateGig = () => {
           />
         </FormField>
         <FormField>
-          <Label htmlFor="budget">Budget:</Label>
+          <Label htmlFor="price">Price (₹):</Label>
           <Input
-            id="budget"
-            name="budget"
+            id="price"
+            name="price"
             type="number"
-            value={gigDetails.budget}
+            value={gigDetails.price}
             onChange={handleInputChange}
             required
           />
         </FormField>
         <FormField>
-          <Label htmlFor="deliveryTime">Delivery Time:</Label>
-          <DatePickerWrapper>
-            <CalendarIcon size={20} />
-            <DatePicker
-              selected={gigDetails.deliveryTime}
-              onChange={handleDateChange}
-              dateFormat="MMMM d, yyyy"
-              showMonthDropdown
-              showYearDropdown
-              dropdownMode="select"
-            />
-          </DatePickerWrapper>
+          <Label htmlFor="deliveryTime">Delivery Time (days):</Label>
+          <Input
+            id="deliveryTime"
+            name="deliveryTime"
+            type="number"
+            value={gigDetails.deliveryTime}
+            onChange={handleInputChange}
+            required
+          />
         </FormField>
         <FormField>
-          <Label htmlFor="skillsRequired">Skills Required:</Label>
-          <div>
-            <Input
-              id="skillsRequired"
-              type="text"
-              value={skillInput}
-              onChange={handleSkillInputChange}
-              onKeyDown={handleSkillKeyPress}
-              placeholder="Press Enter to add skill"
-            />
-            <TagList>
-              {gigDetails.skillsRequired.map((skill, index) => (
-                <Tag key={index}>
-                  {skill}
-                  <RemoveTag onClick={() => handleRemoveSkill(skill)}>×</RemoveTag>
-                </Tag>
-              ))}
-            </TagList>
-          </div>
+          <Label htmlFor="thumbnail">Thumbnail Image:</Label>
+          <Input
+            id="thumbnail"
+            name="thumbnail"
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+          />
+          {thumbnailPreview && <ThumbnailPreview src={thumbnailPreview} alt="Thumbnail Preview" />}
         </FormField>
         <SubmitButton type="submit">Create Gig</SubmitButton>
       </form>
     </FormContainer>
-  );
-};
+    );
+  };
 
-export default CreateGig;
+  export default CreateGig;

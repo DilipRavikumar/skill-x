@@ -7,8 +7,8 @@ import {
   GoogleAuthProvider,
 } from "firebase/auth";
 import { useNavigate, Link } from "react-router-dom";
-import { app } from "../firebaseConfig";
-import loginImage from "../assets/login.png"; // Ensure this path is correct
+import { app } from "./firebaseConfig";
+import loginImage from "./assets/login.png"; // Ensure this path is correct
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -29,7 +29,7 @@ const Login = () => {
       const user = userCredential.user;
       console.log("User logged in:", user);
       // Handle remember me functionality if needed
-      navigate("/dashboard");
+      navigate("/");
     } catch (error) {
       setError("Invalid username or password");
       console.error("Login error:", error.message);
@@ -43,7 +43,7 @@ const Login = () => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
       console.log("User signed in with Google:", user);
-      navigate("/Dashboard");
+      navigate("/");
     } catch (error) {
       setError(error.message);
       console.error("Google sign-in error:", error.message);

@@ -11,6 +11,7 @@ import {
   collection,
 } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
 
 const FormContainer = styled.div`
@@ -161,39 +162,20 @@ const RemoveButton = styled.button`
   }
 `;
 
-const CategorySelect = styled.select`
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 1rem;
-  transition: border-color 0.3s ease;
-
-  &:focus {
-    border-color: #007bff;
-    outline: none;
-  }
-`;
-
 const FreelancerForm = () => {
   const { profile, setProfile } = useProfile();
   const [formValues, setFormValues] = useState({
     ...profile,
     skills: Array.isArray(profile.skills) ? profile.skills : [],
     bio: profile.bio || "",
-    about: profile.about || "",
-    category: profile.category || "",
-    hourlyRate: profile.hourlyRate || "",
-    portfolio: profile.portfolio || "",
-    socialMediaLinks: profile.socialMediaLinks || "",
-    availability: profile.availability || "",
   });
   const [inputValue, setInputValue] = useState("");
   const [user, setUser] = useState(null);
-  const [logo, setLogo] = useState(profile.logo || null);
+  const [logo, setLogo] = useState(profile.profileImage || null);
   const [logoFile, setLogoFile] = useState(null);
   const auth = getAuth();
   const firestore = getFirestore();
+  const storage = getStorage();  // Firebase Storage
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -210,23 +192,18 @@ const FreelancerForm = () => {
 
         if (!querySnapshot.empty) {
           const docSnap = querySnapshot.docs[0];
-          console.log("Fetched Document Data: ", docSnap.data()); // Log data to check structure
           setFormValues((prevState) => ({
             ...docSnap.data(),
-            skills: Array.isArray(docSnap.data().skills) ? docSnap.data().skills : [],
+            skills: Array.isArray(docSnap.data().skills)
+              ? docSnap.data().skills
+              : [],
             bio: docSnap.data().bio || "",
-            about: docSnap.data().about || "",
-            category: docSnap.data().category || "",
-            hourlyRate: docSnap.data().hourlyRate || "",
-            portfolio: docSnap.data().portfolio || "",
-            socialMediaLinks: docSnap.data().socialMediaLinks || "",
-            availability: docSnap.data().availability || "",
           }));
-          setLogo(docSnap.data().logo || null);
+          setLogo(docSnap.data().profileImage || null);
         }
       } else {
         setUser(null);
-        setFormValues({ skills: [], bio: "", about: "", category: "", hourlyRate: "", portfolio: "", socialMediaLinks: "", availability: "" }); // Initialize fields
+        setFormValues({ skills: [], bio: "" }); // Initialize fields
       }
     });
 
@@ -283,11 +260,11 @@ const FreelancerForm = () => {
         // const storage = getStorage();
         // const logoRef = ref(storage, `logos/${profile.email}`);
         // await deleteObject(logoRef);
-        
+
         // Update Firestore document to remove the logo URL
         await setDoc(
           doc(firestore, "users", user.uid),
-          { logo: null },
+          { profileImage: null },
           { merge: true }
         );
         setLogo(null);
@@ -299,16 +276,29 @@ const FreelancerForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let profileImageUrl = logo;
+
     try {
+      if (logoFile) {
+        // Upload the logo to Firebase Storage
+        const logoRef = ref(storage, `logos/${user.uid}`);
+        await uploadBytes(logoRef, logoFile);
+
+        // Get the download URL
+        profileImageUrl = await getDownloadURL(logoRef);
+      }
+
+      // Save the form data to Firestore with the profileImage URL
       await setDoc(
         doc(firestore, "users", user.uid),
         {
           ...formValues,
-          logo: logo || null,
+          profileImage: profileImageUrl || null,
         },
         { merge: true }
       );
-      setProfile(formValues);
+
+      setProfile({ ...formValues, profileImage: profileImageUrl });
       navigate("/profile");
     } catch (error) {
       console.error("Error updating profile: ", error);
@@ -336,6 +326,7 @@ const FreelancerForm = () => {
           </>
         ) : (
           <label htmlFor="logo-upload">
+            <ChangeButton>Add Logo</ChangeButton>
             <input
               type="file"
               id="logo-upload"
@@ -343,144 +334,42 @@ const FreelancerForm = () => {
               accept="image/*"
               onChange={handleLogoChange}
             />
-            <ChangeButton>Add Logo</ChangeButton>
           </label>
         )}
       </LogoContainer>
-
       <form onSubmit={handleSubmit}>
         <FormField>
-          <Label htmlFor="name">Name</Label>
-          <Input
-            type="text"
-            id="name"
-            name="name"
-            value={formValues.name || ""}
-            onChange={handleInputChange}
-            required
-          />
-        </FormField>
-
-        <FormField>
-          <Label htmlFor="email">Email</Label>
-          <Input
-            type="email"
-            id="email"
-            name="email"
-            value={formValues.email || ""}
-            onChange={handleInputChange}
-            required
-            readOnly
-          />
-        </FormField>
-
-        <FormField>
-          <Label htmlFor="bio">Bio</Label>
+          <Label>Bio</Label>
           <TextArea
-            id="bio"
             name="bio"
-            rows="4"
-            value={formValues.bio || ""}
+            value={formValues.bio}
             onChange={handleInputChange}
+            rows={4}
           />
         </FormField>
-
         <FormField>
-          <Label htmlFor="about">About</Label>
-          <TextArea
-            id="about"
-            name="about"
-            rows="4"
-            value={formValues.about || ""}
-            onChange={handleInputChange}
-          />
-        </FormField>
-
-        <FormField>
-          <Label htmlFor="category">Category</Label>
-          <CategorySelect
-            id="category"
-            name="category"
-            value={formValues.category || ""}
-            onChange={handleInputChange}
-          >
-            <option value="">Select Category</option>
-            <option value="web-development">Web Development</option>
-            <option value="graphic-design">Graphic Design</option>
-            <option value="digital-marketing">Digital Marketing</option>
-            {/* Add more categories as needed */}
-          </CategorySelect>
-        </FormField>
-
-        <FormField>
-          <Label htmlFor="hourlyRate">Hourly Rate</Label>
-          <Input
-            type="number"
-            id="hourlyRate"
-            name="hourlyRate"
-            value={formValues.hourlyRate || ""}
-            onChange={handleInputChange}
-            step="0.01"
-          />
-        </FormField>
-
-        <FormField>
-          <Label htmlFor="portfolio">Portfolio URL</Label>
-          <Input
-            type="url"
-            id="portfolio"
-            name="portfolio"
-            value={formValues.portfolio || ""}
-            onChange={handleInputChange}
-          />
-        </FormField>
-
-        <FormField>
-          <Label htmlFor="socialMediaLinks">Social Media Links</Label>
+          <Label>Skills</Label>
           <Input
             type="text"
-            id="socialMediaLinks"
-            name="socialMediaLinks"
-            value={formValues.socialMediaLinks || ""}
-            onChange={handleInputChange}
-          />
-        </FormField>
-
-        <FormField>
-          <Label htmlFor="availability">Availability</Label>
-          <Input
-            type="text"
-            id="availability"
-            name="availability"
-            value={formValues.availability || ""}
-            onChange={handleInputChange}
-          />
-        </FormField>
-
-        <FormField>
-          <Label htmlFor="skills">Skills</Label>
-          <Input
-            type="text"
-            id="skills"
             value={inputValue}
             onChange={handleSkillInputChange}
-            onKeyDown={handleSkillKeyPress}
-            placeholder="Press Enter to add skills"
+            onKeyPress={handleSkillKeyPress}
+            placeholder="Press Enter to add skill"
           />
           <TagList>
             {formValues.skills.map((skill, index) => (
               <Tag key={index}>
-                {skill}
+                {skill}{" "}
                 <RemoveTag onClick={() => handleRemoveSkill(skill)}>x</RemoveTag>
               </Tag>
             ))}
           </TagList>
         </FormField>
-
-        <SubmitButton type="submit">Save Profile</SubmitButton>
+        <SubmitButton type="submit">Save Changes</SubmitButton>
       </form>
     </FormContainer>
   );
 };
 
 export default FreelancerForm;
+

@@ -6,19 +6,23 @@ import HeroSection from './components/HeroSection';
 import AboutSection from './components/AboutSection';
 import ServicesSection from './components/ServicesSection';
 import ContactSection from './components/ContactSection';
-import Login from './components/Login';
+import Login from './Login';
 import FreelancerProfile from './components/FreelancerProfile';
 import FreelancerForm from './components/FreelancerForm';
 import './index.css';
-import Register from './components/Register';
+import Register from './Register';
 import NewUser from './components/UserTypeSelection';
 import EmployerForm from './components/EmployerForm';
 import CreateGigPage from './components/CreateGig';
+import MainHome from './MainHome';
+import FreelancerDashboard from './FreelancerDashboard';
 
 const App = () => {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<MainHome />} />
+        <Route path="/dashboard-freelancer" element={<FreelancerDashboard/>}/>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/freelancer-profile" element={<FreelancerProfile />} /> {/* Ensure this matches the route and component */}
@@ -27,7 +31,7 @@ const App = () => {
         <Route path="/employer-form" element={<EmployerForm />} />
         <Route path='/create-gig' element={<CreateGigPage/>} />
         <Route
-          path="*"
+          path="/Home"
           element={
             <>
               <Navbar />

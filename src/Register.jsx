@@ -5,17 +5,21 @@ import {
   createUserWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider,
+  updateProfile,
 } from "firebase/auth";
 import { useNavigate, Link } from "react-router-dom";
-import { app } from "../firebaseConfig";
-import loginImage from "../assets/login.png"; // Ensure this path is correct
+import { app } from "./firebaseConfig";
+import { getFirestore, doc, setDoc, serverTimestamp } from "firebase/firestore";
+import loginImage from "./assets/login.png"; // Ensure this path is correct
 
 const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [displayName, setDisplayName] = useState(""); // New field for displayName
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const db = getFirestore(app); // Initialize Firestore
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -32,8 +36,27 @@ const Register = () => {
         password
       );
       const user = userCredential.user;
+
+      // Optionally update the user profile with display name
+      await updateProfile(user, { displayName });
+
+      // Add user document to Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        displayName: displayName || user.email.split("@")[0],
+        email: user.email,
+        role: "freelancer", // Default role, can be updated later
+        profileImage: "", // Placeholder for now
+        createdAt: serverTimestamp(),
+        skills: [], // Empty skills array for now
+        rating: 0, // Initial rating
+        completedOrders: 0, // Initial completed orders
+        bio: "", // Empty bio for now
+        transactionHistory: [], // Empty transaction history
+        balance: 0, // Initial balance
+      });
+
       console.log("User registered:", user);
-      navigate("/dashboard");
+      navigate("/");
     } catch (error) {
       setError(error.message);
       console.error("Registration error:", error.message);
@@ -46,8 +69,25 @@ const Register = () => {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
+
+      // Add user document to Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        username: "",
+        displayName: user.displayName || user.email.split("@")[0],
+        email: user.email,
+        role: "user", // Default role, can be updated later
+        profileImage: user.photoURL || "", // Google profile image
+        createdAt: serverTimestamp(),
+        skills: [], // Empty skills array for now
+        rating: 0, // Initial rating
+        completedOrders: 0, // Initial completed orders
+        bio: "", // Empty bio for now
+        transactionHistory: [], // Empty transaction history
+        balance: 0, // Initial balance
+      });
+
       console.log("User signed in with Google:", user);
-      navigate("/dashboard");
+      navigate("/");
     } catch (error) {
       setError(error.message);
       console.error("Google sign-in error:", error.message);
@@ -74,6 +114,14 @@ const Register = () => {
         <p>Create an account to get started.</p>
         <form onSubmit={handleRegister}>
           <div className="input-container">
+            <label className="input-label">Display Name</label>
+            <input
+              type="text"
+              className="input-field"
+              placeholder="Display Name"
+              required
+              onChange={(e) => setDisplayName(e.target.value)}
+            />
             <label className="input-label">Email</label>
             <input
               type="email"
