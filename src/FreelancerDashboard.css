@@ -1,58 +1,326 @@
+/* Dashboard Container */
 .dashboard-container {
-    padding: 20px;
-    max-width: 1200px;
-    margin: auto;
-  }
-  
-  .dashboard-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  .create-gig-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  .create-gig-button:hover {
-    background-color: #0056b3;
-  }
-  
-  .dashboard-content {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .dashboard-section {
-    margin-bottom: 30px;
-  }
-  
-  .dashboard-section h2 {
-    font-size: 24px;
-    margin-bottom: 10px;
-  }
-  
-  .gig-list, .transaction-list, .message-list {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .gig-item, .transaction-item, .message-item {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    cursor: pointer;
-  }
-  
-  .gig-item:hover, .transaction-item:hover, .message-item:hover {
-    background-color: #f0f0f0;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Header */
+.header {
+  background: #ffffff;
+  color: rgb(0, 0, 0);
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  background: #ffffff;
+  color: #343a40;
+  padding: 20px;
+  position: fixed;
+  top: 60px; /* Adjust this to position below the header */
+  bottom: 0;
+  left: 0;
+  overflow-y: auto;
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+}
+.sidebar-content {
+  font-size: 1.5rem; /* Increased font size for better readability */
+}
+/* Main Content */
+.main-content {
+  margin-left: 270px;
+  padding: 20px;
+  background: #f8f9fa;
+  min-height: 100vh;
+  overflow-y: auto;
+}
+
+/* Sidebar Button */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-button {
+  background: transparent;
+  color: #6c757d;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  flex: 1; /* Ensures buttons stretch to fill available space */
+  text-align: left; /* Align text to the left */
+}
+
+.sidebar-button:hover {
+  background: #e9ecef;
+  color: rgb(1, 11, 231);
+}
+
+.sidebar-button.active {
+  background: #007bff; /* Active background color */
+  color: #ffffff; /* Text color when active */
+}
+
+.sidebar-button-container {
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* Icons */
+.icon {
+  color: #6c757d;
+}
+
+/* Section Title */
+.section-title {
+  font-size: 1.75rem;
+  margin-left: 20px;
+  margin-bottom: 20px;
+  color: rgb(1, 11, 231);
+}
+
+/* Profile Card */
+.profile-card {
+  margin-left: 270px; /* Adjusted to align with the sidebar */
+  justify-content: center;
+  background: #ffffff;
+  padding: 20px;
+  width: 500px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Added transition */
+}
+
+.profile-card:hover {
+  transform: translateY(-5px); /* Slight lift effect on hover */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+.profile-card img {
+  border-radius: 50%;
+  width: 120px; /* Slightly larger image */
+  height: 120px;
+  object-fit: cover;
+  margin-bottom: 15px;
+  border: 3px solid #007bff; /* Border around profile image */
+}
+
+.profile-card h2 {
+  font-size: 1.75rem; /* Increased font size */
+  margin: 10px 0;
+  color: #333; /* Darker color for better contrast */
+}
+
+.profile-card p {
+  font-size: 1rem;
+  color: #6c757d;
+}
+
+.profile-card .profile-button {
+  background: #007bff;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Added transform transition */
+}
+
+.profile-card .profile-button:hover {
+  background: #0056b3;
+  transform: scale(1.05); /* Slight scale effect on hover */
+}
+
+/* Button Container */
+.button-container {
+  margin-left: 80px;
+  margin-top: 20px;
+  display: flex;
+  gap: 20px;
+  justify-content: flex-start; /* Align buttons to the start on larger screens */
+  position: relative;
+  z-index: 3;
+}
+
+/* Button */
+.button-freelancer-dashboard {
+  padding: 0.8em 1.6em;
+  border: none;
+  border-radius: 100px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: rgb(1, 11, 231);
+  transition: all 1000ms;
+  font-size: 14px;
+  position: relative;
+  overflow: hidden;
+  outline: 2px solid rgb(1, 11, 231);
+}
+
+.button-freelancer-dashboard:hover {
+  color: #ffffff;
+  transform: scale(1.1);
+  outline: 2px solid rgb(1, 11, 231);
+  box-shadow: 4px 5px 17px -4px #268391;
+}
+
+.button-freelancer-dashboard::before {
+  content: "";
+  position: absolute;
+  left: -50px;
+  top: 0;
+  width: 0;
+  height: 100%;
+  background-color: rgb(1, 11, 231);
+  transform: skewX(45deg);
+  z-index: -1;
+  transition: width 1000ms;
+}
+
+/* Adding a width expansion effect */
+.button-freelancer-dashboard:hover::before {
+  width: 200%; /* Adjust width as needed for desired effect */
+}
+
+/* Gig Card */
+.gig-card {
+  background: #ffffff;
+  padding: 20px; /* Increased padding */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
+  margin: 0 auto 20px auto; /* Centered horizontally with auto margins */
+  width: 80%; /* Reduced width */
+  max-width: 600px; /* Optional: max width for larger screens */
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Added transition */
+}
+
+.gig-card:hover {
+  transform: translateY(-5px); /* Slight lift effect on hover */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+.gig-thumbnail {
+  width: 120px; /* Slightly larger thumbnail */
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-right: 20px; /* Increased margin */
+}
+
+.gig-details {
+  flex: 1;
+}
+
+.gig-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* List and ListItem */
+/* Message Card */
+.list-item {
+  background: #ffffff;
+  padding: 20px; /* Adjust padding as needed */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
+  width: 80%; /* Reduced width of the card */
+  max-width: 600px; /* Optional: max width for larger screens */
+  margin: 20px auto; /* Center the card horizontally and add vertical margin */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Added transition */
+}
+
+.list-item:hover {
+  transform: translateY(-3px); /* Slight lift effect on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+}
+
+
+
+.button1-freelancer-dashboard {
+  padding: 0.8em 1.6em;
+  border: none;
+  border-radius: 100px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: rgb(1, 11, 231);
+  transition: all 1000ms;
+  font-size: 12px;
+  position: relative;
+  left:24px;
+  overflow: hidden;
+  outline: 2px solid rgb(1, 11, 231);
+}
+
+.button1-freelancer-dashboard:hover {
+  color: #ffffff;
+  transform: scale(1.1);
+  outline: 2px solid rgb(1, 11, 231);
+  box-shadow: 4px 5px 17px -4px #268391;
+}
+
+.button1-freelancer-dashboard::before {
+  content: "";
+  position: absolute;
+  left: -50px;
+  top: 0;
+  width: 0;
+  height: 100%;
+  background-color: rgb(1, 11, 231);
+  transform: skewX(45deg);
+  z-index: -1;
+  transition: width 1000ms;
+}
+
+/* Adding a width expansion effect */
+.button1-freelancer-dashboard:hover::before {
+  width: 200%; /* Adjust width as needed for desired effect */
+}
+
+
+
+/* Orders List */
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center cards horizontally */
+  gap: 15px; /* Spacing between items */
+}
+
+/* Orders Item */
+.orders-item {
+  background: #ffffff;
+  padding: 15px; /* Adjusted padding */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
+  width: 80%; /* Reduced width of the card */
+  max-width: 500px; /* Optional: max width for larger screens */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Added transition */
+}
+
+.orders-item:hover {
+  transform: translateY(-3px); /* Slight lift effect on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+}
