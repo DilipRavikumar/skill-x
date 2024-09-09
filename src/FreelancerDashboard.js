@@ -18,6 +18,7 @@ import {
   FaStar,
   FaCog,
 } from "react-icons/fa"; // Import icons
+import OrdersList from './components/OrdersList'
 
 const FreelancerDashboard = () => {
   const { profile } = useProfile();
