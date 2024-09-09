@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { useProfile } from './components/ProfileContext'; // Update path as needed
 import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
+import OrdersList from './components/OrdersList'
 
 // Styled components for layout
 const DashboardContainer = styled.div`
@@ -208,19 +209,9 @@ const FreelancerDashboard = () => {
           </div>
         )}
 
-        {currentSection === 'orders' && (
-          <div>
-            <SectionTitle>Orders</SectionTitle>
-            <List>
-              {/* Sample Order Items */}
-              <ListItem>
-                <h3>Order #1</h3>
-                <p>Status: Active</p>
-              </ListItem>
-              {/* Repeat ListItem for each order */}
-            </List>
-          </div>
-        )}
+      {currentSection === 'orders' && (
+        <OrdersList /> // Use the OrdersList component here
+      )}
 
         {currentSection === 'messages' && (
           <div>

@@ -10,6 +10,8 @@ import {
   collection,
 } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
+
 
 const FormContainer = styled.div`
   display: flex;
@@ -115,7 +117,7 @@ const Title = styled.h1`
   margin-bottom: 20px;
 `;
 
-const EmployerForm = () => {
+const BuyerForm = () => {
   const [formValues, setFormValues] = useState({
     bio: "",
     preferredLocations: [],
@@ -126,6 +128,8 @@ const EmployerForm = () => {
   const [user, setUser] = useState(null);
   const auth = getAuth();
   const firestore = getFirestore();
+  const navigate = useNavigate(); // Initialize useNavigate
+
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -224,6 +228,7 @@ const EmployerForm = () => {
         if (!querySnapshot.empty) {
           const docRef = doc(firestore, "users", querySnapshot.docs[0].id);
           await setDoc(docRef, formValues, { merge: true });
+          navigate('/');
         } else {
           console.error("No matching employer document found");
         }
@@ -299,4 +304,4 @@ const EmployerForm = () => {
   );
 };
 
-export default EmployerForm;
+export default BuyerForm;

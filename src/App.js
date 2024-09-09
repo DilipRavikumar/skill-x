@@ -12,10 +12,11 @@ import FreelancerForm from './components/FreelancerForm';
 import './index.css';
 import Register from './Register';
 import NewUser from './components/UserTypeSelection';
-import EmployerForm from './components/EmployerForm';
+import BuyerForm from './components/BuyerForm';
 import CreateGigPage from './components/CreateGig';
 import MainHome from './MainHome';
 import FreelancerDashboard from './FreelancerDashboard';
+import BuyerDashboard from './BuyerDashboard';
 
 const App = () => {
   return (
@@ -23,12 +24,13 @@ const App = () => {
       <Routes>
         <Route path="/" element={<MainHome />} />
         <Route path="/dashboard-freelancer" element={<FreelancerDashboard/>}/>
+        <Route path="/dashboard-buyer" element={<BuyerDashboard/>}/>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/freelancer-profile" element={<FreelancerProfile />} /> {/* Ensure this matches the route and component */}
         <Route path="/newuser" element={<NewUser />} /> {/* Corrected path */}
         <Route path="/freelancer-form" element={<FreelancerForm />} />
-        <Route path="/employer-form" element={<EmployerForm />} />
+        <Route path="/buyer-form" element={<BuyerForm />} />
         <Route path='/create-gig' element={<CreateGigPage/>} />
         <Route
           path="/Home"

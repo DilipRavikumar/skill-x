@@ -126,8 +126,8 @@ const UserTypeSelection = () => {
         navigate("/freelancer-form", {
           state: { displayName, username, role, email: userEmail },
         });
-      } else if (role === "employer") {
-        navigate("/employer-form", {
+      } else if (role === "buyer") {
+        navigate("/buyer-form", {
           state: { displayName, username, role, email: userEmail },
         });
       }
@@ -176,9 +176,9 @@ const UserTypeSelection = () => {
             Freelancer
           </Button>
           <Button
-            onClick={() => handleSelection("employer")}
+            onClick={() => handleSelection("buyer")}
             style={{
-              backgroundColor: role === "employer" ? "#0056b3" : "#007bff",
+              backgroundColor: role === "buyer" ? "#0056b3" : "#007bff",
             }}
           >
             Employer

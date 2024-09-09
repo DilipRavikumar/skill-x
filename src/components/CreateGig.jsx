@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { getFirestore, collection, addDoc } from 'firebase/firestore';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
+
 
 const FormContainer = styled.div`
   display: flex;
@@ -107,6 +109,7 @@ const ThumbnailPreview = styled.img`
   border-radius: 5px;
 `;
 
+
 const CreateGig = () => {
   const [gigDetails, setGigDetails] = useState({
     title: '',
@@ -122,6 +125,7 @@ const CreateGig = () => {
   const firestore = getFirestore();
   const auth = getAuth();
   const storage = getStorage();
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -179,8 +183,8 @@ const CreateGig = () => {
 
         // Add a new document with a generated ID to the 'gigs' collection
         await addDoc(collection(firestore, 'gigs'), gigData);
-        console.log('Gig successfully created!');
-        // Optionally, redirect to another page or show a success message
+        alert('Gig Created Successfully!'); // Show alert
+        navigate('/dashboard-freelancer'); // Redirect to FreelancerDashboard
       } catch (error) {
         console.error('Error creating gig: ', error);
       }
