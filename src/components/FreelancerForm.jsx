@@ -155,7 +155,7 @@ const FreelancerForm = () => {
         profileImage: profileImageUrl,
       });
 
-      navigate("/profile");
+      navigate("/freelancer-profile");
     } catch (error) {
       console.error("Error updating profile: ", error);
     }

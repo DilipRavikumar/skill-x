@@ -44,7 +44,7 @@ const Register = () => {
       await setDoc(doc(db, "users", user.uid), {
         displayName: displayName || user.email.split("@")[0],
         email: user.email,
-        role: "freelancer", // Default role, can be updated later
+        role: "user", // Default role, can be updated later
         profileImage: "", // Placeholder for now
         createdAt: serverTimestamp(),
         skills: [], // Empty skills array for now

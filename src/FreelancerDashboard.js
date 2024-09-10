@@ -19,6 +19,7 @@ import {
   FaCog,
 } from "react-icons/fa"; // Import icons
 import OrdersList from './components/OrdersList'
+import FreelancerProfile from "./components/FreelancerProfile";
 
 const FreelancerDashboard = () => {
   const { profile } = useProfile();
@@ -107,22 +108,7 @@ const FreelancerDashboard = () => {
       <main className="main-content">
         {currentSection === "profile" && (
           <div>
-            <h2 className="section-title">Profile Overview</h2>
-            <div className="profile-card">
-              <img
-                className="profile-image"
-                src={profile?.profileImage || "/default-profile.png"}
-                alt="Profile"
-              />
-              <h2>{profile?.displayName || "No Name"}</h2>
-              <p>{profile?.bio || "No bio available"}</p>
-              <button
-                className="button-freelancer-dashboard"
-                onClick={() => navigate("/freelancer-form")}
-              >
-                Edit Profile
-              </button>
-            </div>
+            <FreelancerProfile/>
           </div>
         )}
 
