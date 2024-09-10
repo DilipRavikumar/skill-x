@@ -15,6 +15,14 @@ const Card = styled.div`
   align-items: center;
 `;
 
+const Thumbnail = styled.img`
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+`;
+
 const Title = styled.h2`
   font-size: 1.5rem;
   margin-bottom: 10px;
@@ -70,6 +78,7 @@ const GigCard = ({ gig }) => {
           deliveryDate: Timestamp.fromDate(deliveryDate),
           messageThread: [],
           review: null,
+          thumbnail: gig.thumbnail // Add the thumbnail to the order data
         };
 
         // Add the order to Firestore
@@ -88,6 +97,8 @@ const GigCard = ({ gig }) => {
 
   return (
     <Card>
+      {/* Display the thumbnail */}
+      <Thumbnail src={gig.thumbnail} alt={gig.title} />
       <Title>{gig.title}</Title>
       <Description>{gig.description}</Description>
       <Button onClick={handlePlaceOrder}>Place Order</Button>
