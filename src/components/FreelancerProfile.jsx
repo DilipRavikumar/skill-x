@@ -6,7 +6,7 @@ import { onAuthStateChanged } from "firebase/auth"; // Import onAuthStateChanged
 import "./FreelancerProfile.css"; // Import the external CSS file
 
 // Import default profile picture (if applicable)
-import defaultProfilePic from "../assets/user-icon.JPG"; // Update path as needed
+import defaultProfilePic from "../assets/user-icon.png"; // Update path as needed
 
 const FreelancerProfile = () => {
   const [profile, setProfile] = useState(null);
@@ -19,7 +19,6 @@ const FreelancerProfile = () => {
       if (user) {
         const userRef = doc(db, "users", user.uid); // Reference to the user's document in Firestore
         const userDoc = await getDoc(userRef);
-
         if (userDoc.exists()) {
           const userData = userDoc.data();
           setProfile(userData);
