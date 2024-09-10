@@ -8,7 +8,6 @@ import {
   query,
   where,
   getDocs,
-  updateDoc,
   deleteDoc,
   doc,
 } from "firebase/firestore";
@@ -21,7 +20,7 @@ import {
   FaStar,
   FaCog,
 } from "react-icons/fa"; // Import icons
-import OrdersList from './components/OrdersList'
+import OrdersList from "./components/OrdersList";
 import FreelancerProfile from "./components/FreelancerProfile";
 
 const FreelancerDashboard = () => {
@@ -75,6 +74,10 @@ const FreelancerDashboard = () => {
     }
   };
 
+  const handleEditSettings = () => {
+    navigate('/freelancer-form'); // Navigate to the FreelancerForm route
+  };
+
   return (
     <div className="dashboard-container">
       <header className="header">
@@ -83,37 +86,49 @@ const FreelancerDashboard = () => {
       <aside className="sidebar">
         <div className="sidebar-button-container">
           <button
-            className={`sidebar-button ${currentSection === "profile" ? "active" : ""}`}
+            className={`sidebar-button ${
+              currentSection === "profile" ? "active" : ""
+            }`}
             onClick={() => handleSectionChange("profile")}
           >
             <FaUser className="icon" /> <span>Profile Overview</span>
           </button>
           <button
-            className={`sidebar-button ${currentSection === "my-gigs" ? "active" : ""}`}
+            className={`sidebar-button ${
+              currentSection === "my-gigs" ? "active" : ""
+            }`}
             onClick={() => handleSectionChange("my-gigs")}
           >
             <FaBriefcase className="icon" /> <span>My Gigs</span>
           </button>
           <button
-            className={`sidebar-button ${currentSection === "orders" ? "active" : ""}`}
+            className={`sidebar-button ${
+              currentSection === "orders" ? "active" : ""
+            }`}
             onClick={() => handleSectionChange("orders")}
           >
             <FaBox className="icon" /> <span>Orders</span>
           </button>
           <button
-            className={`sidebar-button ${currentSection === "messages" ? "active" : ""}`}
+            className={`sidebar-button ${
+              currentSection === "messages" ? "active" : ""
+            }`}
             onClick={() => handleSectionChange("messages")}
           >
             <FaEnvelope className="icon" /> <span>Messages</span>
           </button>
           <button
-            className={`sidebar-button ${currentSection === "reviews" ? "active" : ""}`}
+            className={`sidebar-button ${
+              currentSection === "reviews" ? "active" : ""
+            }`}
             onClick={() => handleSectionChange("reviews")}
           >
             <FaStar className="icon" /> <span>Reviews</span>
           </button>
           <button
-            className={`sidebar-button ${currentSection === "settings" ? "active" : ""}`}
+            className={`sidebar-button ${
+              currentSection === "settings" ? "active" : ""
+            }`}
             onClick={() => handleSectionChange("settings")}
           >
             <FaCog className="icon" /> <span>Account Settings</span>
@@ -124,7 +139,7 @@ const FreelancerDashboard = () => {
       <main className="main-content">
         {currentSection === "profile" && (
           <div>
-            <FreelancerProfile/>
+            <FreelancerProfile />
           </div>
         )}
 
@@ -177,7 +192,7 @@ const FreelancerDashboard = () => {
           </div>
         )}
 
-        {currentSection === 'orders' && (
+        {currentSection === "orders" && (
           <OrdersList /> // Use the OrdersList component here
         )}
 
@@ -215,7 +230,10 @@ const FreelancerDashboard = () => {
             <h2 className="section-title">Account Settings</h2>
             <div className="profile-card">
               <h3>Personal Information</h3>
-              <button className="button-freelancer-dashboard">
+              <button
+                className="button-freelancer-dashboard"
+                onClick={handleEditSettings}
+              >
                 Edit Settings
               </button>
             </div>

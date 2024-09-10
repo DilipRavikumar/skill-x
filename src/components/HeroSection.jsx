@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { FaSearch } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 
 // Import the images
 import mainImage from "../assets/Home.png";
@@ -22,7 +23,6 @@ const HeroContainer = styled.div`
   animation: fadeIn 1.5s ease-out;
 
   .text-container {
-  
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -50,7 +50,7 @@ const HeroContainer = styled.div`
   }
 
   .button-container {
-  margin-left:80px;
+    margin-left:80px;
     margin-top: 20px;
     display: flex;
     gap: 20px;
@@ -101,7 +101,6 @@ const HeroContainer = styled.div`
 
   .search-container1 {
     margin-left:80px;
-
     position: relative;
     margin-top: 20px;
     display: flex;
@@ -279,9 +278,10 @@ const HeroContainer = styled.div`
 
 const HeroSection = () => {
   const [query, setQuery] = useState("");
+  const navigate = useNavigate(); // Initialize navigate function
 
   const handleSearch = () => {
-    alert(`Searching for: ${query}`);
+    navigate('/login'); // Navigate to the /login page
   };
 
   return (
@@ -293,8 +293,8 @@ const HeroSection = () => {
         </h1>
         <p>Your gateway to top freelance opportunities.</p>
         <div className="button-container">
-          <button className="button">Hire</button>
-          <button className="button">Work</button>
+          <button className="button" onClick={() => navigate('/login')}>Hire</button>
+          <button className="button" onClick={() => navigate('/login')}>Work</button>
         </div>
         <div className="search-container1">
           <input
@@ -315,10 +315,10 @@ const HeroSection = () => {
         </div>
       </div>
       <div className="image-container">
-        <img className="mainImage" src={mainImage} alt="Main" />
-        <img className="elementImage cube" src={cubeImage} alt="Cube Element" />
-        <img className="elementImage spiral" src={spiralImage} alt="Spiral Element" />
-        <img className="elementImage crush" src={crushImage} alt="Crush Element" />
+        <img src={mainImage} alt="Main" className="mainImage" />
+        <img src={cubeImage} alt="Cube" className="elementImage cube" />
+        <img src={spiralImage} alt="Spiral" className="elementImage spiral" />
+        <img src={crushImage} alt="Crush" className="elementImage crush" />
       </div>
     </HeroContainer>
   );

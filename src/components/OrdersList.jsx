@@ -20,6 +20,8 @@ const OrdersList = () => {
           const fetchedOrders = querySnapshot.docs.map((doc) => ({
             id: doc.id,
             ...doc.data(),
+            // Assume 'thumbnail' field contains the URL to the image
+            thumbnail: doc.data().thumbnail || "",
           }));
           setOrders(fetchedOrders);
         }
@@ -33,7 +35,6 @@ const OrdersList = () => {
 
   return (
     <div style={{ marginTop: "20px" }}>
-      {/* Updated Heading with New Styles */}
       <h2 style={{ fontSize: "1.75rem", marginLeft: "20px", marginBottom: "20px", color: "rgb(1, 11, 231)" }}>
         My Orders
       </h2>
@@ -63,20 +64,31 @@ const OrdersList = () => {
               e.currentTarget.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.1)";
             }}
           >
-            {/* Thumbnail Section (You can add an image if you have one) */}
-            <div
-              style={{
-                width: "120px",
-                height: "120px",
-                objectFit: "cover",
-                borderRadius: "10px",
-                marginRight: "20px",
-                backgroundColor: "#f0f0f0", // Placeholder background color for missing images
-              }}
-            >
-              {/* Replace with actual image if available */}
-            </div>
-            
+            {/* Thumbnail Section */}
+            {order.thumbnail && (
+              <div
+                style={{
+                  width: "120px",
+                  height: "120px",
+                  objectFit: "cover",
+                  borderRadius: "10px",
+                  marginRight: "20px",
+                  backgroundColor: "#f0f0f0", // Placeholder background color for missing images
+                }}
+              >
+                <img
+                  src={order.thumbnail}
+                  alt={`Thumbnail for order ${order.id}`}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    borderRadius: "10px",
+                  }}
+                />
+              </div>
+            )}
+
             {/* Details Section */}
             <div style={{ flex: 1 }}>
               <h3>Order #{order.id}</h3>
