@@ -324,3 +324,88 @@
   transform: translateY(-3px); /* Slight lift effect on hover */
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
 }
+
+
+.message-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.message {
+  padding: 10px;
+  margin: 5px;
+  border-radius: 5px;
+}
+
+.sent {
+  background-color: #d1ffd1;
+  text-align: right;
+}
+
+.received {
+  background-color: #f1f0f0;
+  text-align: left;
+}
+
+.message-form {
+  display: flex;
+  flex-direction: column;
+}
+
+textarea {
+  width: 100%;
+  height: 60px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.button-send {
+  align-self: flex-end;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+
+.chat-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-messages {
+  flex: 1;
+  padding: 20px;
+  background: #fff;
+  overflow-y: auto;
+  border-left: 1px solid #ddd;
+}
+
+.message-input {
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  background: #f9f9f9;
+}
+
+.message {
+  margin-bottom: 10px;
+}
+
+.message-buyer {
+  text-align: right;
+}
+
+.message-freelancer {
+  text-align: left;
+}
+  
+
+

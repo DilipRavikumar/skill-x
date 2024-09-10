@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { getFirestore, collection, getDocs, query, where } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
-import GigCard from "./components/GigCard"; // Assuming you have a GigCard component to display individual gigs
-import { FaBriefcase, FaBox } from "react-icons/fa"; // Import icons for sidebar
-import BuyerOrderList from "./components/BuyerOrderList";
+// BuyerDashboard.js
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import { getFirestore, collection, getDocs, query, where, addDoc, Timestamp } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
+import GigCard from './components/GigCard';
+import { FaBriefcase, FaBox, FaEnvelope } from 'react-icons/fa';
+import BuyerOrderList from './components/BuyerOrderList';
+import Chat from './Chat';
 
-// Styled components
 const DashboardContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -20,11 +21,11 @@ const Sidebar = styled.aside`
   flex-direction: column;
   align-items: flex-start;
   border-right: 1px solid #ddd;
-  position: fixed; /* Fix the sidebar in place */
-  top: 60px; /* Adjust this value to account for the header height */
+  position: fixed;
+  top: 60px;
   left: 0;
-  height: calc(100vh - 60px); /* Adjust height to be below the header */
-  z-index: 1; /* Lower z-index so it stays behind the header */
+  height: calc(100vh - 60px);
+  z-index: 1;
 `;
 
 const SidebarButton = styled.button`
@@ -56,8 +57,11 @@ const SidebarButton = styled.button`
 const MainContent = styled.main`
   flex: 1;
   padding: 80px;
-  margin-left: 250px; /* Offset for the sidebar */
+  margin-left: 250px;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center child elements horizontally */
 `;
 
 const Header = styled.header`
@@ -66,11 +70,11 @@ const Header = styled.header`
   padding: 15px;
   text-align: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  position: fixed; /* Fix the header in place */
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100%; /* Full width */
-  z-index: 2; /* Higher z-index to ensure it overlaps the sidebar */
+  width: 100%;
+  z-index: 2;
 `;
 
 const HeaderTitle = styled.h1`
@@ -86,7 +90,7 @@ const SearchBar = styled.input`
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 1rem;
-  margin-left:120px;
+  margin-left: 120px;
 
   &:focus {
     border-color: #007bff;
@@ -107,53 +111,27 @@ const SectionTitle = styled.h2`
   margin-bottom: 15px;
 `;
 
-const OrderList = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  align-items: center;
-`;
-
-const OrderCard = styled.div`
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 16px;
-  width: 100%;
-  max-width: 600px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-`;
-
-const OrderCardTitle = styled.h3`
-  font-size: 1.25rem;
-  margin-bottom: 10px;
-`;
-
-const OrderCardDetails = styled.p`
-  font-size: 1rem;
-  margin-bottom: 10px;
-`;
-
 const BuyerDashboard = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [gigs, setGigs] = useState([]);
   const [filteredGigs, setFilteredGigs] = useState([]);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [currentSection, setCurrentSection] = useState("available-gigs");
+  const [currentSection, setCurrentSection] = useState('available-gigs');
+  const [selectedChat, setSelectedChat] = useState(null);
   const auth = getAuth();
   const firestore = getFirestore();
 
   useEffect(() => {
     const fetchGigs = async () => {
       try {
-        const q = query(collection(firestore, "gigs"));
+        const q = query(collection(firestore, 'gigs'));
         const querySnapshot = await getDocs(q);
         const fetchedGigs = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
         setGigs(fetchedGigs);
         setFilteredGigs(fetchedGigs);
       } catch (error) {
-        console.error("Error fetching gigs: ", error);
+        console.error('Error fetching gigs: ', error);
       }
     };
 
@@ -163,14 +141,14 @@ const BuyerDashboard = () => {
       if (user) {
         try {
           const q = query(
-            collection(firestore, "orders"),
-            where("buyerId", "==", user.uid)
+            collection(firestore, 'orders'),
+            where('buyerId', '==', user.uid)
           );
           const querySnapshot = await getDocs(q);
           const fetchedOrders = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
           setOrders(fetchedOrders);
         } catch (error) {
-          console.error("Error fetching orders: ", error);
+          console.error('Error fetching orders: ', error);
         }
       }
     };
@@ -196,6 +174,43 @@ const BuyerDashboard = () => {
     filterGigs();
   }, [searchTerm, gigs]);
 
+  const handleChatClick = async (gig) => {
+    const user = auth.currentUser;
+
+    if (user) {
+      try {
+        const chatQuery = query(
+          collection(firestore, 'chats'),
+          where('buyerId', '==', user.uid),
+          where('freelancerId', '==', gig.freelancerId)
+        );
+
+        const chatSnapshot = await getDocs(chatQuery);
+        let chatId;
+
+        if (chatSnapshot.empty) {
+          const chatData = {
+            buyerId: user.uid,
+            freelancerId: gig.freelancerId,
+            createdAt: Timestamp.fromDate(new Date()),
+            messages: [],
+          };
+          const chatDoc = await addDoc(collection(firestore, 'chats'), chatData);
+          chatId = chatDoc.id;
+        } else {
+          chatId = chatSnapshot.docs[0].id;
+        }
+
+        setSelectedChat(chatId); // Set the selected chat ID
+        setCurrentSection('messages'); // Switch to messages section
+      } catch (error) {
+        console.error('Error initializing chat: ', error);
+      }
+    } else {
+      alert('You need to be logged in to start a chat.');
+    }
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -204,23 +219,29 @@ const BuyerDashboard = () => {
     <DashboardContainer>
       <Sidebar>
         <SidebarButton
-          className={currentSection === "available-gigs" ? "active" : ""}
-          onClick={() => setCurrentSection("available-gigs")}
+          className={currentSection === 'available-gigs' ? 'active' : ''}
+          onClick={() => setCurrentSection('available-gigs')}
         >
           <FaBriefcase className="icon" /> <span>Available Gigs</span>
         </SidebarButton>
         <SidebarButton
-          className={currentSection === "order-history" ? "active" : ""}
-          onClick={() => setCurrentSection("order-history")}
+          className={currentSection === 'order-history' ? 'active' : ''}
+          onClick={() => setCurrentSection('order-history')}
         >
           <FaBox className="icon" /> <span>Order History</span>
+        </SidebarButton>
+        <SidebarButton
+          className={currentSection === 'messages' ? 'active' : ''}
+          onClick={() => setCurrentSection('messages')}
+        >
+          <FaEnvelope className="icon" /> <span>Messages</span>
         </SidebarButton>
       </Sidebar>
       <MainContent>
         <Header>
           <HeaderTitle>Skill-X Buyer Dashboard</HeaderTitle>
         </Header>
-        {currentSection === "available-gigs" && (
+        {currentSection === 'available-gigs' && (
           <>
             <SearchBar
               type="text"
@@ -231,14 +252,19 @@ const BuyerDashboard = () => {
             <SectionTitle>Available Gigs</SectionTitle>
             <GigList>
               {filteredGigs.map((gig) => (
-                <GigCard key={gig.id} gig={gig} />
+                <GigCard key={gig.id} gig={gig} onChatClick={() => handleChatClick(gig)} />
               ))}
             </GigList>
           </>
         )}
-        {currentSection === "order-history" && (
+        {currentSection === 'order-history' && (
           <>
-             <BuyerOrderList/>
+            <BuyerOrderList />
+          </>
+        )}
+        {currentSection === 'messages' && (
+          <>
+            <Chat selectedChat={selectedChat} /> {/* Use Chat component */}
           </>
         )}
       </MainContent>

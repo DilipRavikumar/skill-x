@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./FreelancerDashboard.css"; // Import the external CSS file
-import { useProfile } from "./components/ProfileContext"; // Update path as needed
+import "./FreelancerDashboard.css";
+import { useProfile } from "./components/ProfileContext";
 import {
   getFirestore,
   collection,
@@ -10,6 +10,9 @@ import {
   getDocs,
   deleteDoc,
   doc,
+  onSnapshot,
+  updateDoc,
+  arrayUnion
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import {
@@ -19,23 +22,29 @@ import {
   FaEnvelope,
   FaStar,
   FaCog,
-} from "react-icons/fa"; // Import icons
+} from "react-icons/fa";
 import OrdersList from "./components/OrdersList";
 import FreelancerProfile from "./components/FreelancerProfile";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const FreelancerDashboard = () => {
   const { profile } = useProfile();
   const navigate = useNavigate();
   const [currentSection, setCurrentSection] = useState("my-gigs");
   const [gigs, setGigs] = useState([]);
+  const [messages, setMessages] = useState([]);
+  const [selectedChatId, setSelectedChatId] = useState(null);
+  const [newMessage, setNewMessage] = useState("");
+  const [imageFile, setImageFile] = useState(null);
   const auth = getAuth();
   const firestore = getFirestore();
+  const storage = getStorage();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
-        // Fetch gigs created by the logged-in freelancer
         try {
+          // Fetch gigs created by the logged-in freelancer
           const gigsQuery = query(
             collection(firestore, "gigs"),
             where("freelancerId", "==", user.uid)
@@ -46,11 +55,33 @@ const FreelancerDashboard = () => {
             ...doc.data(),
           }));
           setGigs(fetchedGigs);
+
+          // Set up real-time message listener
+          const messagesQuery = query(
+            collection(firestore, "chats"),
+            where("freelancerId", "==", user.uid)
+          );
+          const unsubscribeMessages = onSnapshot(messagesQuery, (querySnapshot) => {
+            const fetchedMessages = [];
+            querySnapshot.forEach((doc) => {
+              const data = doc.data();
+              fetchedMessages.push({
+                chatId: doc.id,
+                ...data,
+                messages: data.messages || [],
+              });
+            });
+            setMessages(fetchedMessages);
+          });
+
+          return () => unsubscribeMessages();
+
         } catch (error) {
-          console.error("Error fetching gigs: ", error);
+          console.error("Error fetching gigs or messages: ", error);
         }
       } else {
         setGigs([]);
+        setMessages([]);
       }
     });
 
@@ -75,7 +106,47 @@ const FreelancerDashboard = () => {
   };
 
   const handleEditSettings = () => {
-    navigate('/freelancer-form'); // Navigate to the FreelancerForm route
+    navigate('/freelancer-form');
+  };
+
+  const uploadImage = async (file) => {
+    const imageRef = ref(storage, `chat-images/${file.name}`);
+    await uploadBytes(imageRef, file);
+    const imageUrl = await getDownloadURL(imageRef);
+    return imageUrl;
+  };
+
+  const handleSendMessage = async () => {
+    if (selectedChatId && (newMessage.trim() || imageFile)) {
+      try {
+        const messageData = {
+          senderId: auth.currentUser.uid,
+          text: newMessage.trim() || "",
+          imageUrl: imageFile ? await uploadImage(imageFile) : "",
+          timestamp: new Date(),
+        };
+
+        // Update the chat document with the new message
+        await updateDoc(doc(firestore, "chats", selectedChatId), {
+          messages: arrayUnion(messageData),
+        });
+
+        setNewMessage("");
+        setImageFile(null); // Reset the image file
+      } catch (error) {
+        console.error("Error sending message: ", error);
+      }
+    }
+  };
+
+  const handleChatSelection = (chatId) => {
+    setSelectedChatId(chatId);
+  };
+
+  const handleImageChange = (e) => {
+    if (e.target.files[0]) {
+      setImageFile(e.target.files[0]);
+    }
   };
 
   return (
@@ -193,19 +264,38 @@ const FreelancerDashboard = () => {
         )}
 
         {currentSection === "orders" && (
-          <OrdersList /> // Use the OrdersList component here
+          <OrdersList />
         )}
 
         {currentSection === "messages" && (
           <div>
             <h2 className="section-title">Messages</h2>
             <div className="list">
-              {/* Sample Message Items */}
-              <div className="list-item">
-                <h3>Conversation with Client</h3>
-                <p>Last message preview</p>
-              </div>
-              {/* Repeat ListItem for each conversation */}
+              {messages.length > 0 ? (
+                messages.map((chat) => (
+                  <div className="list-item" key={chat.chatId} onClick={() => handleChatSelection(chat.chatId)}>
+                    <h3>Conversation with {chat.buyerId}</h3>
+                    <div className="message-list">
+                      {chat.messages.map((msg, index) => (
+                        <div key={index} className={`message ${msg.senderId === auth.currentUser?.uid ? "sent" : "received"}`}>
+                          {msg.text && <p>{msg.text}</p>}
+                          {msg.imageUrl && <img src={msg.imageUrl} alt="message attachment" className="message-image" />}
+                          <span>{new Date(msg.timestamp.toDate()).toLocaleTimeString()}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <textarea
+                      value={newMessage}
+                      onChange={(e) => setNewMessage(e.target.value)}
+                      placeholder="Type your message here..."
+                    />
+                    <input type="file" accept="image/*" onChange={handleImageChange} />
+                    <button className="button-send" onClick={handleSendMessage}>Send</button>
+                  </div>
+                ))
+              ) : (
+                <div className="list-item">No messages found</div>
+              )}
             </div>
           </div>
         )}
@@ -213,30 +303,19 @@ const FreelancerDashboard = () => {
         {currentSection === "reviews" && (
           <div>
             <h2 className="section-title">Reviews</h2>
-            <div className="list">
-              {/* Sample Review Items */}
-              <div className="list-item">
-                <h3>Review from Client</h3>
-                <p>Rating: ★★★☆☆</p>
-                <p>Review text...</p>
-              </div>
-              {/* Repeat ListItem for each review */}
-            </div>
+            {/* Review functionality can be implemented here */}
           </div>
         )}
 
         {currentSection === "settings" && (
           <div>
             <h2 className="section-title">Account Settings</h2>
-            <div className="profile-card">
-              <h3>Personal Information</h3>
-              <button
-                className="button-freelancer-dashboard"
-                onClick={handleEditSettings}
-              >
-                Edit Settings
-              </button>
-            </div>
+            <button
+              className="button-freelancer-dashboard"
+              onClick={handleEditSettings}
+            >
+              Edit Settings
+            </button>
           </div>
         )}
       </main>

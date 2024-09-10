@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { getFirestore, collection, addDoc, Timestamp } from "firebase/firestore";
+import { getFirestore, collection, addDoc, Timestamp, query, where, getDocs } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 const Card = styled.div`
@@ -45,6 +45,14 @@ const Button = styled.button`
 
   &:hover {
     background: #0056b3;
+  }
+`;
+
+const ChatButton = styled(Button)`
+  background: #28a745;
+
+  &:hover {
+    background: #218838;
   }
 `;
 
@@ -95,6 +103,46 @@ const GigCard = ({ gig }) => {
     }
   };
 
+  const handleStartChat = async () => {
+    const user = auth.currentUser;
+
+    if (user) {
+      try {
+        // Check if a chat room already exists between buyer and freelancer
+        const chatQuery = query(
+          collection(firestore, "chats"),
+          where("buyerId", "==", user.uid),
+          where("freelancerId", "==", gig.freelancerId)
+        );
+
+        const chatSnapshot = await getDocs(chatQuery);
+        let chatId;
+
+        if (chatSnapshot.empty) {
+          // Create a new chat room if one does not exist
+          const chatData = {
+            buyerId: user.uid,
+            freelancerId: gig.freelancerId,
+            gigId: gig.id,
+            createdAt: Timestamp.fromDate(new Date()),
+            messages: []
+          };
+          const chatDoc = await addDoc(collection(firestore, "chats"), chatData);
+          chatId = chatDoc.id;
+        } else {
+          chatId = chatSnapshot.docs[0].id;
+        }
+
+        // Navigate to the chat page with the chat ID
+        navigate(`/chat/${chatId}`);
+      } catch (error) {
+        console.error("Error starting chat: ", error);
+      }
+    } else {
+      alert("You need to be logged in to start a chat.");
+    }
+  };
+
   return (
     <Card>
       {/* Display the thumbnail */}
@@ -102,6 +150,7 @@ const GigCard = ({ gig }) => {
       <Title>{gig.title}</Title>
       <Description>{gig.description}</Description>
       <Button onClick={handlePlaceOrder}>Place Order</Button>
+      <ChatButton onClick={handleStartChat}>Chat with Freelancer</ChatButton>
     </Card>
   );
 };
