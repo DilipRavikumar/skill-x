@@ -4,6 +4,7 @@ import { getFirestore, collection, getDocs, query, where } from "firebase/firest
 import { getAuth } from "firebase/auth";
 import GigCard from "./components/GigCard"; // Assuming you have a GigCard component to display individual gigs
 import { FaBriefcase, FaBox } from "react-icons/fa"; // Import icons for sidebar
+import BuyerOrderList from "./components/BuyerOrderList";
 
 // Styled components
 const DashboardContainer = styled.div`
@@ -237,18 +238,7 @@ const BuyerDashboard = () => {
         )}
         {currentSection === "order-history" && (
           <>
-            <SectionTitle>My Orders</SectionTitle>
-            <OrderList>
-              {orders.map((order) => (
-                <OrderCard key={order.id}>
-                  <OrderCardTitle>{order.gigTitle}</OrderCardTitle>
-                  <OrderCardDetails>Price: ₹{order.price}</OrderCardDetails>
-                  <OrderCardDetails>Status: {order.status}</OrderCardDetails>
-                  <OrderCardDetails>Delivery Date: {order.deliveryDate.toDate().toLocaleDateString()}</OrderCardDetails>
-                  {/* Add more details or actions as needed */}
-                </OrderCard>
-              ))}
-            </OrderList>
+             <BuyerOrderList/>
           </>
         )}
       </MainContent>
