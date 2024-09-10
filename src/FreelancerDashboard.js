@@ -8,6 +8,9 @@ import {
   query,
   where,
   getDocs,
+  updateDoc,
+  deleteDoc,
+  doc,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import {
@@ -57,6 +60,19 @@ const FreelancerDashboard = () => {
 
   const handleSectionChange = (section) => {
     setCurrentSection(section);
+  };
+
+  const handleEditGig = (gigId) => {
+    navigate(`/edit-gig/${gigId}`);
+  };
+
+  const handleDeleteGig = async (gigId) => {
+    try {
+      await deleteDoc(doc(firestore, "gigs", gigId));
+      setGigs(gigs.filter((gig) => gig.id !== gigId));
+    } catch (error) {
+      console.error("Error deleting gig: ", error);
+    }
   };
 
   return (
@@ -139,10 +155,16 @@ const FreelancerDashboard = () => {
                       <p>Category: {gig.category}</p>
                     </div>
                     <div className="gig-actions">
-                      <button className="button-freelancer-dashboard">
+                      <button
+                        className="button-freelancer-dashboard"
+                        onClick={() => handleEditGig(gig.id)}
+                      >
                         Edit
                       </button>
-                      <button className="button-freelancer-dashboard">
+                      <button
+                        className="button-freelancer-dashboard"
+                        onClick={() => handleDeleteGig(gig.id)}
+                      >
                         Delete
                       </button>
                     </div>
@@ -155,9 +177,9 @@ const FreelancerDashboard = () => {
           </div>
         )}
 
-      {currentSection === 'orders' && (
-        <OrdersList /> // Use the OrdersList component here
-      )}
+        {currentSection === 'orders' && (
+          <OrdersList /> // Use the OrdersList component here
+        )}
 
         {currentSection === "messages" && (
           <div>
