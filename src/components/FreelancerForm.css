@@ -1,137 +1,252 @@
-/* FreelancerForm.css */
+/* Container for the form */
 .form-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 30px;
-    max-width: 800px;
-    margin: 50px auto;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .form-field {
-    margin: 15px 0;
-    width: 100%;
-  }
-  
-  .label {
-    display: block;
-    font-size: 1rem;
-    color: #333;
-    margin-bottom: 8px;
-    font-weight: 600;
-  }
-  
-  .input,
-  .text-area,
-  .category-select {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
-  }
-  
-  .input:focus,
-  .text-area:focus,
-  .category-select:focus {
-    border-color: #007bff;
-    outline: none;
-  }
-  
-  .text-area {
-    resize: vertical;
-  }
-  
-  .tag-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  
-  .tag {
-    background-color: #007bff;
-    color: #fff;
-    padding: 6px 12px;
-    border-radius: 5px;
-    font-size: 0.9rem;
-    display: flex;
-    align-items: center;
-  }
-  
-  .remove-tag {
-    margin-left: 8px;
-    cursor: pointer;
-    font-weight: bold;
-  }
-  
-  .submit-button {
-    background: #007bff;
-    color: #fff;
-    padding: 12px 24px;
-    border-radius: 5px;
-    border: none;
-    font-size: 1.2rem;
-    cursor: pointer;
-    margin-top: 20px;
-    transition: background 0.3s ease, transform 0.2s ease;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .submit-button:hover {
-    background: #0056b3;
-    transform: translateY(-2px);
-  }
-  
-  .submit-button:active {
-    transform: translateY(0);
-  }
-  
-  .title {
-    font-size: 2rem;
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  .logo-container {
-    margin: 15px 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .logo {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 50%;
-    margin-bottom: 10px;
-  }
-  
-  .change-button,
-  .remove-button {
-    background: #007bff;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    margin-right: 10px;
-    transition: background 0.3s ease;
-  }
-  
-  .change-button:hover {
-    background: #0056b3;
-  }
-  
-  .remove-button {
-    background: #ff4d4d;
-  }
-  
-  .remove-button:hover {
-    background: #cc0000;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem; /* Increased padding for a more spacious feel */
+  max-width: 700px; /* Increased max-width for better readability */
+  margin: 3rem auto; /* Increased margin for better spacing */
+  background-color: #ffffff; /* Clean white background */
+  border-radius: 1rem; /* Slightly more rounded corners */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* More pronounced shadow */
+  border: 1px solid #e0e0e0; /* Light border for a subtle definition */
+}
+
+/* Form fields */
+.form-field {
+  margin: 1.5rem 0; /* Increased spacing for better separation */
+  width: 100%;
+}
+
+/* Labels */
+.label {
+  display: block;
+  font-size: 1.1rem; /* Slightly larger font-size for labels */
+  color: #333;
+  margin-bottom: 0.75rem; /* Increased spacing below labels */
+  font-weight: 600; /* Bold font-weight for labels */
+}
+
+/* Input fields */
+.input,
+.textarea {
+  width: 100%;
+  padding: 1rem; /* Increased padding for a more spacious feel */
+  border: 1px solid #ccc;
+  border-radius: 0.625rem; /* More rounded corners */
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input:focus,
+.textarea:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5); /* Slightly stronger glow effect */
+  outline: none;
+}
+
+/* Textarea */
+.textarea {
+  resize: vertical;
+  min-height: 8rem; /* Increased minimum height for the textarea */
+}
+
+/* Tag list */
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem; /* Increased gap between tags */
+  padding: 0.625rem; /* Padding around the tag list for spacing */
+}
+
+/* Tag */
+.tag {
+  background-color: #007bff; /* Primary color for tags */
+  color: #fff; /* Text color */
+  padding: 0.5rem 1rem; /* Padding inside the tag */
+  border-radius: 1.25rem; /* Rounded corners for tags */
+  font-size: 0.9rem; /* Slightly smaller font size */
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+}
+
+/* Tag on hover */
+.tag:hover {
+  background-color: #0056b3; /* Darker shade on hover */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+}
+
+/* Remove tag */
+.remove-tag {
+  margin-left: 0.75rem;
+  cursor: pointer;
+  font-weight: 700; /* Bolder font-weight */
+  color: #ffffff; /* Color for remove tag icon */
+  transition: color 0.3s ease; /* Smooth transition for color change */
+}
+
+/* Remove tag on hover */
+.remove-tag:hover {
+  color: #cc0000; /* Darker color on hover */
+}
+
+/* Title */
+.title {
+  font-size: 2rem; /* Larger title size for emphasis */
+  color: #333;
+  margin-bottom: 1.875rem; /* Increased margin for better spacing */
+  text-align: center; /* Centered title */
+  font-weight: 700; /* Bold title */
+}
+
+/* Logo container */
+.logo-container {
+  margin: 1.5rem 0; /* Increased margin for better spacing */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Logo image */
+.logo {
+  width: 140px; /* Larger logo */
+  height: 140px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 5px solid #000000; /* Thicker black border */
+  margin-bottom: 1.25rem;
+}
+
+/* Change and Remove button */
+.change-button,
+.remove-button {
+  background: #007bff;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.625rem;
+  border: none;
+  cursor: pointer;
+  margin-right: 0.75rem; /* Increased margin between buttons */
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.change-button:hover,
+.remove-button:hover {
+  background: #0056b3;
+  transform: translateY(-2px);
+}
+
+.change-button:active,
+.remove-button:active {
+  transform: translateY(0);
+}
+
+.remove-button {
+  background: #ff4d4d; /* Different color for remove button */
+}
+
+.remove-button:hover {
+  background: #cc0000;
+}
+
+/* Hidden file input */
+.file-input {
+  display: none;
+}
+
+/* Submit button - Freelancer Profile */
+.submit-button-freelancer-profile {
+  font-family: inherit;
+  width: 110px;
+  margin-left: 100px;
+  font-size: 1rem;
+  background: #212121;
+  color: white;
+  fill: rgb(155, 153, 153);
+  padding: 0.7em 1em;
+  padding-left: 0.9em;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  border: none;
+  border-radius: 0.9375rem;
+  font-weight: 1000;
+}
+
+.submit-button-freelancer-profile span {
+  display: block;
+  margin-left: 0.3em;
+  transition: all 0.3s ease-in-out;
+}
+
+.submit-button-freelancer-profile svg {
+  display: block;
+  transform-origin: center center;
+  transition: transform 0.3s ease-in-out;
+}
+
+.submit-button-freelancer-profile:hover {
+  background: #000;
+}
+
+.submit-button-freelancer-profile:hover .svg-wrapper {
+  transform: scale(1.25);
+  transition: 0.5s linear;
+}
+
+.submit-button-freelancer-profile:hover svg {
+  transform: translateX(1.2em) scale(1.1);
+  fill: #fff;
+}
+
+.submit-button-freelancer-profile:hover span {
+  opacity: 0;
+  transition: 0.5s linear;
+}
+
+.submit-button-freelancer-profile:active {
+  transform: scale(0.95);
+}
+
+/* Upload button */
+.upload-button {
+  border: none;
+  display: flex;
+  padding: 0.75rem 1.5rem;
+  background-color: #007bff;
+  color: #ffffff;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+  text-transform: uppercase;
+  vertical-align: middle;
+  align-items: center;
+  border-radius: 0.5rem;
+  user-select: none;
+  gap: 0.75rem;
+  box-shadow:
+    0 4px 6px -1px #488aec31,
+    0 2px 4px -1px #488aec17;
+  transition: all 0.6s ease;
+}
+
+.upload-button:hover {
+  box-shadow:
+    0 10px 15px -3px #488aec4f,
+    0 4px 6px -2px #488aec17;
+}
+
+.upload-button:focus,
+.upload-button:active {
+  opacity: 0.85;
+  box-shadow: none;
+}
+
+.upload-button svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}

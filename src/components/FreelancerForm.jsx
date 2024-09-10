@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
 import { useProfile } from "./ProfileContext";
 import {
   getFirestore,
@@ -13,154 +12,7 @@ import {
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
-
-const FormContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 30px;
-  max-width: 800px;
-  margin: 50px auto;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-`;
-
-const FormField = styled.div`
-  margin: 15px 0;
-  width: 100%;
-`;
-
-const Label = styled.label`
-  display: block;
-  font-size: 1rem;
-  color: #333;
-  margin-bottom: 8px;
-  font-weight: 600;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 1rem;
-  transition: border-color 0.3s ease;
-
-  &:focus {
-    border-color: #007bff;
-    outline: none;
-  }
-`;
-
-const TextArea = styled.textarea`
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 1rem;
-  resize: vertical;
-  transition: border-color 0.3s ease;
-
-  &:focus {
-    border-color: #007bff;
-    outline: none;
-  }
-`;
-
-const TagList = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-`;
-
-const Tag = styled.div`
-  background-color: #007bff;
-  color: #fff;
-  padding: 6px 12px;
-  border-radius: 5px;
-  font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-`;
-
-const RemoveTag = styled.span`
-  margin-left: 8px;
-  cursor: pointer;
-  font-weight: bold;
-`;
-
-const SubmitButton = styled.button`
-  background: #007bff;
-  color: #fff;
-  padding: 12px 24px;
-  border-radius: 5px;
-  border: none;
-  font-size: 1.2rem;
-  cursor: pointer;
-  margin-top: 20px;
-  transition: background 0.3s ease, transform 0.2s ease;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-
-  &:hover {
-    background: #0056b3;
-    transform: translateY(-2px);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-`;
-
-const Title = styled.h1`
-  font-size: 2rem;
-  color: #333;
-  margin-bottom: 20px;
-`;
-
-const LogoContainer = styled.div`
-  margin: 15px 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const Logo = styled.img`
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 50%;
-  margin-bottom: 10px;
-`;
-
-const ChangeButton = styled.button`
-  background: #007bff;
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-  margin-right: 10px;
-  transition: background 0.3s ease;
-
-  &:hover {
-    background: #0056b3;
-  }
-`;
-
-const RemoveButton = styled.button`
-  background: #ff4d4d;
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-  transition: background 0.3s ease;
-
-  &:hover {
-    background: #cc0000;
-  }
-`;
+import "./FreelancerForm.css"; // Import the CSS file
 
 const FreelancerForm = () => {
   const { profile, setProfile } = useProfile();
@@ -175,7 +27,7 @@ const FreelancerForm = () => {
   const [logoFile, setLogoFile] = useState(null);
   const auth = getAuth();
   const firestore = getFirestore();
-  const storage = getStorage();  // Firebase Storage
+  const storage = getStorage(); // Firebase Storage
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -288,17 +140,21 @@ const FreelancerForm = () => {
         profileImageUrl = await getDownloadURL(logoRef);
       }
 
-      // Save the form data to Firestore with the profileImage URL
+      // Update Firestore with form values
       await setDoc(
         doc(firestore, "users", user.uid),
         {
           ...formValues,
-          profileImage: profileImageUrl || null,
+          profileImage: profileImageUrl,
         },
         { merge: true }
       );
 
-      setProfile({ ...formValues, profileImage: profileImageUrl });
+      setProfile({
+        ...formValues,
+        profileImage: profileImageUrl,
+      });
+
       navigate("/profile");
     } catch (error) {
       console.error("Error updating profile: ", error);
@@ -306,70 +162,124 @@ const FreelancerForm = () => {
   };
 
   return (
-    <FormContainer>
-      <Title>Freelancer Profile</Title>
-      <LogoContainer>
+    <div className="form-container">
+      <h2 className="title">Update Profile</h2>
+      <div className="logo-container">
         {logo ? (
           <>
-            <Logo src={logo} alt="Profile Logo" />
-            <ChangeButton>
-              <label htmlFor="logo-upload">Change Logo</label>
-              <input
-                type="file"
-                id="logo-upload"
-                style={{ display: "none" }}
-                accept="image/*"
-                onChange={handleLogoChange}
-              />
-            </ChangeButton>
-            <RemoveButton onClick={handleRemoveLogo}>Remove Logo</RemoveButton>
+            <img src={logo} alt="Profile Logo" className="logo" />
+            <button
+              className="change-button"
+              onClick={() => document.getElementById("logoInput").click()}
+            >
+              Change Logo
+            </button>
+            <button className="remove-button" onClick={handleRemoveLogo}>
+              Remove Logo
+            </button>
           </>
         ) : (
-          <label htmlFor="logo-upload">
-            <ChangeButton>Add Logo</ChangeButton>
-            <input
-              type="file"
-              id="logo-upload"
-              style={{ display: "none" }}
-              accept="image/*"
-              onChange={handleLogoChange}
-            />
-          </label>
+          <>
+            <button
+              className="upload-button"
+              onClick={() => document.getElementById("logoInput").click()}
+            >
+              <svg
+                aria-hidden="true"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-width="2"
+                  stroke="#fffffff"
+                  d="M13.5 3H12H8C6.34315 3 5 4.34315 5 6V18C5 19.6569 6.34315 21 8 21H11M13.5 3L19 8.625M13.5 3V7.625C13.5 8.17728 13.9477 8.625 14.5 8.625H19M19 8.625V11.8125"
+                  stroke-linejoin="round"
+                  stroke-linecap="round"
+                ></path>
+                <path
+                  stroke-linejoin="round"
+                  stroke-linecap="round"
+                  stroke-width="2"
+                  stroke="#fffffff"
+                  d="M17 15V18M17 21V18M17 18H14M17 18H20"
+                ></path>
+              </svg>
+              Upload Logo
+            </button>
+          </>
         )}
-      </LogoContainer>
+        <input
+          type="file"
+          id="logoInput"
+          className="file-input"
+          accept="image/*"
+          onChange={handleLogoChange}
+        />
+      </div>
       <form onSubmit={handleSubmit}>
-        <FormField>
-          <Label>Bio</Label>
-          <TextArea
+        <div className="form-field">
+          <label htmlFor="bio" className="label">
+            Bio
+          </label>
+          <textarea
+            id="bio"
             name="bio"
             value={formValues.bio}
             onChange={handleInputChange}
-            rows={4}
+            className="textarea"
+            rows="4"
           />
-        </FormField>
-        <FormField>
-          <Label>Skills</Label>
-          <Input
+        </div>
+        <div className="form-field">
+          <label htmlFor="skills" className="label">
+            Skills
+          </label>
+          <input
+            id="skills"
+            name="skills"
             type="text"
             value={inputValue}
             onChange={handleSkillInputChange}
-            onKeyPress={handleSkillKeyPress}
-            placeholder="Press Enter to add skill"
+            onKeyDown={handleSkillKeyPress}
+            placeholder="Press Enter to add skills"
+            className="input"
           />
-          <TagList>
+          <div className="tag-list">
             {formValues.skills.map((skill, index) => (
-              <Tag key={index}>
-                {skill}{" "}
-                <RemoveTag onClick={() => handleRemoveSkill(skill)}>x</RemoveTag>
-              </Tag>
+              <div key={index} className="tag">
+                {skill}
+                <span
+                  className="remove-tag"
+                  onClick={() => handleRemoveSkill(skill)}
+                >
+                  x
+                </span>
+              </div>
             ))}
-          </TagList>
-        </FormField>
-        <SubmitButton type="submit">Save Changes</SubmitButton>
+          </div>
+        </div>
+        <button type="submit" className="submit-button-freelancer-profile">
+          <div class="svg-wrapper-1">
+            <div class="svg-wrapper">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="30"
+                height="30"
+                class="icon"
+              >
+                <path d="M22,15.04C22,17.23 20.24,19 18.07,19H5.93C3.76,19 2,17.23 2,15.04C2,13.07 3.43,11.44 5.31,11.14C5.28,11 5.27,10.86 5.27,10.71C5.27,9.33 6.38,8.2 7.76,8.2C8.37,8.2 8.94,8.43 9.37,8.8C10.14,7.05 11.13,5.44 13.91,5.44C17.28,5.44 18.87,8.06 18.87,10.83C18.87,10.94 18.87,11.06 18.86,11.17C20.65,11.54 22,13.13 22,15.04Z"></path>
+              </svg>
+            </div>
+          </div>
+          <span>Save</span>
+        </button>
       </form>
-    </FormContainer>
+    </div>
   );
 };
 
 export default FreelancerForm;
-
