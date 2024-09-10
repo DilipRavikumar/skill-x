@@ -1,97 +1,140 @@
 /* FreelancerProfile.css */
 
 .profile-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    max-width: 100%;
-    margin: auto;
-    min-height: 100vh; /* Ensures the container takes up at least the full height of the viewport */
-  }
-  
-  .profile-header {
-    display: flex;
-    flex-direction: column; /* Stack items vertically */
-    align-items: center; /* Center horizontally */
-    margin-bottom: 20px;
-    width: 100%;
-  }
-  
-  .profile-image {
-    border-radius: 50%;
-    width: 120px; /* Adjust the size as needed */
-    height: 120px; /* Adjust the size as needed */
-    object-fit: cover;
-    margin-bottom: 10px; /* Space below the profile image */
-  }
-  
-  .profile-name {
-    font-size: 1.8rem;
-    font-weight: bold;
-    margin: 0; /* Remove default margin */
-  }
-  
-  .profile-bio {
-    font-size: 1rem;
-    color: #666; /* Slightly lighter color for the bio */
-    margin: 10px 0; /* Space below the bio */
-    text-align: center; /* Center-align the bio text */
-  }
-  
-  .profile-content {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between; /* Distribute space between items */
-    max-width: 800px;
-    width: 100%;
-  }
-  
-  .profile-details {
-    flex: 1;
-    margin-right: 50px; /* Increase space between the details and the illustration image */
-    display: flex;
-    flex-direction: column; /* Stack details vertically */
-    align-items: flex-start; /* Align items to the left */
-  }
-  
-  .profile-detail {
-    margin: 15px 0; /* Increased margin for better spacing */
-  }
-  
-  .label {
-    font-size: 1.2rem;
-    color: #333;
-    margin-bottom: 8px; /* Reduced margin for label */
-  }
-  
-  .edit-button {
-    margin-top: 20px;
-    padding: 12px 24px; /* Increased padding for better button size */
-    font-size: 1rem;
-    color: #fff;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    display: block;
-    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition for hover effects */
-  }
-  
-  .edit-button:hover {
-    background-color: #0056b3;
-    transform: scale(1.05); /* Slight scale effect on hover */
-  }
-  
-  .illustration-container {
-    display: flex;
-    align-items: flex-start; /* Aligns the illustration image to the top */
-    transform: translateX(140px); /* Move the illustration image further to the right */
-    flex-shrink: 0; /* Prevent the illustration from shrinking */
-  }
-  
-  .illustration-image {
-    width: 350px; /* Adjust the size as needed */
-    height: auto; /* Maintains the aspect ratio */
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  max-width: 700px;
+  margin: 0 auto;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profile-image {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #000000; /* Black border */
+}
+
+.profile-name {
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 10px;
+  color: #000; /* Black color */
+}
+
+.profile-bio {
+  font-size: 16px;
+  color: #333; /* Standard text color */
+  margin-top: 5px;
+}
+
+.profile-content {
+  width: 100%;
+  position: relative; /* Ensure child elements are positioned relative to this container */
+}
+
+.profile-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Adjust the gap between details */
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  position: relative; /* Ensure the edit button is positioned relative to this container */
+}
+
+.profile-detail {
+  flex: 1 1 calc(50% - 20px); /* Adjust the width of each detail */
+  display: flex;
+  flex-direction: column; /* Arrange label and value vertically */
+  justify-content: flex-start;
+  margin-bottom: 15px;
+}
+
+.label {
+  font-size: 16px;
+  font-weight: bold;
+  color: #000; /* Black color */
+  margin-bottom: 2px; /* Space between label and value */
+}
+
+.profile-detail p {
+  font-size: 16px;
+  color: #333; /* Standard text color */
+}
+
+/* Edit Button Styles */
+.edit-button {
+  position: absolute;
+  top: -50px; /* Adjust as needed */
+  right: 20px; /* Adjust as needed */
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgb(20, 20, 20);
+  border: none;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.164);
+  cursor: pointer;
+  transition-duration: 0.3s;
+  overflow: hidden;
+  text-decoration: none !important;
+}
+
+.edit-svgIcon {
+  width: 17px;
+  transition-duration: 0.3s;
+}
+
+.edit-svgIcon path {
+  fill: white;
+}
+
+.edit-button:hover {
+  width: 120px;
+  border-radius: 50px;
+  background-color: rgb(1, 11, 231);
+  align-items: center;
+
+}
+
+.edit-button:hover .edit-svgIcon {
+  width: 20px;
+  transition-duration: 0.3s;
+  transform: translateY(60%);
+  -webkit-transform: rotate(360deg);
+  -moz-transform: rotate(360deg);
+  -o-transform: rotate(360deg);
+  -ms-transform: rotate(360deg);
+  transform: rotate(360deg);
+}
+
+.edit-button::before {
+  display: none;
+  content: "Edit";
+  color: white;
+  transition-duration: 0.3s;
+  font-size: 2px;
+}
+
+.edit-button:hover::before {
+  display: block;
+  padding-right: 10px;
+  font-size: 13px;
+  opacity: 1;
+  transform: translateY(0px);
+}
