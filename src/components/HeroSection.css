@@ -276,7 +276,9 @@
         margin-top: 20px; /* Space above the search bar */
         margin-left: 6px;
     }
-
+    .search-icon-container {
+        margin-right: -130px; /* Adjust for mobile */
+    }
     .search-bar1 {
         width: 90%; /* Full width with some padding */
         max-width: 280px; /* Control max-width */

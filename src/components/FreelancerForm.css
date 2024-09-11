@@ -250,3 +250,55 @@
   width: 1.25rem;
   height: 1.25rem;
 }
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .form-container {
+    padding: 1.5rem; /* Reduced padding for smaller screens */
+    margin: 2rem auto; /* Reduced margin for smaller screens */
+    max-width: 90%; /* Allow form to take more width on smaller screens */
+  }
+
+  .form-field {
+    margin: 1rem 0; /* Reduced margin for form fields */
+  }
+
+  .logo {
+    width: 120px; /* Smaller logo for smaller screens */
+    height: 120px;
+  }
+
+  .submit-button-freelancer-profile {
+    width: auto; /* Allow button to adapt to text width */
+    margin-left: 0; /* Remove left margin on smaller screens */
+  }
+
+  .upload-button {
+    font-size: 0.65rem; /* Smaller font size for upload button */
+  }
+}
+
+@media (max-width: 480px) {
+  .form-container {
+    padding: 1rem; /* Further reduced padding for very small screens */
+    margin: 1.5rem auto; /* Further reduced margin for very small screens */
+    max-width: 100%; /* Full width for very small screens */
+  }
+
+  .title {
+    font-size: 1.5rem; /* Smaller font size for title on very small screens */
+  }
+
+  .logo {
+    width: 100px; /* Even smaller logo */
+    height: 100px;
+  }
+
+  .submit-button-freelancer-profile {
+    font-size: 0.9rem; /* Smaller font size for button */
+  }
+
+  .upload-button {
+    font-size: 0.6rem; /* Even smaller font size for upload button */
+  }
+}

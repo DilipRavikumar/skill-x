@@ -409,3 +409,221 @@ button:hover {
   
 
 
+@media (max-width: 1200px) {
+  /* For tablets and smaller screens */
+  .dashboard-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 200px; /* Reduce width of sidebar */
+    padding: 10px;
+  }
+
+  .main-content {
+    margin-left: 220px; /* Adjust margin to fit sidebar */
+  }
+
+  .profile-card,
+  .gig-card,
+  .list-item,
+  .orders-item {
+    width: 90%; /* Adjust width of cards */
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .button-container {
+    margin-left: 0; /* Center buttons on smaller screens */
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  /* For mobile screens */
+  .sidebar {
+    width: 100%;
+    height: auto; /* Allow sidebar to adjust its height automatically */
+    top: 0; /* Position sidebar at the top */
+    left: 0;
+    bottom: auto; /* Remove fixed positioning from the bottom */
+    padding: 15px; /* Adjust padding */
+    box-shadow: none; /* Remove shadow */
+    display: none; /* Hide sidebar on small screens */
+  }
+
+  .main-content {
+    margin-left: 0; /* Remove margin */
+  }
+
+  .header {
+    padding: 10px;
+    font-size: 1.2rem; /* Adjust font size for header */
+  }
+
+  .profile-card,
+  .gig-card,
+  .list-item,
+  .orders-item {
+    width: 100%; /* Full width on mobile */
+    margin: 10px 0; /* Adjust margins */
+  }
+
+  .button-container {
+    margin-left: 0; /* Center buttons */
+    justify-content: center;
+  }
+
+  .sidebar-button {
+    font-size: 1rem; /* Adjust font size */
+    padding: 8px; /* Adjust padding */
+  }
+
+  .button-freelancer-dashboard,
+  .button1-freelancer-dashboard {
+    font-size: 12px; /* Adjust font size */
+    padding: 0.6em 1.2em; /* Adjust padding */
+  }
+
+  .message-list {
+    max-height: 200px; /* Adjust max height */
+  }
+}
+
+@media (max-width: 480px) {
+  /* For very small screens */
+  .header {
+    padding: 5px;
+    font-size: 1rem; /* Adjust font size */
+  }
+
+  .sidebar {
+    font-size: 0.9rem; /* Adjust font size */
+    display: block; /* Show sidebar as a block element */
+  }
+
+  .sidebar-button {
+    font-size: 0.9rem; /* Adjust font size */
+    padding: 6px; /* Adjust padding */
+  }
+
+  .button-freelancer-dashboard,
+  .button1-freelancer-dashboard {
+    font-size: 10px; /* Adjust font size */
+    padding: 0.5em 1em; /* Adjust padding */
+  }
+
+  .profile-card img {
+    width: 100px; /* Adjust image size */
+    height: 100px;
+  }
+
+  .section-title {
+    font-size: 1.5rem; /* Adjust font size */
+  }
+  
+  .message-form textarea {
+    height: 50px; /* Adjust height */
+  }
+
+  .chat-messages {
+    padding: 10px; /* Adjust padding */
+  }
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  background: #ffffff;
+  color: #343a40;
+  padding: 20px;
+  position: fixed;
+  top: 60px; /* Adjust this to position below the header */
+  bottom: 0;
+  left: 0;
+  overflow-y: auto;
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+  transition: width 0.3s ease; /* Smooth transition for width change */
+}
+
+
+.sidebar-content {
+  font-size: 1.5rem; /* Increased font size for better readability */
+}
+
+.sidebar-button {
+  background: transparent;
+  color: #6c757d;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  text-align: left; /* Align text to the left */
+}
+
+.sidebar-button .icon {
+  font-size: 1.5rem; /* Adjust icon size */
+}
+
+.sidebar-button:hover {
+  background: #e9ecef;
+  color: rgb(1, 11, 231);
+}
+
+.sidebar-button.active {
+  background: #007bff; /* Active background color */
+  color: #ffffff; /* Text color when active */
+}
+
+.sidebar-label {
+  display: inline; /* Show label by default */
+}
+
+@media (max-width: 1200px) {
+  .sidebar {
+    width: 200px; /* Reduce width of sidebar */
+  }
+
+  .sidebar-button {
+    justify-content: center; /* Center content */
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 60px; /* Narrow sidebar */
+    padding: 10px;
+    top: 0; /* Position sidebar at the top */
+    bottom: auto; /* Remove fixed positioning from the bottom */
+    display: block; /* Ensure sidebar is displayed */
+  }
+
+  .sidebar-button {
+    justify-content: center; /* Center content */
+    padding: 10px; /* Adjust padding */
+    font-size: 1rem; /* Adjust font size */
+  }
+
+  .sidebar-label {
+    display: none; /* Hide text labels */
+  }
+
+  .sidebar-button .icon {
+    font-size: 1.5rem; /* Adjust icon size */
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar {
+    width: 50px; /* Further narrow sidebar */
+  }
+
+  .sidebar-button .icon {
+    font-size: 1.2rem; /* Adjust icon size */
+  }
+}

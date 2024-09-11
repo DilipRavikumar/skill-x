@@ -97,6 +97,9 @@
 
 @media (max-width: 480px) {
   .service-card {
-    width: calc(100% - 20px); /* Adjust for very small screens */
+    width: calc(100% - 10px); /* Adjust for very small screens */
+
+
+    
   }
 }

@@ -199,3 +199,40 @@ form {
   color: rgb(1, 11, 231);
   text-decoration: underline;
 }
+
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) {
+  .register-container {
+    flex-direction: column;
+  }
+
+  .register-left {
+    display: none; /* Hide left side on mobile */
+  }
+
+  .register-right {
+    width: 100%;
+    border-radius: 0; /* Remove border-radius for full-width on mobile */
+  }
+
+  .register-right h2 {
+    margin-right: 0; /* Adjust margin */
+  }
+
+  .register-right p {
+    margin-right: 0; /* Adjust margin */
+  }
+
+  .google-register {
+    width: 100%; /* Full-width Google button on mobile */
+  }
+
+  .submit-button {
+    width: 100%; /* Full-width submit button on mobile */
+  }
+
+  .login-link {
+    margin-left: 0; /* Adjust margin */
+    margin-bottom: 20px; /* Adjust margin */
+  }
+}

@@ -232,3 +232,35 @@ form {
 .register-prompt a:hover {
   text-decoration: underline;
 }
+
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) {
+  .auth-container {
+    flex-direction: column;
+  }
+
+  .auth-left {
+    display: none; /* Hide left side on mobile */
+  }
+
+  .auth-right {
+    width: 100%;
+    border-radius: 0; /* Remove border-radius for full-width on mobile */
+  }
+
+  .auth-right h2 {
+    margin-right: 0; /* Adjust margin */
+  }
+
+  .auth-right p {
+    margin-right: 0; /* Adjust margin */
+  }
+
+  .google-button {
+    width: 100%; /* Full-width Google button on mobile */
+  }
+
+  .auth-button {
+    width: 100%; /* Full-width auth button on mobile */
+  }
+}

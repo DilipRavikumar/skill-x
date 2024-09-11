@@ -306,7 +306,6 @@ const FreelancerDashboard = () => {
             {/* Review functionality can be implemented here */}
           </div>
         )}
-
         {currentSection === "settings" && (
           <div>
             <h2 className="section-title">Account Settings</h2>
