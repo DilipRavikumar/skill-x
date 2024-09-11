@@ -425,7 +425,7 @@
         width: 100%; /* Ensure full width */
     }
     .search-icon-container {
-        margin-right: -120px; /* Adjust for mobile */
+        margin-right: 0px; /* Adjust for mobile */
     }
   
     .search-bar1 {
