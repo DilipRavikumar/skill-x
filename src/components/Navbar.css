@@ -32,6 +32,7 @@
   background: rgb(1, 11, 231); /* Active background color */
   border-color: rgb(1, 11, 231); /* Active border color */
 }
+
 .search-container {
   position: relative;
   display: flex;
@@ -69,6 +70,7 @@
   font-size: 18px;
   pointer-events: none; /* Prevent interaction with the icon */
 }
+
 .btn-18,
 .btn-18 * {
   border: 0 solid;
@@ -102,4 +104,28 @@
 .btn-18:active {
   background: rgb(1, 11, 231); /* Active background color */
   border-color: rgb(1, 11, 231); /* Active border color */
+}
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+  .btn-17,
+  .btn-18 {
+
+    margin-left: -40px; /* Remove margin-left on mobile */
+  }
+
+  .btn-17 {
+    order: 1; /* Move to the left */
+  }
+
+  .btn-18 {
+    order: 2; /* Position after .btn-17 */
+  }
+
+  .auth-buttons {
+    display: flex;
+    align-items: center;
+    width: 100%; /* Full width */
+    justify-content: space-between; /* Space out buttons */
+  }
 }
