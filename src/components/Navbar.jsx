@@ -97,7 +97,7 @@ const Navbar = () => {
     flex: '1',
     margin: '0 auto', // Center the logo horizontally
     textAlign: isMobile ? 'center' : 'left',
-    marginLeft: isMobile ? '100px' : '0',
+    marginLeft: isMobile ? '90px' : '0',
     whiteSpace: 'nowrap', // Prevent text from wrapping
     textOverflow: 'ellipsis', // Add ellipsis if text overflows
     width: isMobile ? '100%' : 'auto',
@@ -105,9 +105,9 @@ const Navbar = () => {
 
   const searchContainerStyle = {
     position: 'relative',
-    display: 'flex',
+    display: isMobile ? 'none' : 'flex', // Hide on mobile
     alignItems: 'center',
-    visibility: showSearch ? 'visible' : 'hidden',
+    visibility: showSearch && !isMobile ? 'visible' : 'hidden',
     width: isMobile ? '100%' : 'auto',
     marginBottom: isMobile ? '10px' : '0',
   };
@@ -167,12 +167,7 @@ const Navbar = () => {
     justifyContent: 'space-between',
   };
 
-  const profileImgStyle = {
-    width: '40px',
-    height: '40px',
-    borderRadius: '50%',
-    cursor: 'pointer',
-  };
+
 
   const menuToggleStyle = {
     display: isMobile ? 'block' : 'none',

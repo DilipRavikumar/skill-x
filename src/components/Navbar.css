@@ -110,8 +110,7 @@
 @media (max-width: 768px) {
   .btn-17,
   .btn-18 {
-
-    margin-left: -40px; /* Remove margin-left on mobile */
+    margin-left: 40px; /* Remove margin-left on mobile */
   }
 
   .btn-17 {
@@ -127,5 +126,9 @@
     align-items: center;
     width: 100%; /* Full width */
     justify-content: space-between; /* Space out buttons */
+  }
+
+  .search-container {
+    display: none !important; /* Ensure search container is hidden on mobile */
   }
 }
