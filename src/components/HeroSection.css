@@ -1,0 +1,435 @@
+/* HeroSection.css */
+
+.hero-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgb(244, 244, 244);
+    color: #000;
+    text-align: left;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    animation: fadeIn 1.5s ease-out;
+  }
+  
+  .text-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: left;
+    position: relative;
+    z-index: 2;
+    animation: slideInLeft 1.5s ease-out;
+  }
+  
+  .text-container h1 {
+    margin-left: 80px;
+    font-size: 4rem;
+    font-weight: bold;
+    line-height: 1.2;
+    animation: zoomIn 1.5s ease-out;
+  }
+  
+  .text-container p {
+    font-size: 1.5rem;
+    margin-left: 80px;
+    margin-top: 20px;
+    animation: zoomIn 1.5s ease-out;
+  }
+  
+  .button-container {
+    margin-left: 80px;
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+    justify-content: flex-start;
+    position: relative;
+    z-index: 3;
+  }
+  
+  .button {
+    padding: 0.8em 1.6em;
+    border: none;
+    border-radius: 100px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: rgb(1, 11, 231);
+    transition: all 1000ms;
+    font-size: 14px;
+    position: relative;
+    overflow: hidden;
+    outline: 2px solid rgb(1, 11, 231);
+  }
+  
+  .button:hover {
+    color: #ffffff;
+    transform: scale(1.1);
+    outline: 2px solid rgb(1, 11, 231);
+    box-shadow: 4px 5px 17px -4px #268391;
+  }
+  
+  .button::before {
+    content: "";
+    position: absolute;
+    left: -50px;
+    top: 0;
+    width: 0;
+    height: 100%;
+    background-color: rgb(1, 11, 231);
+    transform: skewX(45deg);
+    z-index: -1;
+    transition: width 1000ms;
+  }
+  
+  .button:hover::before {
+    width: 250%;
+  }
+  
+  .search-container1 {
+    position: relative; /* Ensure the container positions its children absolutely */
+    margin-left: 80px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    animation: slideInRight 1.5s ease-out;
+  }
+  
+  .search-bar1 {
+    background-color: rgb(244, 244, 244);
+    width: 300px;
+    padding: 0.8em 3em 0.8em 1em; /* Add extra padding on the right to make space for the icon */
+    border: 2px solid rgb(1, 11, 231);
+    border-radius: 50px;
+    font-size: 14px;
+    outline: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative; /* Position relative for absolute positioning of the icon */
+  }
+  
+  .search-icon-container {
+    position: absolute;
+    right: 110px; /* Position icon 15px from the right edge */
+    top: 50%;
+    transform: translateY(-50%); /* Center icon vertically */
+    cursor: pointer;
+    color: rgb(1, 11, 231);
+    font-size: 18px;
+    transition: transform 0.3s;
+  }
+  
+  .search-icon-container:hover {
+    transform: translateY(-50%) scale(1.2);
+  }
+  
+  
+  .image-container {
+    margin-left: 450px;
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+  }
+  
+  .main-image {
+    margin-right: 200px;
+    margin-top: 50px;
+    width: 500px;
+    height: 500px;
+    z-index: 5;
+    animation: zoomIn 1.5s ease-out;
+  }
+  
+  .element-image {
+    position: absolute;
+    animation: fadeIn 1.5s ease-out, rotate 20s linear infinite;
+  }
+  
+  .crush {
+    top: 10%;
+    left: -200px;
+    width: 100px;
+  }
+  
+  .cube {
+    top: -20px;
+    right: 10px;
+    width: 100px;
+  }
+  
+  .spiral {
+    bottom: -30px;
+    right: 120px;
+    width: 100px;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideInLeft {
+    from {
+      transform: translateX(-50px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideInRight {
+    from {
+      transform: translateX(50px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes zoomIn {
+    from {
+      transform: scale(0.9);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Media Queries for Responsiveness */
+ /* Mobile Styles */
+/* General styles for all devices */
+
+  
+  /* For tablets and small devices */
+  @media (max-width: 1024px) {
+    .text-container h1 {
+      font-size: 2.2rem;
+    }
+  
+    .text-container p {
+      font-size: 1.4rem;
+    }
+  
+    .button {
+      font-size: 14px;
+    }
+  
+    .search-bar1 {
+      max-width: 400px;
+    }
+  }
+  
+ /* For mobile devices (iPhone 12 Pro and similar) */
+
+@media (max-width: 480px) {
+    .text-container {
+        margin-top: -40px; /* Move content up for better fit */
+        padding: 10px; /* Ensure proper padding */
+    }
+  
+    .text-container h1 {
+        font-size: 1.8rem; /* Adjust font size for very small devices */
+    }
+  
+    .text-container p {
+        font-size: 0.9rem; /* Adjust font size for very small devices */
+        margin: 0 auto; /* Center the paragraph horizontally */
+        width: 100%; /* Ensure paragraph takes full width */
+    }
+  
+    .button {
+        padding: 0.4em 0.8em; /* Adjust padding for very small devices */
+        font-size: 12px; /* Adjust font size for very small devices */
+        margin-left: 20px; /* Space between buttons */
+    }
+  
+    .search-container1 {
+        width: 100%; /* Full width for very small devices */
+        display: flex; /* Use flex to center search bar */
+        justify-content: center; /* Center search bar horizontally */
+        margin-top: 20px; /* Space above the search bar */
+        margin-left: 6px;
+    }
+
+    .search-bar1 {
+        width: 90%; /* Full width with some padding */
+        max-width: 280px; /* Control max-width */
+    }
+}
+
+@media (max-width: 768px) {
+    .text-container {
+        align-items: center; /* Center items horizontally */
+        text-align: center; /* Center text */
+        margin-top: -60px; /* Move content up for better fit */
+        padding: 10px; /* Adjust padding for mobile */
+        width: 100%; /* Ensure container takes full width */
+    }
+  
+    .text-container h1 {
+        font-size: 2rem; /* Adjust font size */
+        margin: 0; /* Remove margin for alignment */
+    }
+  
+    .text-container p {
+        font-size: 1rem; /* Adjust font size */
+        margin-top: 10px; /* Space between heading and paragraph */
+        text-align: center; /* Center paragraph */
+        max-width: 600px; /* Optional: Limit width for readability */
+        margin-left: auto; /* Center horizontally */
+        margin-right: auto; /* Center horizontally */
+        width: 100%; /* Ensure full width */
+    }
+  
+    .button-container {
+        flex-direction: row; /* Keep buttons side by side */
+        gap: 10px; /* Space between buttons */
+        align-items: center; /* Center buttons vertically */
+        justify-content: center; /* Center buttons horizontally */
+        margin-top: 20px; /* Space above buttons */
+        width: 100%; /* Ensure container takes full width */
+    }
+  
+    .button {
+        padding: 0.5em 1em; /* Adjust padding for mobile */
+        font-size: 14px; /* Adjust font size */
+        margin: 0; /* Remove default margin */
+    }
+  
+    .search-container1 {
+        width: 100%; /* Full width */
+        display: flex; /* Use flex to center search bar */
+        justify-content: center; /* Center search bar */
+        margin-top: 20px; /* Space above search bar */
+        position: relative; /* Ensure relative positioning for the icon */
+    }
+  
+    .search-bar1 {
+        width: 90%; /* Adjust width for mobile */
+        padding-right: 40px; 
+    }
+  
+    .search-icon-container {
+        margin-right: -120px; /* Adjust for mobile */
+    }
+  
+    .search-icon-container:hover {
+        transform: translateY(-50%) scale(1.2);
+    }
+  
+    .image-container {
+        display: none; /* Hide image container */
+    }
+  
+    .elementImage {
+        width: 60px; /* Adjust size of elements */
+    }
+  
+    .crush, .cube, .spiral {
+        width: 60px; /* Adjust width for elements */
+    }
+}
+
+/* For larger tablets and small desktops (e.g., iPad Pro, larger screens) */
+@media (max-width: 1024px) {
+    .text-container {
+        padding: 20px; /* Adjust padding for larger tablets */
+    }
+  
+    .text-container h1 {
+        font-size: 2.4rem; /* Adjust font size for larger screens */
+    }
+  
+    .text-container p {
+        font-size: 1.2rem; /* Adjust font size */
+        margin-top: 15px; /* Space between heading and paragraph */
+        max-width: 800px; /* Optional: Limit width for readability */
+    }
+  
+    .button-container {
+        flex-direction: row; /* Keep buttons side by side */
+        gap: 15px; /* Space between buttons */
+    }
+  
+    .button {
+        padding: 0.6em 1.2em; /* Adjust padding for larger screens */
+        font-size: 16px; /* Adjust font size */
+    }
+  
+    .search-icon-container {
+        margin-right: -320px; /* Adjust for mobile */
+    }
+  
+    .search-bar1 {
+        width: 80%; /* Adjust width for larger tablets */
+        max-width: 350px; /* Control max-width */
+    }
+    .search-icon-container {
+        margin-right: -98px; /* Adjust for mobile */
+    }
+}
+
+/* Default styles for larger screens */
+@media (min-width: 1025px) {
+    .text-container {
+        padding: 30px; /* Adjust padding for larger screens */
+    }
+  
+    .text-container h1 {
+        font-size: 3.5rem; /* Adjust font size */ 
+    }
+  
+    .text-container p {
+        font-size: 1.5rem; /* Adjust font size */
+        margin-top: 20px; /* Space between heading and paragraph */
+        max-width: 1000px; /* Optional: Limit width for readability */
+    }
+  
+    .button-container {
+        flex-direction: row; /* Keep buttons side by side */
+        gap: 20px; /* Space between buttons */
+    }
+  
+    .button {
+        padding: 0.8em 1.5em; /* Adjust padding for larger screens */
+        font-size: 14px; /* Adjust font size */
+    }
+  
+    .search-container1 {
+        width: 100%; /* Ensure full width */
+    }
+    .search-icon-container {
+        margin-right: -120px; /* Adjust for mobile */
+    }
+  
+    .search-bar1 {
+        width: 70%; /* Adjust width for larger screens */
+        max-width: 400px; /* Control max-width */
+    }
+}
