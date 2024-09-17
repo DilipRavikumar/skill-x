@@ -23,7 +23,7 @@ const MainHome = () => {
       }
     });
 
-    return () => unsubscribe(); // Clean up the listener on component 
+    return () => unsubscribe(); // Clean up the listener on component unmount
   }, []);
 
   const fetchUserRole = async (uid) => {
