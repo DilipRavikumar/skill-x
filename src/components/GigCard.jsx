@@ -92,9 +92,7 @@ const GigCard = ({ gig }) => {
         // Add the order to Firestore
         await addDoc(collection(firestore, "orders"), orderData);
         
-        // Optionally, navigate to an order confirmation page or show a success message
-        alert("Order placed successfully!");
-        navigate("/dashboard-buyer"); // Redirect to BuyerDashboard or appropriate page
+        navigate("/escrowComponent"); // Redirect to BuyerDashboard or appropriate page
       } catch (error) {
         console.error("Error placing order: ", error);
       }

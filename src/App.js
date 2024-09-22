@@ -21,6 +21,7 @@ import Chat from './Chat'; // Import your Chat component
 import Sidebar from './Sidebar'; // Import your Sidebar component
 import { getFirestore, collection, query, onSnapshot } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
+import EscrowComponent from './components/Escrowcomponent';
 
 const App = () => {
   const [users, setUsers] = useState([]); // Array of users for the sidebar
@@ -53,6 +54,7 @@ const App = () => {
         <Route path="/freelancer-form" element={<FreelancerForm />} />
         <Route path="/buyer-form" element={<BuyerForm />} />
         <Route path='/create-gig' element={<CreateGigPage />} />
+        <Route path='/escrowcomponent' element={<EscrowComponent />} />
         <Route path="/chat/:chatId" element={<Chat selectedChat={selectedChat} />} />
         <Route
           path="/Home"
