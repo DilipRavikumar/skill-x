@@ -1,20 +1,8 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  Image,
-  Text,
-  VStack,
-  HStack,
-  useToast,
-  Heading,
-  Flex,
-} from "@chakra-ui/react";
 
 const EscrowComponent = () => {
   const [status, setStatus] = useState("Pending");
   const [error, setError] = useState(null);
-  const toast = useToast();
   
   const gigId = "SEO";
   const amount = 400;
@@ -24,100 +12,119 @@ const EscrowComponent = () => {
   const handleStartTask = () => {
     setStatus("Funds Deposited");
     setError(null);
-    toast({
-      title: "Success",
-      description: "Funds deposited successfully.",
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-    });
+    alert("Funds deposited successfully.");
   };
 
   const handleFreelancerComplete = () => {
     setStatus("Work Completed by Freelancer");
-    toast({
-      title: "Success",
-      description: "Task marked as completed.",
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-    });
+    alert("Task marked as completed.");
   };
 
   const handleEmployerVerification = () => {
     if (status !== "Work Completed by Freelancer") {
       setError("Freelancer hasn't completed the work yet.");
-      toast({
-        title: "Error",
-        description: "Freelancer hasn't completed the work yet.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
+      alert("Freelancer hasn't completed the work yet.");
       return;
     }
 
     setStatus("Funds Released to Freelancer");
-    toast({
-      title: "Success",
-      description: "Funds released to freelancer.",
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-    });
+    alert("Funds released to freelancer.");
   };
 
   return (
-    <Flex
-      direction="column"
-      align="center"
-      justify="center"
-      p={6}
-      bg="white"
-      borderRadius="lg"
-      boxShadow="lg"
-      maxW="lg"
-      margin="auto"
-      mt={10}
-    >
-      <Heading mb={4} color="blue.600">Escrow Management</Heading>
-      <Text fontSize="lg" color="blue.500">Escrow Status: {status}</Text>
-      {error && <Text color="red.300">{error}</Text>}
+    <div style={styles.container}>
+      <h1 style={styles.heading}>Escrow Management</h1>
+      <p style={styles.status}>Escrow Status: {status}</p>
+      {error && <p style={styles.error}>{error}</p>}
       
-      <Image
+      <img
         src={gigImage}
         alt="Gig Image"
-        borderRadius="md"
-        boxSize="200px"
-        objectFit="cover"
-        mb={4}
+        style={styles.image}
       />
 
-      <VStack spacing={4} mt={4} w="100%">
-        <Text fontSize="lg" color="blue.500">Gig: {gigId}</Text>
-        <Text fontSize="lg" color="blue.500">Amount: ${amount}</Text>
-        <Text fontSize="lg" color="blue.500">Freelancer: {freelancerName}</Text>
-      </VStack>
+      <div style={styles.details}>
+        <p style={styles.detail}>Gig: {gigId}</p>
+        <p style={styles.detail}>Amount: ${amount}</p>
+        <p style={styles.detail}>Freelancer: {freelancerName}</p>
+      </div>
       
-      <HStack spacing={4} mt={4} w="100%">
+      <div style={styles.buttonContainer}>
         {status === "Pending" && (
-          <Button colorScheme="blue" size="lg" onClick={handleStartTask}>
+          <button style={styles.button} onClick={handleStartTask}>
             Deposit Funds
-          </Button>
+          </button>
         )}
         {status === "Funds Deposited" && (
-          <Button colorScheme="teal" size="lg" onClick={handleFreelancerComplete}>
+          <button style={styles.button} onClick={handleFreelancerComplete}>
             Mark Task as Completed
-          </Button>
+          </button>
         )}
         {status === "Work Completed by Freelancer" && (
-          <Button colorScheme="green" size="lg" onClick={handleEmployerVerification}>
+          <button style={styles.button} onClick={handleEmployerVerification}>
             Verify and Release Funds
-          </Button>
+          </button>
         )}
-      </HStack>
-    </Flex>
+      </div>
+    </div>
   );
+};
+
+const styles = {
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "20px",
+    backgroundColor: "#f8f9fa",
+    borderRadius: "10px",
+    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+    maxWidth: "400px",
+    margin: "auto",
+    marginTop: "40px",
+  },
+  heading: {
+    marginBottom: "20px",
+    color: "#007bff",
+  },
+  status: {
+    fontSize: "18px",
+    color: "#007bff",
+  },
+  error: {
+    color: "red",
+  },
+  image: {
+    borderRadius: "8px",
+    width: "100%",
+    height: "auto",
+    marginBottom: "20px",
+  },
+  details: {
+    width: "100%",
+    marginBottom: "20px",
+  },
+  detail: {
+    fontSize: "16px",
+    color: "#495057",
+  },
+  buttonContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+  },
+  button: {
+    padding: "10px 15px",
+    fontSize: "16px",
+    color: "#fff",
+    backgroundColor: "#007bff",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    transition: "background-color 0.3s",
+  },
 };
 
 export default EscrowComponent;
