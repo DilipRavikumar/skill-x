@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
 import {
   getFirestore,
   doc,
@@ -11,111 +10,6 @@ import {
 } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
-
-
-const FormContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 30px;
-  max-width: 800px;
-  margin: 50px auto;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-`;
-
-const FormField = styled.div`
-  margin: 15px 0;
-  width: 100%;
-`;
-
-const Label = styled.label`
-  display: block;
-  font-size: 1rem;
-  color: #333;
-  margin-bottom: 8px;
-  font-weight: 600;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 1rem;
-  transition: border-color 0.3s ease;
-
-  &:focus {
-    border-color: #007bff;
-    outline: none;
-  }
-`;
-
-const TextArea = styled.textarea`
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 1rem;
-  resize: vertical;
-  transition: border-color 0.3s ease;
-
-  &:focus {
-    border-color: #007bff;
-    outline: none;
-  }
-`;
-
-const TagList = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-`;
-
-const Tag = styled.div`
-  background-color: #007bff;
-  color: #fff;
-  padding: 6px 12px;
-  border-radius: 5px;
-  font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-`;
-
-const RemoveTag = styled.span`
-  margin-left: 8px;
-  cursor: pointer;
-  font-weight: bold;
-`;
-
-const SubmitButton = styled.button`
-  background: #007bff;
-  color: #fff;
-  padding: 12px 24px;
-  border-radius: 5px;
-  border: none;
-  font-size: 1.2rem;
-  cursor: pointer;
-  margin-top: 20px;
-  transition: background 0.3s ease, transform 0.2s ease;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-
-  &:hover {
-    background: #0056b3;
-    transform: translateY(-2px);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-`;
-
-const Title = styled.h1`
-  font-size: 2rem;
-  color: #333;
-  margin-bottom: 20px;
-`;
 
 const BuyerForm = () => {
   const [formValues, setFormValues] = useState({
@@ -129,7 +23,6 @@ const BuyerForm = () => {
   const auth = getAuth();
   const firestore = getFirestore();
   const navigate = useNavigate(); // Initialize useNavigate
-
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -241,66 +134,71 @@ const BuyerForm = () => {
   };
 
   return (
-    <FormContainer>
-      <Title>Employer Profile</Title>
-      <FormField>
-        <Label htmlFor="bio">Bio:</Label>
-        <TextArea
+    <div className="form-container">
+      <h1 className="form-title">Employer Profile</h1>
+      <div className="form-field">
+        <label htmlFor="bio" className="form-label">Bio:</label>
+        <textarea
           id="bio"
           name="bio"
           rows="4"
           value={formValues.bio || ""}
           onChange={handleInputChange}
+          className="form-textarea"
         />
-      </FormField>
-      <FormField>
-        <Label htmlFor="preferredLocations">Preferred Locations:</Label>
-        <TagList>
+      </div>
+      <div className="form-field">
+        <label htmlFor="preferredLocations" className="form-label">Preferred Locations:</label>
+        <div className="tag-list">
           {formValues.preferredLocations?.map((location, index) => (
-            <Tag key={index}>
+            <div key={index} className="tag">
               {location}
-              <RemoveTag
+              <span
+                className="remove-tag"
                 onClick={() => handleRemoveTag("preferredLocations", location)}
               >
                 &times;
-              </RemoveTag>
-            </Tag>
+              </span>
+            </div>
           ))}
-          <Input
+          <input
             type="text"
             placeholder="Type a location and press Enter"
             value={preferredLocationInput}
             onChange={handlePreferredLocationInputChange}
             onKeyDown={(e) => handleTagKeyPress(e, "preferredLocations")}
+            className="form-input"
           />
-        </TagList>
-      </FormField>
-      <FormField>
-        <Label htmlFor="languagesKnown">Languages Known:</Label>
-        <TagList>
+        </div>
+      </div>
+      <div className="form-field">
+        <label htmlFor="languagesKnown" className="form-label">Languages Known:</label>
+        <div className="tag-list">
           {formValues.languagesKnown?.map((language, index) => (
-            <Tag key={index}>
+            <div key={index} className="tag">
               {language}
-              <RemoveTag
+              <span
+                className="remove-tag"
                 onClick={() => handleRemoveTag("languagesKnown", language)}
               >
                 &times;
-              </RemoveTag>
-            </Tag>
+              </span>
+            </div>
           ))}
-          <Input
+          <input
             type="text"
             placeholder="Type a language and press Enter"
             value={languageInput}
             onChange={handleLanguageInputChange}
             onKeyDown={(e) => handleTagKeyPress(e, "languagesKnown")}
+            className="form-input"
           />
-        </TagList>
-      </FormField>
-      <SubmitButton type="submit" onClick={handleSubmit}>
+        </div>
+      </div>
+      <button type="submit" onClick={handleSubmit} className="submit-button">
         Save Changes
-      </SubmitButton>
-    </FormContainer>
+      </button>
+    </div>
   );
 };
 

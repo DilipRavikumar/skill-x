@@ -1,0 +1,133 @@
+/* Animation for fading in */
+@keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Container for the selection form */
+  .selection-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding: 20px;
+    text-align: center;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  /* Input styles */
+  .input {
+    padding: 10px;
+    margin: 10px 0;
+    width: 100%;
+    max-width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in-out forwards;
+  }
+  
+  /* Button styles */
+  .custom-button {
+    left: 10px;
+    padding: 0.8em 1.6em;
+    border: none;
+    border-radius: 100px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: rgb(1, 11, 231);
+    transition: all 1000ms;
+    font-size: 14px;
+    position: relative;
+    overflow: hidden;
+    outline: 2px solid rgb(1, 11, 231);
+}
+
+.custom-button:hover {
+    color: #ffffff;
+    transform: scale(1.1);
+    outline: 2px solid rgb(1, 11, 231);
+    box-shadow: 4px 5px 17px -4px #268391;
+}
+
+.custom-button::before {
+    content: "";
+    position: absolute;
+    left: -50px;
+    top: 0;
+    width: 0;
+    height: 100%;
+    background-color: rgb(1, 11, 231);
+    transform: skewX(45deg);
+    z-index: -1;
+    transition: width 1000ms;
+}
+
+.custom-button:hover::before {
+    width: 250%;
+}
+
+
+  /* Error message styles */
+  .error-message {
+    color: red;
+    font-size: 0.9rem;
+    margin: 10px 0;
+  }
+  .option-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Space between buttons */
+  }
+  
+  .option-button {
+    padding: 0.8em 1.6em;
+    border: none;
+    border-radius: 100px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: rgb(1, 11, 231);
+    transition: all 1000ms;
+    font-size: 14px;
+    position: relative;
+    overflow: hidden;
+    outline: 2px solid rgb(1, 11, 231);
+  }
+  
+  .option-button:hover {
+    color: #ffffff;
+    transform: scale(1.1);
+    outline: 2px solid rgb(1, 11, 231);
+    box-shadow: 4px 5px 17px -4px #268391;
+  }
+  
+  .option-button::before {
+    content: "";
+    position: absolute;
+    left: -50px;
+    top: 0;
+    width: 0;
+    height: 100%;
+    background-color: rgb(1, 11, 231);
+    transform: skewX(45deg);
+    z-index: -1;
+    transition: width 1000ms;
+  }
+  
+  .option-button:hover::before {
+    width: 250%;
+  }
+  

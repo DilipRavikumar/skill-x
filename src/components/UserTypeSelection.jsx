@@ -1,67 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import styled, { keyframes } from "styled-components";
 import { doc, updateDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { db, auth } from "../firebaseConfig";
-
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
-
-const SelectionContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  padding: 20px;
-  text-align: center;
-  animation: ${fadeIn} 0.5s ease-in-out;
-`;
-
-const Input = styled.input`
-  padding: 10px;
-  margin: 10px 0;
-  width: 100%;
-  max-width: 300px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 1rem;
-  opacity: 0;
-  animation: ${fadeIn} 0.5s ease-in-out forwards;
-`;
-
-const Button = styled.button`
-  background: #007bff;
-  color: #fff;
-  padding: 15px 30px;
-  border: none;
-  border-radius: 5px;
-  font-size: 1rem;
-  cursor: pointer;
-  margin: 10px;
-  transition: background 0.3s ease;
-  opacity: 0;
-  animation: ${fadeIn} 0.5s ease-in-out forwards;
-
-  &:hover {
-    background: #0056b3;
-  }
-`;
-
-const ErrorMessage = styled.p`
-  color: red;
-  font-size: 0.9rem;
-  margin: 10px 0;
-`;
+import "./UserTypeSelection.css"; // Import the external CSS
 
 const UserTypeSelection = () => {
   const [step, setStep] = useState(0);
@@ -69,7 +11,7 @@ const UserTypeSelection = () => {
   const [username, setUsername] = useState("");
   const [role, setUserType] = useState(null);
   const [userEmail, setUserEmail] = useState("");
-  const [uid, setUid] = useState(null); // State to store user ID
+  const [uid, setUid] = useState(null);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -77,7 +19,7 @@ const UserTypeSelection = () => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUserEmail(user.email);
-        setUid(user.uid); // Store the user's UID
+        setUid(user.uid);
       } else {
         console.log("User is not signed in");
       }
@@ -113,7 +55,6 @@ const UserTypeSelection = () => {
     }
 
     try {
-      // Update the existing user document in Firestore
       const userDocRef = doc(db, "users", uid);
       await updateDoc(userDocRef, {
         displayName,
@@ -137,56 +78,55 @@ const UserTypeSelection = () => {
   };
 
   return (
-    <SelectionContainer>
-      {error && <ErrorMessage>{error}</ErrorMessage>}
+    <div className="selection-container">
+      {error && <p className="error-message">{error}</p>}
       {step === 0 && (
         <div>
           <h1>Enter your display name</h1>
-          <Input
+          <input
+            className="input"
             type="text"
             placeholder="Display Name"
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
           />
-          <Button onClick={handleNextStep}>Next</Button>
+          <button className="custom-button" onClick={handleNextStep}>Next</button>
         </div>
       )}
       {step === 1 && (
         <div>
           <h1>Enter your username</h1>
-          <Input
+          <input
+            className="input"
             type="text"
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
-          <Button onClick={handleNextStep}>Next</Button>
+          <button className="custom-button" onClick={handleNextStep}>Next</button>
         </div>
       )}
       {step === 2 && (
         <div>
-          <h1>Are you a freelancer or an employer?</h1>
-          <Button
+        <h1>Are you a freelancer or an employer?</h1>
+        <div className="option-container">
+          <button
+            className="option-button"
             onClick={() => handleSelection("freelancer")}
-            style={{
-              backgroundColor:
-                role === "freelancer" ? "#0056b3" : "#007bff",
-            }}
           >
             Freelancer
-          </Button>
-          <Button
+          </button>
+          <button
+            className="option-button"
             onClick={() => handleSelection("buyer")}
-            style={{
-              backgroundColor: role === "buyer" ? "#0056b3" : "#007bff",
-            }}
           >
             Employer
-          </Button>
+          </button>
         </div>
+      </div>
       )}
-      {step === 3 && <Button onClick={handleSubmit}>Submit</Button>}
-    </SelectionContainer>
+      {step === 3 && <button className="button" onClick={handleSubmit}>Submit</button>}
+    </div>
   );
 };
 
