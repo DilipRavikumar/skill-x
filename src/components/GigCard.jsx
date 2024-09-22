@@ -1,18 +1,24 @@
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { getFirestore, collection, addDoc, Timestamp, query, where, getDocs } from "firebase/firestore";
+import { getFirestore, collection, addDoc, Timestamp, query, where, getDocs, doc, getDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import defaultAvatar from "../assets/avatar.png";
 
 const Card = styled.div`
   border: 1px solid #ddd;
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 16px;
   width: 300px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: scale(1.02);
+  }
 `;
 
 const Thumbnail = styled.img`
@@ -26,11 +32,13 @@ const Thumbnail = styled.img`
 const Title = styled.h2`
   font-size: 1.5rem;
   margin-bottom: 10px;
+  text-align: center;
 `;
 
 const Description = styled.p`
   font-size: 1rem;
   color: #555;
+  text-align: center;
 `;
 
 const Button = styled.button`
@@ -56,6 +64,27 @@ const ChatButton = styled(Button)`
   }
 `;
 
+const FreelancerInfo = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  width: 100%;
+`;
+
+const Avatar = styled.img`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+  cursor: pointer;
+  border: 2px solid #007bff;
+`;
+
+const FreelancerName = styled.p`
+  font-size: 1rem;
+  color: #333;
+`;
+
 const GigCard = ({ gig }) => {
   const navigate = useNavigate();
   const auth = getAuth();
@@ -66,12 +95,10 @@ const GigCard = ({ gig }) => {
 
     if (user) {
       try {
-        // Calculate delivery date
         const currentDate = new Date();
         const deliveryDate = new Date(currentDate);
         deliveryDate.setDate(currentDate.getDate() + gig.deliveryTime);
 
-        // Collect order details
         const orderData = {
           gigId: gig.id,
           gigTitle: gig.title,
@@ -86,13 +113,11 @@ const GigCard = ({ gig }) => {
           deliveryDate: Timestamp.fromDate(deliveryDate),
           messageThread: [],
           review: null,
-          thumbnail: gig.thumbnail // Add the thumbnail to the order data
+          thumbnail: gig.thumbnail,
         };
 
-        // Add the order to Firestore
         await addDoc(collection(firestore, "orders"), orderData);
-        
-        navigate("/escrowComponent"); // Redirect to BuyerDashboard or appropriate page
+        navigate("/escrowComponent");
       } catch (error) {
         console.error("Error placing order: ", error);
       }
@@ -106,7 +131,6 @@ const GigCard = ({ gig }) => {
 
     if (user) {
       try {
-        // Check if a chat room already exists between buyer and freelancer
         const chatQuery = query(
           collection(firestore, "chats"),
           where("buyerId", "==", user.uid),
@@ -117,13 +141,12 @@ const GigCard = ({ gig }) => {
         let chatId;
 
         if (chatSnapshot.empty) {
-          // Create a new chat room if one does not exist
           const chatData = {
             buyerId: user.uid,
             freelancerId: gig.freelancerId,
             gigId: gig.id,
             createdAt: Timestamp.fromDate(new Date()),
-            messages: []
+            messages: [],
           };
           const chatDoc = await addDoc(collection(firestore, "chats"), chatData);
           chatId = chatDoc.id;
@@ -131,7 +154,6 @@ const GigCard = ({ gig }) => {
           chatId = chatSnapshot.docs[0].id;
         }
 
-        // Navigate to the chat page with the chat ID
         navigate(`/chat/${chatId}`);
       } catch (error) {
         console.error("Error starting chat: ", error);
@@ -141,8 +163,30 @@ const GigCard = ({ gig }) => {
     }
   };
 
+  const handleAvatarClick = async () => {
+    try {
+      const freelancerDoc = await getDoc(doc(firestore, "users", gig.freelancerId));
+      if (freelancerDoc.exists()) {
+        const freelancerData = freelancerDoc.data();
+        navigate(`/freelancer/${gig.freelancerId}`, { state: { freelancer: freelancerData } });
+      } else {
+        alert("Freelancer not found.");
+      }
+    } catch (error) {
+      console.error("Error fetching freelancer details: ", error);
+    }
+  };
+
+  // Determine the avatar image to display
+  const avatarImage = gig.freelancerAvatar ? gig.freelancerAvatar : defaultAvatar;
+
   return (
     <Card>
+      {/* Freelancer Info Section */}
+      <FreelancerInfo onClick={handleAvatarClick}>
+        <Avatar src={avatarImage} alt="Freelancer Avatar" />
+        <FreelancerName>{gig.freelancerName}</FreelancerName>
+      </FreelancerInfo>
       {/* Display the thumbnail */}
       <Thumbnail src={gig.thumbnail} alt={gig.title} />
       <Title>{gig.title}</Title>

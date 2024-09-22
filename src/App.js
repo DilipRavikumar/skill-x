@@ -22,6 +22,7 @@ import Sidebar from './Sidebar'; // Import your Sidebar component
 import { getFirestore, collection, query, onSnapshot } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import EscrowComponent from './components/Escrowcomponent';
+import FreelancerDetails from './components/FreelancerDetails';
 
 const App = () => {
   const [users, setUsers] = useState([]); // Array of users for the sidebar
@@ -56,6 +57,7 @@ const App = () => {
         <Route path='/create-gig' element={<CreateGigPage />} />
         <Route path='/escrowcomponent' element={<EscrowComponent />} />
         <Route path="/chat/:chatId" element={<Chat selectedChat={selectedChat} />} />
+        <Route path="/freelancer/:id" element={<FreelancerDetails />} />
         <Route
           path="/Home"
           element={
