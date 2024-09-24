@@ -47,7 +47,7 @@ const AboutContainer = styled.div`
   }
 
   h1 {
-    margin: 1% 0;
+    margin: 1% 0 7% 13%;
     margin-bottom: 2%;
     color: #333;
     font-size: 2.5vw; /* Adjusted font size */
